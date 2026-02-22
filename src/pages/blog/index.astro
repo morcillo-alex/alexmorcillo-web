@@ -6,7 +6,8 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { CATEGORIES, SITE_TITLE } from '../../consts';
-import { getSlug } from '../../utils/posts';
+import { buildCategoryUrl, slugify } from '../../utils/categories';
+import { getPostUrl } from '../../utils/posts';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -30,22 +31,25 @@ const [featured, ...rest] = posts;
 				All Posts
 			</h1>
 
-			<!-- Category Filters -->
-			<div class="flex flex-wrap gap-2 mb-12 animate-fade-up" style="animation-delay: 0.15s" id="category-filters">
-				<button data-filter="all" class="filter-btn font-mono text-xs uppercase tracking-widest px-4 py-2 border rounded-full transition-colors duration-200 border-accent text-[#107C41] dark:text-accent bg-accent/10">
+			<!-- Category Navigation -->
+			<div class="flex flex-wrap gap-2 mb-12 animate-fade-up" style="animation-delay: 0.15s">
+				<span class="font-mono text-xs uppercase tracking-widest px-4 py-2 border rounded-full border-accent text-[#107C41] dark:text-accent bg-accent/10">
 					All
-				</button>
+				</span>
 				{CATEGORIES.map(cat => (
-					<button data-filter={cat} class="filter-btn font-mono text-xs uppercase tracking-widest px-4 py-2 border rounded-full transition-colors duration-200 border-border dark:border-night-border text-ink-muted dark:text-cream-muted hover:border-accent hover:text-[#107C41] dark:hover:text-accent">
+					<a
+						href={buildCategoryUrl(slugify(cat))}
+						class="font-mono text-xs uppercase tracking-widest px-4 py-2 border rounded-full transition-colors duration-200 border-border dark:border-night-border text-ink-muted dark:text-cream-muted hover:border-accent hover:text-[#107C41] dark:hover:text-accent no-underline"
+					>
 						{cat}
-					</button>
+					</a>
 				))}
 			</div>
 
 			<!-- Featured Post -->
 			{featured && (
-				<article class="mb-16 animate-fade-up" style="perspective: 800px; animation-delay: 0.2s" data-category={featured.data.category}>
-					<a href={`/blog/${getSlug(featured.id)}/`} class="card-glass relative overflow-hidden group block no-underline md:grid md:grid-cols-2 md:gap-10 items-center" data-tilt>
+				<article class="mb-16 animate-fade-up" style="perspective: 800px; animation-delay: 0.2s">
+					<a href={getPostUrl(featured)} class="card-glass relative overflow-hidden group block no-underline md:grid md:grid-cols-2 md:gap-10 items-center" data-tilt>
 						{featured.data.heroImage && (
 							<div class="overflow-hidden rounded-lg bg-border/30 dark:bg-night-border/30">
 								<Image
@@ -84,8 +88,8 @@ const [featured, ...rest] = posts;
 					<div class="h-px bg-border dark:bg-night-border mb-12"></div>
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="posts-grid">
 						{rest.map((post, i) => (
-							<article class="animate-fade-up" style={`perspective: 800px; animation-delay: ${0.05 * (i + 1)}s`} data-category={post.data.category}>
-								<a href={`/blog/${getSlug(post.id)}/`} class="card-glass relative overflow-hidden group block no-underline" data-tilt>
+							<article class="animate-fade-up" style={`perspective: 800px; animation-delay: ${0.05 * (i + 1)}s`}>
+								<a href={getPostUrl(post)} class="card-glass relative overflow-hidden group block no-underline" data-tilt>
 									{post.data.heroImage && (
 										<div class="overflow-hidden rounded-lg mb-4 bg-border/30 dark:bg-night-border/30">
 											<Image
@@ -122,42 +126,14 @@ const [featured, ...rest] = posts;
 		</main>
 		<Footer />
 
+		<!-- Backwards compat: redirect ?category=X to /blog/category-slug/ -->
 		<script is:inline>
 			(function () {
-				const buttons = document.querySelectorAll('.filter-btn');
-				const articles = document.querySelectorAll('[data-category]');
-
-				function setFilter(category) {
-					buttons.forEach(btn => {
-						const isActive = btn.dataset.filter === category;
-						btn.classList.toggle('border-accent', isActive);
-						btn.classList.toggle('text-[#107C41]', isActive);
-						btn.classList.toggle('dark:text-accent', isActive);
-						btn.classList.toggle('bg-accent/10', isActive);
-						btn.classList.toggle('border-border', !isActive);
-						btn.classList.toggle('dark:border-night-border', !isActive);
-						btn.classList.toggle('text-ink-muted', !isActive);
-						btn.classList.toggle('dark:text-cream-muted', !isActive);
-					});
-
-					articles.forEach(article => {
-						if (category === 'all' || article.dataset.category === category) {
-							article.style.display = '';
-						} else {
-							article.style.display = 'none';
-						}
-					});
-				}
-
-				buttons.forEach(btn => {
-					btn.addEventListener('click', () => setFilter(btn.dataset.filter));
-				});
-
-				// Deep-link support: read ?category=X from URL
-				const params = new URLSearchParams(window.location.search);
-				const initial = params.get('category');
-				if (initial) {
-					setFilter(initial);
+				var params = new URLSearchParams(window.location.search);
+				var cat = params.get('category');
+				if (cat) {
+					var slug = cat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+					window.location.replace('/blog/' + slug + '/');
 				}
 			})();
 		</script>

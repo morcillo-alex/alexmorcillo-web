@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { isValidCategoryPath } from './utils/categories';
 
 const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
@@ -10,7 +11,10 @@ const blog = defineCollection({
 		z.object({
 			title: z.string(),
 			description: z.string(),
-			category: z.enum(['AI', 'Games', 'Architecture', 'Technology']),
+			category: z.string().refine((val) => isValidCategoryPath(val), {
+				message:
+					'Category must be a valid path in CATEGORY_TREE (e.g. "AI", "Games/Blender/Modeling")',
+			}),
 			tags: z.array(z.string()).optional(),
 			// Transform string to Date object
 			pubDate: z.coerce.date(),

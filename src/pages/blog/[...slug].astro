@@ -1,36 +1,122 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
-import { getSlug } from '../../utils/posts';
+import CategoryListing from '../../layouts/CategoryListing.astro';
+import {
+	buildCategoryBreadcrumbs,
+	buildPostBreadcrumbs,
+	categoryToSlugPath,
+	getAllSlugPaths,
+	getChildCategories,
+	getDescendantPaths,
+	labelPathFromSlugPath,
+} from '../../utils/categories';
+import { getFullSlug } from '../../utils/posts';
+
+type CategoryProps = {
+	type: 'category';
+	categoryLabel: string;
+	categorySlugPath: string;
+	breadcrumbs: { label: string; href: string }[];
+	subcategories: { label: string; slug: string; fullSlugPath: string }[];
+	posts: CollectionEntry<'blog'>[];
+};
+
+type PostProps = {
+	type: 'post';
+	post: CollectionEntry<'blog'>;
+	breadcrumbs: { label: string; href: string }[];
+	categorySlugPath: string;
+};
+
+type Props = CategoryProps | PostProps;
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
+	const allSlugPaths = getAllSlugPaths();
+	const paths: { params: { slug: string }; props: Props }[] = [];
 
-	// Build-time slug collision detection
-	const slugs = new Map<string, string>();
-	for (const post of posts) {
-		const slug = getSlug(post.id);
-		if (slugs.has(slug)) {
-			throw new Error(
-				`Slug collision: "${slug}" is used by both "${slugs.get(slug)}" and "${post.id}". Rename one of the files.`,
-			);
-		}
-		slugs.set(slug, post.id);
+	// --- Category listing pages ---
+	for (const slugPath of allSlugPaths) {
+		const labelPath = labelPathFromSlugPath(slugPath);
+		const label = labelPath.split('/').pop()!;
+		const descendantPaths = getDescendantPaths(slugPath);
+		const categoryPosts = posts
+			.filter((p) => {
+				const postCatSlug = categoryToSlugPath(p.data.category);
+				return descendantPaths.includes(postCatSlug);
+			})
+			.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+		paths.push({
+			params: { slug: slugPath },
+			props: {
+				type: 'category',
+				categoryLabel: label,
+				categorySlugPath: slugPath,
+				breadcrumbs: buildCategoryBreadcrumbs(slugPath),
+				subcategories: getChildCategories(slugPath),
+				posts: categoryPosts,
+			},
+		});
 	}
 
-	return posts.map((post) => ({
-		params: { slug: getSlug(post.id) },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<'blog'>;
+	// --- Blog post pages ---
+	const postSlugs = new Map<string, string>();
+	for (const post of posts) {
+		const fullSlug = getFullSlug(post);
 
-const post = Astro.props;
-const { Content } = await render(post);
-const words = post.body?.split(/\s+/).length ?? 0;
-const readingTime = Math.max(1, Math.round(words / 225));
+		if (postSlugs.has(fullSlug)) {
+			throw new Error(
+				`Slug collision: "${fullSlug}" is used by both "${postSlugs.get(fullSlug)}" and "${post.id}". Rename one of the files.`,
+			);
+		}
+		postSlugs.set(fullSlug, post.id);
+
+		if (allSlugPaths.includes(fullSlug)) {
+			throw new Error(
+				`Post slug "${fullSlug}" collides with a category path. Rename the post file "${post.id}".`,
+			);
+		}
+
+		const categorySlugPath = categoryToSlugPath(post.data.category);
+		paths.push({
+			params: { slug: fullSlug },
+			props: {
+				type: 'post',
+				post,
+				breadcrumbs: buildPostBreadcrumbs(categorySlugPath, post.data.title),
+				categorySlugPath,
+			},
+		});
+	}
+
+	return paths;
+}
+
+const props = Astro.props;
+
+let Content: any = null;
+let readingTime = 0;
+
+if (props.type === 'post') {
+	const rendered = await render(props.post);
+	Content = rendered.Content;
+	const words = props.post.body?.split(/\s+/).length ?? 0;
+	readingTime = Math.max(1, Math.round(words / 225));
+}
 ---
 
-<BlogPost {...post.data} readingTime={readingTime}>
-	<Content />
-</BlogPost>
+{props.type === 'category' ? (
+	<CategoryListing
+		categoryLabel={props.categoryLabel}
+		categorySlugPath={props.categorySlugPath}
+		breadcrumbs={props.breadcrumbs}
+		subcategories={props.subcategories}
+		posts={props.posts}
+	/>
+) : (
+	<BlogPost {...props.post.data} readingTime={readingTime} breadcrumbs={props.breadcrumbs}>
+		<Content />
+	</BlogPost>
+)}

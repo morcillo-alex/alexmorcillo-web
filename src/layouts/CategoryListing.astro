@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import type { BreadcrumbItem, ChildCategory } from '../utils/categories';
+import { buildCategoryUrl } from '../utils/categories';
+import { getPostUrl } from '../utils/posts';
+
+interface Props {
+	categoryLabel: string;
+	categorySlugPath: string;
+	breadcrumbs: BreadcrumbItem[];
+	subcategories: ChildCategory[];
+	posts: CollectionEntry<'blog'>[];
+}
+
+const { categoryLabel, breadcrumbs, subcategories, posts } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`${categoryLabel} — ${SITE_TITLE}`} description={`Articles about ${categoryLabel} by Alex Morcillo.`} />
+	</head>
+	<body>
+		<Header />
+		<main class="max-w-5xl mx-auto px-6 py-16">
+			<div class="mb-6 animate-fade-up">
+				<Breadcrumbs items={breadcrumbs} />
+			</div>
+			<h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-10 animate-fade-up" style="animation-delay: 0.1s">
+				{categoryLabel}
+			</h1>
+
+			{subcategories.length > 0 && (
+				<div class="flex flex-wrap gap-2 mb-12 animate-fade-up" style="animation-delay: 0.15s">
+					{subcategories.map((sub) => (
+						<a
+							href={buildCategoryUrl(sub.fullSlugPath)}
+							class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-border dark:border-night-border text-ink-muted dark:text-cream-muted rounded-full hover:border-accent hover:text-[#107C41] dark:hover:text-accent transition-colors duration-200 no-underline"
+						>
+							{sub.label}
+						</a>
+					))}
+				</div>
+			)}
+
+			{posts.length > 0 ? (
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					{posts.map((post, i) => (
+						<article class="animate-fade-up" style={`perspective: 800px; animation-delay: ${0.05 * (i + 1)}s`}>
+							<a href={getPostUrl(post)} class="card-glass relative overflow-hidden group block no-underline" data-tilt>
+								{post.data.heroImage && (
+									<div class="overflow-hidden rounded-lg mb-4 bg-border/30 dark:bg-night-border/30">
+										<Image
+											width={480}
+											height={320}
+											src={post.data.heroImage}
+											alt=""
+											class="w-full aspect-[3/2] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+											loading="lazy"
+										/>
+									</div>
+								)}
+								<div class="flex items-center gap-3 mb-2">
+									<span class="font-mono text-xs uppercase tracking-widest text-[#107C41] dark:text-accent">
+										{post.data.category}
+									</span>
+									<span class="text-border dark:text-night-border">&middot;</span>
+									<span class="font-mono text-xs text-ink-muted dark:text-cream-muted uppercase tracking-wider">
+										<FormattedDate date={post.data.pubDate} />
+									</span>
+								</div>
+								<h3 class="font-heading text-lg font-semibold text-ink dark:text-cream group-hover:text-accent transition-colors duration-200 leading-snug">
+									{post.data.title}
+								</h3>
+								<p class="mt-2 text-ink-secondary dark:text-cream-secondary text-sm leading-relaxed line-clamp-2">
+									{post.data.description}
+								</p>
+							</a>
+						</article>
+					))}
+				</div>
+			) : (
+				<p class="text-ink-muted dark:text-cream-muted font-mono text-sm">No posts in this category yet.</p>
+			)}
+		</main>
+		<Footer />
+
+		<script is:inline>
+			(function () {
+				var cards = document.querySelectorAll('[data-tilt]');
+				var maxRotate = 6;
+				cards.forEach(function (card) {
+					var parent = card.parentElement;
+					parent.addEventListener('mousemove', function (e) {
+						var rect = parent.getBoundingClientRect();
+						var x = (e.clientX - rect.left) / rect.width - 0.5;
+						var y = (e.clientY - rect.top) / rect.height - 0.5;
+						card.style.transform = 'rotateY(' + (x * maxRotate) + 'deg) rotateX(' + (-y * maxRotate) + 'deg)';
+					});
+					parent.addEventListener('mouseleave', function () {
+						card.style.transform = '';
+					});
+				});
+			})();
+		</script>
+	</body>
+</html>
