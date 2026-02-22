@@ -5,62 +5,94 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const [featured, ...rest] = posts;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`Blog — ${SITE_TITLE}`} description="All posts" />
 	</head>
 	<body>
 		<Header />
-		<main class="w-[960px] max-w-[calc(100%-2em)] mx-auto py-12 px-4">
-			<section>
-				<ul class="flex flex-wrap gap-8 list-none m-0 p-0 max-md:gap-2">
-					{
-						posts.map((post, index) => (
-							<li
-								class:list={[
-									index === 0
-										? 'w-full mb-4 text-center max-md:mb-0'
-										: 'w-[calc(50%-1rem)] max-md:w-full max-md:text-center',
-								]}
-							>
-								<a href={`/blog/${post.id}/`} class="block group no-underline">
+		<main class="max-w-5xl mx-auto px-6 py-16">
+			<p class="font-mono text-sm uppercase tracking-[0.25em] text-ink-muted dark:text-cream-muted mb-6 animate-fade-up">
+				Blog
+			</p>
+			<h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-16 animate-fade-up" style="animation-delay: 0.1s">
+				All Posts
+			</h1>
+
+			<!-- Featured Post -->
+			{featured && (
+				<article class="mb-16 animate-fade-up" style="animation-delay: 0.2s">
+					<a href={`/blog/${featured.id}/`} class="group block no-underline md:grid md:grid-cols-2 md:gap-10 items-center">
+						{featured.data.heroImage && (
+							<div class="overflow-hidden rounded-xl bg-border/30 dark:bg-night-border/30">
+								<Image
+									width={720}
+									height={480}
+									src={featured.data.heroImage}
+									alt=""
+									class="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+								/>
+							</div>
+						)}
+						<div class="mt-6 md:mt-0">
+							<span class="font-mono text-xs uppercase tracking-widest text-[#107C41] dark:text-accent">Featured</span>
+							<h2 class="text-3xl md:text-4xl font-bold text-ink dark:text-cream mt-3 leading-tight group-hover:text-accent transition-colors duration-200">
+								{featured.data.title}
+							</h2>
+							<p class="mt-4 text-ink-secondary dark:text-cream-secondary leading-relaxed">
+								{featured.data.description}
+							</p>
+							<div class="font-mono text-sm text-ink-muted dark:text-cream-muted mt-4 uppercase tracking-wider">
+								<FormattedDate date={featured.data.pubDate} />
+							</div>
+						</div>
+					</a>
+				</article>
+			)}
+
+			{rest.length > 0 && (
+				<>
+					<div class="h-px bg-border dark:bg-night-border mb-12"></div>
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{rest.map((post, i) => (
+							<article class="group animate-fade-up" style={`animation-delay: ${0.05 * (i + 1)}s`}>
+								<a href={`/blog/${post.id}/`} class="block no-underline">
 									{post.data.heroImage && (
-										<Image
-											width={720}
-											height={360}
-											src={post.data.heroImage}
-											alt=""
-											class:list={[
-												'mb-2 rounded-xl transition-all duration-200 group-hover:shadow-box',
-												{ 'w-full': index === 0 },
-											]}
-										/>
+										<div class="overflow-hidden rounded-xl mb-4 bg-border/30 dark:bg-night-border/30">
+											<Image
+												width={480}
+												height={320}
+												src={post.data.heroImage}
+												alt=""
+												class="w-full aspect-[3/2] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+											/>
+										</div>
 									)}
-									<h4
-										class:list={[
-											'm-0 text-black leading-none transition-colors duration-200 group-hover:text-accent',
-											{ 'text-[2.369rem] max-md:text-[1.563em]': index === 0 },
-										]}
-									>
-										{post.data.title}
-									</h4>
-									<p class="m-0 text-gray transition-colors duration-200 group-hover:text-accent">
+									<div class="font-mono text-xs text-ink-muted dark:text-cream-muted uppercase tracking-wider mb-2">
 										<FormattedDate date={post.data.pubDate} />
+									</div>
+									<h3 class="font-display text-lg font-semibold text-ink dark:text-cream group-hover:text-accent transition-colors duration-200 leading-snug">
+										{post.data.title}
+									</h3>
+									<p class="mt-2 text-ink-secondary dark:text-cream-secondary text-sm leading-relaxed line-clamp-2">
+										{post.data.description}
 									</p>
 								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+							</article>
+						))}
+					</div>
+				</>
+			)}
 		</main>
 		<Footer />
 	</body>

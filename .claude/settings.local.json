@@ -3,7 +3,12 @@
     "allow": [
       "Bash(cd:*)",
       "Bash(cd \"C:/Users/Usuario/projects/alexmorcillo\" && npm run build 2>&1)",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(npx playwright:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(npx:*)",
+      "Bash(cd /c/Users/Usuario/projects/alexmorcillo && node -e \"\nconst { chromium } = require\\('playwright'\\);\n\\(async \\(\\) => {\n  const browser = await chromium.launch\\(\\);\n  const page = await browser.newPage\\(\\);\n  await page.goto\\('http://localhost:4321/'\\);\n  \n  // Inject axe-core\n  await page.addScriptTag\\({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js' }\\);\n  \n  const results = await page.evaluate\\(async \\(\\) => {\n    return await axe.run\\({ runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }\\);\n  }\\);\n  \n  console.log\\('VIOLATIONS:', JSON.stringify\\(results.violations.map\\(v => \\({\n    id: v.id,\n    impact: v.impact,\n    description: v.description,\n    nodes: v.nodes.slice\\(0,2\\).map\\(n => \\({ html: n.html.slice\\(0, 100\\), failureSummary: n.failureSummary }\\)\\)\n  }\\)\\), null, 2\\)\\);\n  \n  await browser.close\\(\\);\n}\\)\\(\\);\n\" 2>&1)"
     ]
   }
 }
