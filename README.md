@@ -1,62 +1,48 @@
-# Astro Starter Kit: Blog
+# alexmorcillo.com
 
-```sh
-npm create astro@latest -- --template blog
+Personal website and blog by Alex Morcillo — exploring AI, games, architecture, and the ideas shaping our future.
+
+## Tech Stack
+
+- **[Astro](https://astro.build)** v6 (beta) — static site generation, zero JS by default
+- **[Tailwind CSS](https://tailwindcss.com)** v4 — CSS-first config with custom design tokens
+- **[MDX](https://mdxjs.com)** — rich blog content with component support
+- **Typography** — Syne (headings), Newsreader (body), JetBrains Mono (code)
+
+## Features
+
+- Dark mode with system preference detection and manual toggle
+- Full SEO: Open Graph, Twitter Cards, JSON-LD structured data, canonical URLs
+- Social sharing previews for X, Facebook, LinkedIn, WhatsApp, Telegram
+- RSS feed at `/rss.xml`, auto-generated sitemap
+- Non-render-blocking font loading for fast performance
+- Lighthouse scores: 100 Performance, 100 SEO, 100 Best Practices
+
+## Getting Started
+
+```bash
+npm install        # Install dependencies
+npm run dev        # Dev server at localhost:4321
+npm run build      # Production build to ./dist/
+npm run preview    # Preview production build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Project Structure
 
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```
+src/
+  components/    # BaseHead, Header, Footer, FormattedDate
+  content/blog/  # Blog posts (Markdown/MDX)
+  layouts/       # BlogPost layout
+  pages/         # File-based routing
+  styles/        # global.css (Tailwind config + design tokens)
+  consts.ts      # Site metadata and social links
+public/          # Static assets, robots.txt, favicons
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Links
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+- [alexmorcillo.com](https://alexmorcillo.com)
+- [GitHub](https://github.com/morcillo-alex)
+- [X / Twitter](https://x.com/alexmorcillo82)
+- [LinkedIn](https://www.linkedin.com/in/alexmorcillo/)

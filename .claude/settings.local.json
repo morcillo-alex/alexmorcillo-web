@@ -18,7 +18,9 @@
       "Bash(node:*)",
       "Bash(sleep 1:*)",
       "Bash(xxd:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(ls:*)",
+      "Bash(rm:*)"
     ]
   }
 }
