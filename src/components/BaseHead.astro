@@ -36,10 +36,23 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Fonts -->
+<!-- Fonts (non-render-blocking) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link
+	rel="preload"
+	as="style"
+	href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Syne:wght@400;500;600;700;800&display=swap"
+/>
+<link
+	href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Syne:wght@400;500;600;700;800&display=swap"
+	rel="stylesheet"
+	media="print"
+	onload="this.media='all'"
+/>
+<noscript>
+	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</noscript>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

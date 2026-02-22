@@ -30,6 +30,7 @@ No test or lint commands are configured. The `/rss.xml` route has a pre-existing
 - `@import "tailwindcss"` + `@plugin "@tailwindcss/typography"` + `@custom-variant dark`
 - `@theme` block defines design tokens (colors, fonts, shadows, breakpoints, animations)
 - `@layer base` for element-level defaults (body, headings, links, code, blockquote, etc.)
+- **Prose color overrides live outside `@layer base`** — the TW v4 typography plugin uses hardcoded oklch values and ignores `--tw-prose-*` custom properties. Direct `.prose` / `.dark .prose` selectors outside any layer are needed to beat the plugin's specificity.
 - Vite plugin registered in `astro.config.mjs` → `vite.plugins: [tailwindcss()]`
 
 ### Design system (color tokens)
@@ -44,13 +45,14 @@ Pattern: use `text-ink dark:text-cream`, `bg-canvas dark:bg-night`, etc.
 - **Syne** (`font-display`) — geometric display font for headings
 - **Newsreader** (`font-body`) — editorial serif for body text
 - **JetBrains Mono** (`font-mono`) — monospace for code, dates, metadata
+- Fonts loaded non-render-blocking in `BaseHead.astro` via `media="print" onload="this.media='all'"` pattern with `<noscript>` fallback
 
 ### Key directories
 
 - `src/pages/` — File-based routing (`.astro`, `.md`, `.mdx` → URLs)
 - `src/content/blog/` — Blog posts as Markdown/MDX, validated by Zod schema in `src/content.config.ts`
 - `src/components/` — BaseHead, Header, HeaderLink, Footer, FormattedDate
-- `src/layouts/` — BlogPost.astro (article layout with hero image + prose)
+- `src/layouts/` — BlogPost.astro (article layout with hero image + prose). Hero image uses `loading="eager"` + `fetchpriority="high"` for LCP optimization.
 - `src/consts.ts` — SITE_TITLE ("Alex Morcillo"), SITE_DESCRIPTION
 - `public/` — Static assets (favicons)
 
@@ -65,6 +67,14 @@ Dynamic routes via `getStaticPaths()` in `src/pages/blog/[...slug].astro`.
 ### SEO
 
 BaseHead handles Open Graph, Twitter Card, canonical URLs. RSS at `/rss.xml`, sitemap auto-generated.
+
+### Performance
+
+- Lighthouse performance score: 97–100 (production build)
+- Google Fonts loaded non-render-blocking (`preload` + `media="print"` swap pattern)
+- Hero images in `BlogPost.astro` use `loading="eager"` + `fetchpriority="high"` (LCP optimization)
+- Zero JS shipped by default (Astro SSG)
+- TBT: 0ms, CLS: ~0, FCP: ~0.8s
 
 ## Conventions
 

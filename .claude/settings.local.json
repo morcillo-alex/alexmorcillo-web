@@ -8,7 +8,17 @@
       "Bash(grep:*)",
       "Bash(head:*)",
       "Bash(npx:*)",
-      "Bash(cd /c/Users/Usuario/projects/alexmorcillo && node -e \"\nconst { chromium } = require\\('playwright'\\);\n\\(async \\(\\) => {\n  const browser = await chromium.launch\\(\\);\n  const page = await browser.newPage\\(\\);\n  await page.goto\\('http://localhost:4321/'\\);\n  \n  // Inject axe-core\n  await page.addScriptTag\\({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js' }\\);\n  \n  const results = await page.evaluate\\(async \\(\\) => {\n    return await axe.run\\({ runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }\\);\n  }\\);\n  \n  console.log\\('VIOLATIONS:', JSON.stringify\\(results.violations.map\\(v => \\({\n    id: v.id,\n    impact: v.impact,\n    description: v.description,\n    nodes: v.nodes.slice\\(0,2\\).map\\(n => \\({ html: n.html.slice\\(0, 100\\), failureSummary: n.failureSummary }\\)\\)\n  }\\)\\), null, 2\\)\\);\n  \n  await browser.close\\(\\);\n}\\)\\(\\);\n\" 2>&1)"
+      "Bash(cd /c/Users/Usuario/projects/alexmorcillo && node -e \"\nconst { chromium } = require\\('playwright'\\);\n\\(async \\(\\) => {\n  const browser = await chromium.launch\\(\\);\n  const page = await browser.newPage\\(\\);\n  await page.goto\\('http://localhost:4321/'\\);\n  \n  // Inject axe-core\n  await page.addScriptTag\\({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js' }\\);\n  \n  const results = await page.evaluate\\(async \\(\\) => {\n    return await axe.run\\({ runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }\\);\n  }\\);\n  \n  console.log\\('VIOLATIONS:', JSON.stringify\\(results.violations.map\\(v => \\({\n    id: v.id,\n    impact: v.impact,\n    description: v.description,\n    nodes: v.nodes.slice\\(0,2\\).map\\(n => \\({ html: n.html.slice\\(0, 100\\), failureSummary: n.failureSummary }\\)\\)\n  }\\)\\), null, 2\\)\\);\n  \n  await browser.close\\(\\);\n}\\)\\(\\);\n\" 2>&1)",
+      "WebSearch",
+      "Bash(claude mcp add:*)",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__evaluate_script",
+      "Bash(node:*)",
+      "Bash(sleep 1:*)",
+      "Bash(xxd:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

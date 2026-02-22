@@ -148,32 +148,15 @@
 	input { font-size: 16px; }
 	table { width: 100%; }
 
-	/* Prose */
+	/* Prose — font families only (colors handled outside @layer for specificity) */
 	.prose {
 		font-family: var(--font-family-body);
-		--tw-prose-body: var(--color-ink);
-		--tw-prose-headings: var(--color-ink);
-		--tw-prose-links: #0A5F30;
-		--tw-prose-bold: var(--color-ink);
-		--tw-prose-quotes: var(--color-ink-secondary);
-		--tw-prose-code: var(--color-ink);
-		--tw-prose-hr: var(--color-border);
 	}
 	.prose h1, .prose h2, .prose h3, .prose h4 {
 		font-family: var(--font-family-display);
 	}
 	.prose code {
 		font-family: var(--font-family-mono);
-	}
-
-	.dark .prose {
-		--tw-prose-body: var(--color-cream);
-		--tw-prose-headings: var(--color-cream);
-		--tw-prose-links: var(--color-accent);
-		--tw-prose-bold: var(--color-cream);
-		--tw-prose-quotes: var(--color-cream-secondary);
-		--tw-prose-code: var(--color-cream);
-		--tw-prose-hr: var(--color-night-border);
 	}
 
 	/* Scrollbar */
@@ -190,4 +173,79 @@
 	@media (max-width: 720px) {
 		body { font-size: 16px; }
 	}
+}
+
+/* Prose color overrides — outside @layer so they beat the typography plugin */
+.prose {
+	color: var(--color-ink);
+}
+.prose :where(h1, h2, h3, h4, h5, h6) {
+	color: var(--color-ink);
+}
+.prose :where(a) {
+	color: #0A5F30;
+}
+.prose :where(strong, b) {
+	color: var(--color-ink);
+}
+.prose :where(blockquote) {
+	color: var(--color-ink-secondary);
+	border-left-color: var(--color-accent);
+}
+.prose :where(code) {
+	color: var(--color-ink);
+}
+.prose :where(th) {
+	color: var(--color-ink);
+	border-bottom-color: var(--color-border);
+}
+.prose :where(td) {
+	border-bottom-color: var(--color-border);
+}
+.prose :where(hr) {
+	border-color: var(--color-border);
+}
+.prose :where(kbd) {
+	color: var(--color-ink);
+	border-color: var(--color-border);
+}
+.prose :where(li)::marker {
+	color: var(--color-ink-muted);
+}
+
+.dark .prose {
+	color: var(--color-cream);
+}
+.dark .prose :where(h1, h2, h3, h4, h5, h6) {
+	color: var(--color-cream);
+}
+.dark .prose :where(a) {
+	color: var(--color-accent);
+}
+.dark .prose :where(strong, b) {
+	color: var(--color-cream);
+}
+.dark .prose :where(blockquote) {
+	color: var(--color-cream-secondary);
+	border-left-color: var(--color-accent);
+}
+.dark .prose :where(code) {
+	color: var(--color-cream);
+}
+.dark .prose :where(th) {
+	color: var(--color-cream);
+	border-bottom-color: var(--color-night-border);
+}
+.dark .prose :where(td) {
+	border-bottom-color: var(--color-night-border);
+}
+.dark .prose :where(hr) {
+	border-color: var(--color-night-border);
+}
+.dark .prose :where(kbd) {
+	color: var(--color-cream);
+	border-color: var(--color-night-border);
+}
+.dark .prose :where(li)::marker {
+	color: var(--color-cream-muted);
 }
