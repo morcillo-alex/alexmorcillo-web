@@ -44,10 +44,10 @@ const [featured, ...rest] = posts;
 
 			<!-- Featured Post -->
 			{featured && (
-				<article class="mb-16 animate-fade-up" style="animation-delay: 0.2s" data-category={featured.data.category}>
-					<a href={`/blog/${getSlug(featured.id)}/`} class="group block no-underline md:grid md:grid-cols-2 md:gap-10 items-center">
+				<article class="mb-16 animate-fade-up" style="perspective: 800px; animation-delay: 0.2s" data-category={featured.data.category}>
+					<a href={`/blog/${getSlug(featured.id)}/`} class="card-glass relative overflow-hidden group block no-underline md:grid md:grid-cols-2 md:gap-10 items-center" data-tilt>
 						{featured.data.heroImage && (
-							<div class="overflow-hidden rounded-xl bg-border/30 dark:bg-night-border/30">
+							<div class="overflow-hidden rounded-lg bg-border/30 dark:bg-night-border/30">
 								<Image
 									width={720}
 									height={480}
@@ -84,10 +84,10 @@ const [featured, ...rest] = posts;
 					<div class="h-px bg-border dark:bg-night-border mb-12"></div>
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="posts-grid">
 						{rest.map((post, i) => (
-							<article class="group animate-fade-up" style={`animation-delay: ${0.05 * (i + 1)}s`} data-category={post.data.category}>
-								<a href={`/blog/${getSlug(post.id)}/`} class="block no-underline">
+							<article class="animate-fade-up" style={`perspective: 800px; animation-delay: ${0.05 * (i + 1)}s`} data-category={post.data.category}>
+								<a href={`/blog/${getSlug(post.id)}/`} class="card-glass relative overflow-hidden group block no-underline" data-tilt>
 									{post.data.heroImage && (
-										<div class="overflow-hidden rounded-xl mb-4 bg-border/30 dark:bg-night-border/30">
+										<div class="overflow-hidden rounded-lg mb-4 bg-border/30 dark:bg-night-border/30">
 											<Image
 												width={480}
 												height={320}
@@ -159,6 +159,25 @@ const [featured, ...rest] = posts;
 				if (initial) {
 					setFilter(initial);
 				}
+			})();
+		</script>
+
+		<script is:inline>
+			(function () {
+				var cards = document.querySelectorAll('[data-tilt]');
+				var maxRotate = 6;
+				cards.forEach(function (card) {
+					var parent = card.parentElement;
+					parent.addEventListener('mousemove', function (e) {
+						var rect = parent.getBoundingClientRect();
+						var x = (e.clientX - rect.left) / rect.width - 0.5;
+						var y = (e.clientY - rect.top) / rect.height - 0.5;
+						card.style.transform = 'rotateY(' + (x * maxRotate) + 'deg) rotateX(' + (-y * maxRotate) + 'deg)';
+					});
+					parent.addEventListener('mouseleave', function () {
+						card.style.transform = '';
+					});
+				});
 			})();
 		</script>
 	</body>
