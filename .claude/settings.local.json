@@ -23,7 +23,12 @@
       "Bash(rm:*)",
       "mcp__chrome-devtools__list_pages",
       "mcp__chrome-devtools__new_page",
-      "mcp__chrome-devtools__hover"
+      "mcp__chrome-devtools__hover",
+      "WebFetch(domain:phaser.io)",
+      "WebFetch(domain:www.winterwind.com)",
+      "Bash(sleep 10:*)",
+      "Bash(echo Server stopped:*)",
+      "Bash(echo cleaned up:*)"
     ]
   }
 }

@@ -57,8 +57,9 @@ const jsonLd = {
 		<Header />
 		<main>
 			<article>
+				<!-- Mobile: stacked layout -->
 				{heroImage && (
-					<div class="max-w-5xl mx-auto px-6 pt-8 animate-fade-up">
+					<div class="md:hidden max-w-5xl mx-auto px-6 pt-8 animate-fade-up">
 						<Image
 							width={1200}
 							height={600}
@@ -70,25 +71,49 @@ const jsonLd = {
 						/>
 					</div>
 				)}
-				<header class="max-w-3xl mx-auto px-6 pt-12 pb-8">
-					<div class="font-mono text-sm text-ink-muted dark:text-cream-muted tracking-wider uppercase mb-4 animate-fade-up">
-						<FormattedDate date={pubDate} />
-						{updatedDate && (
-							<span class="ml-2 normal-case italic">
-								&middot; Updated <FormattedDate date={updatedDate} />
-							</span>
+
+				<!-- Desktop: side-by-side with 3D hero -->
+				<div class="max-w-5xl mx-auto px-6 pt-12 pb-8">
+					<div class="md:flex md:items-center md:gap-12">
+						<header class="md:flex-1 md:min-w-0">
+							<div class="font-mono text-sm text-ink-muted dark:text-cream-muted tracking-wider uppercase mb-4 animate-fade-up">
+								<FormattedDate date={pubDate} />
+								{updatedDate && (
+									<span class="ml-2 normal-case italic">
+										&middot; Updated <FormattedDate date={updatedDate} />
+									</span>
+								)}
+							</div>
+							<h1 class="text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight animate-fade-up" style="animation-delay: 0.1s">
+								{title}
+							</h1>
+							<p class="text-ink-secondary dark:text-cream-secondary text-lg mt-4 animate-fade-up" style="animation-delay: 0.15s">
+								{description}
+							</p>
+							<div class="w-12 h-0.5 bg-accent mt-6 animate-fade-up" style="animation-delay: 0.2s"></div>
+							{readingTime && (
+								<p class="font-mono text-sm text-ink-muted dark:text-cream-muted mt-4 animate-fade-up" style="animation-delay: 0.25s">
+									{readingTime} min read
+								</p>
+							)}
+						</header>
+						{heroImage && (
+							<div class="hidden md:block md:flex-1 md:min-w-0 animate-fade-up" style="animation-delay: 0.15s; perspective: 600px;">
+								<div id="hero-tilt" class="hero-glass relative overflow-hidden will-change-transform transition-transform duration-300 ease-out rounded-2xl" style="transform-style: preserve-3d; transform: rotateY(-8deg) rotateX(2deg); background: rgba(255,255,255, 0.08); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255, 0.15); box-shadow: 0 8px 32px rgba(0,0,0, 0.25), inset 0 1px 0 rgba(255,255,255, 0.1); padding: 8px;">
+									<Image
+										width={1200}
+										height={600}
+										src={heroImage}
+										alt=""
+										class="w-full rounded-xl object-cover aspect-[4/3]"
+										loading="eager"
+										fetchpriority="high"
+									/>
+								</div>
+							</div>
 						)}
 					</div>
-					<h1 class="text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight animate-fade-up" style="animation-delay: 0.1s">
-						{title}
-					</h1>
-					<div class="w-12 h-0.5 bg-accent mt-8 animate-fade-up" style="animation-delay: 0.2s"></div>
-					{readingTime && (
-						<p class="font-mono text-sm text-ink-muted dark:text-cream-muted mt-4 animate-fade-up" style="animation-delay: 0.25s">
-							{readingTime} min read
-						</p>
-					)}
-				</header>
+				</div>
 				<div class="max-w-3xl mx-auto px-6 pb-20 animate-fade-up" style="animation-delay: 0.2s">
 					<div class="prose prose-lg max-w-none">
 						<slot />
@@ -97,5 +122,22 @@ const jsonLd = {
 			</article>
 		</main>
 		<Footer />
+		<script is:inline>
+			const tilt = document.getElementById('hero-tilt');
+			if (tilt) {
+				const container = tilt.parentElement;
+				const maxRotate = 12;
+				const restTransform = 'rotateY(-8deg) rotateX(2deg)';
+				container.addEventListener('mousemove', (e) => {
+					const rect = container.getBoundingClientRect();
+					const x = (e.clientX - rect.left) / rect.width - 0.5;
+					const y = (e.clientY - rect.top) / rect.height - 0.5;
+					tilt.style.transform = `rotateY(${x * maxRotate}deg) rotateX(${-y * maxRotate}deg)`;
+				});
+				container.addEventListener('mouseleave', () => {
+					tilt.style.transform = restTransform;
+				});
+			}
+		</script>
 	</body>
 </html>
