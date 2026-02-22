@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getSlug } from '../utils/posts';
 
 function escapeXml(str) {
 	return str
@@ -19,10 +20,11 @@ export async function GET(context) {
 		.map(
 			(post) => `    <item>
       <title>${escapeXml(post.data.title)}</title>
-      <link>${new URL(`/blog/${post.id}/`, context.site)}</link>
-      <guid>${new URL(`/blog/${post.id}/`, context.site)}</guid>
+      <link>${new URL(`/blog/${getSlug(post.id)}/`, context.site)}</link>
+      <guid>${new URL(`/blog/${getSlug(post.id)}/`, context.site)}</guid>
       <description>${escapeXml(post.data.description)}</description>
       <pubDate>${post.data.pubDate.toUTCString()}</pubDate>
+      <category>${escapeXml(post.data.category)}</category>
     </item>`,
 		)
 		.join('\n');

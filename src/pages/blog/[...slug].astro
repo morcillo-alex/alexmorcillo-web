@@ -1,11 +1,25 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { getSlug } from '../../utils/posts';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
+
+	// Build-time slug collision detection
+	const slugs = new Map<string, string>();
+	for (const post of posts) {
+		const slug = getSlug(post.id);
+		if (slugs.has(slug)) {
+			throw new Error(
+				`Slug collision: "${slug}" is used by both "${slugs.get(slug)}" and "${post.id}". Rename one of the files.`,
+			);
+		}
+		slugs.set(slug, post.id);
+	}
+
 	return posts.map((post) => ({
-		params: { slug: post.id },
+		params: { slug: getSlug(post.id) },
 		props: post,
 	}));
 }

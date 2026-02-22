@@ -30,7 +30,10 @@
       "Bash(echo Server stopped:*)",
       "Bash(echo cleaned up:*)",
       "Bash(lsof -ti:4322 | xargs kill -9 2>/dev/null)",
-      "Bash(sleep 3:*)"
+      "Bash(sleep 3:*)",
+      "Bash(npm i:*)",
+      "mcp__chrome-devtools__click",
+      "Bash(kill %1:*)"
     ]
   }
 }

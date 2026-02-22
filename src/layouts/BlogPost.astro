@@ -9,7 +9,7 @@ import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & { readingTime?: number };
 
-const { title, description, pubDate, updatedDate, heroImage, readingTime } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, readingTime, category } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const jsonLd = {
@@ -31,6 +31,7 @@ const jsonLd = {
 	},
 	url: canonicalURL.toString(),
 	mainEntityOfPage: canonicalURL.toString(),
+	articleSection: category,
 	...(heroImage && { image: new URL(heroImage.src, Astro.site).toString() }),
 	isPartOf: {
 		'@type': 'Blog',
@@ -77,6 +78,8 @@ const jsonLd = {
 					<div class="md:flex md:items-center md:gap-12">
 						<header class="md:flex-1 md:min-w-0">
 							<div class="font-mono text-sm text-ink-muted dark:text-cream-muted tracking-wider uppercase mb-4 animate-fade-up">
+								<a href={`/blog?category=${category}`} class="text-[#107C41] dark:text-accent no-underline hover:underline">{category}</a>
+								<span class="mx-2">&middot;</span>
 								<FormattedDate date={pubDate} />
 								{updatedDate && (
 									<span class="ml-2 normal-case italic">

@@ -5,7 +5,8 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE, SOCIAL_LINKS } from '../consts';
+import { CATEGORIES, SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE, SOCIAL_LINKS } from '../consts';
+import { getSlug } from '../utils/posts';
 
 const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -52,10 +53,10 @@ const jsonLd = {
 				{SITE_DESCRIPTION}
 			</p>
 			<div class="flex flex-wrap gap-3 mt-10 animate-fade-up" style="animation-delay: 0.4s">
-				{['AI', 'Games', 'Architecture', 'Technology'].map(topic => (
-					<span class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-border dark:border-night-border text-ink-muted dark:text-cream-muted rounded-full hover:border-accent hover:text-[#107C41] dark:hover:text-accent transition-colors duration-200 cursor-default">
+				{CATEGORIES.map(topic => (
+					<a href={`/blog?category=${topic}`} class="font-mono text-xs uppercase tracking-widest px-4 py-2 border border-border dark:border-night-border text-ink-muted dark:text-cream-muted rounded-full hover:border-accent hover:text-[#107C41] dark:hover:text-accent transition-colors duration-200 no-underline">
 						{topic}
-					</span>
+					</a>
 				))}
 			</div>
 		</section>
@@ -73,7 +74,7 @@ const jsonLd = {
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 				{posts.map((post, i) => (
 					<article class="group animate-fade-up" style={`animation-delay: ${0.1 * (i + 1)}s`}>
-						<a href={`/blog/${post.id}/`} class="block no-underline">
+						<a href={`/blog/${getSlug(post.id)}/`} class="block no-underline">
 							{post.data.heroImage && (
 								<div class="overflow-hidden rounded-xl mb-4 bg-border/30 dark:bg-night-border/30">
 									<Image
@@ -86,8 +87,14 @@ const jsonLd = {
 									/>
 								</div>
 							)}
-							<div class="font-mono text-xs text-ink-muted dark:text-cream-muted uppercase tracking-wider mb-2">
-								<FormattedDate date={post.data.pubDate} />
+							<div class="flex items-center gap-3 mb-2">
+								<span class="font-mono text-xs uppercase tracking-widest text-[#107C41] dark:text-accent">
+									{post.data.category}
+								</span>
+								<span class="text-border dark:text-night-border">&middot;</span>
+								<span class="font-mono text-xs text-ink-muted dark:text-cream-muted uppercase tracking-wider">
+									<FormattedDate date={post.data.pubDate} />
+								</span>
 							</div>
 							<h3 class="font-heading text-xl font-semibold text-ink dark:text-cream group-hover:text-accent transition-colors duration-200 leading-snug">
 								{post.data.title}
