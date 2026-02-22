@@ -3,9 +3,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-	--font-family-display: "Syne", system-ui, sans-serif;
-	--font-family-body: "Newsreader", Georgia, serif;
-	--font-family-mono: "JetBrains Mono", ui-monospace, monospace;
+	--font-heading: "Syne", system-ui, sans-serif;
+	--font-body: "Newsreader", Georgia, serif;
+	--font-mono: "JetBrains Mono", ui-monospace, monospace;
 
 	--color-accent: #2acf62;
 	--color-accent-muted: rgba(42, 207, 98, 0.1);
@@ -50,7 +50,7 @@
 	}
 
 	body {
-		font-family: var(--font-family-body);
+		font-family: var(--font-body);
 		margin: 0;
 		padding: 0;
 		background-color: var(--color-canvas);
@@ -72,7 +72,7 @@
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		font-family: var(--font-family-display);
+		font-family: var(--font-heading);
 		color: var(--color-ink);
 		line-height: 1.15;
 		margin: 0;
@@ -96,7 +96,7 @@
 	p { margin-bottom: 1.25em; }
 
 	code {
-		font-family: var(--font-family-mono);
+		font-family: var(--font-mono);
 		font-size: 0.875em;
 		padding: 2px 6px;
 		background-color: var(--color-border);
@@ -114,7 +114,7 @@
 	}
 	pre > code {
 		all: unset;
-		font-family: var(--font-family-mono);
+		font-family: var(--font-mono);
 	}
 
 	blockquote {
@@ -150,13 +150,13 @@
 
 	/* Prose — font families only (colors handled outside @layer for specificity) */
 	.prose {
-		font-family: var(--font-family-body);
+		font-family: var(--font-body);
 	}
 	.prose h1, .prose h2, .prose h3, .prose h4 {
-		font-family: var(--font-family-display);
+		font-family: var(--font-heading);
 	}
 	.prose code {
-		font-family: var(--font-family-mono);
+		font-family: var(--font-mono);
 	}
 
 	/* Scrollbar */

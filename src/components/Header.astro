@@ -6,7 +6,7 @@ import HeaderLink from './HeaderLink.astro';
 <header class="sticky top-0 z-50 backdrop-blur-xl bg-canvas/80 dark:bg-night/80 border-b border-border/50 dark:border-night-border/50 transition-colors duration-300">
 	<nav class="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
 		<a href="/" class="no-underline group">
-			<span class="font-display text-lg font-extrabold tracking-tight text-ink dark:text-cream group-hover:text-accent transition-colors duration-200">
+			<span class="font-heading text-lg font-extrabold tracking-tight text-ink dark:text-cream group-hover:text-accent transition-colors duration-200">
 				{SITE_TITLE}
 			</span>
 		</a>
@@ -30,6 +30,7 @@ import HeaderLink from './HeaderLink.astro';
 			</button>
 		</div>
 	</nav>
+	<div id="reading-progress" class="absolute bottom-0 left-0 h-0.5 bg-accent" style="width: 0%; transition: none;"></div>
 </header>
 
 <script is:inline>
@@ -37,4 +38,12 @@ import HeaderLink from './HeaderLink.astro';
 		const isDark = document.documentElement.classList.toggle('dark');
 		localStorage.setItem('theme', isDark ? 'dark' : 'light');
 	});
+
+	const progressBar = document.getElementById('reading-progress');
+	window.addEventListener('scroll', () => {
+		const scrollTop = window.scrollY;
+		const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+		const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+		progressBar.style.width = progress + '%';
+	}, { passive: true });
 </script>

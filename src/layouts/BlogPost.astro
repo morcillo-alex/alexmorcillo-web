@@ -7,9 +7,9 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { readingTime?: number };
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, readingTime } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const jsonLd = {
@@ -70,7 +70,7 @@ const jsonLd = {
 						/>
 					</div>
 				)}
-				<header class="max-w-2xl mx-auto px-6 pt-12 pb-8">
+				<header class="max-w-3xl mx-auto px-6 pt-12 pb-8">
 					<div class="font-mono text-sm text-ink-muted dark:text-cream-muted tracking-wider uppercase mb-4 animate-fade-up">
 						<FormattedDate date={pubDate} />
 						{updatedDate && (
@@ -83,8 +83,13 @@ const jsonLd = {
 						{title}
 					</h1>
 					<div class="w-12 h-0.5 bg-accent mt-8 animate-fade-up" style="animation-delay: 0.2s"></div>
+					{readingTime && (
+						<p class="font-mono text-sm text-ink-muted dark:text-cream-muted mt-4 animate-fade-up" style="animation-delay: 0.25s">
+							{readingTime} min read
+						</p>
+					)}
 				</header>
-				<div class="max-w-2xl mx-auto px-6 pb-20 animate-fade-up" style="animation-delay: 0.2s">
+				<div class="max-w-3xl mx-auto px-6 pb-20 animate-fade-up" style="animation-delay: 0.2s">
 					<div class="prose prose-lg max-w-none">
 						<slot />
 					</div>
