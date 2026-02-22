@@ -29,7 +29,7 @@ npm run preview    # Preview production build
 
 ## Project Structure
 
-```
+```text
 src/
   components/    # BaseHead, Header, Footer, FormattedDate
   content/blog/  # Blog posts (Markdown/MDX)

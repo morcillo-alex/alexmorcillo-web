@@ -20,7 +20,10 @@
       "Bash(xxd:*)",
       "Bash(npm run:*)",
       "Bash(ls:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__hover"
     ]
   }
 }
