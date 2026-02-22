@@ -12,7 +12,7 @@
 
 	--color-ink: #1A1A2E;
 	--color-ink-secondary: #475569;
-	--color-ink-muted: #64748B;
+	--color-ink-muted: #4A5568;
 	--color-surface: #ffffff;
 	--color-canvas: #FAFAF8;
 	--color-border: #E2E8F0;
@@ -84,12 +84,12 @@
 	}
 
 	a {
-		color: #107C41;
+		color: #0A5F30;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
 		transition: color 0.2s ease;
 	}
-	a:hover { color: #107C41; }
+	a:hover { color: #0A5F30; }
 	.dark a { color: var(--color-accent); }
 	.dark a:hover { color: var(--color-accent); }
 
@@ -153,7 +153,7 @@
 		font-family: var(--font-family-body);
 		--tw-prose-body: var(--color-ink);
 		--tw-prose-headings: var(--color-ink);
-		--tw-prose-links: #107C41;
+		--tw-prose-links: #0A5F30;
 		--tw-prose-bold: var(--color-ink);
 		--tw-prose-quotes: var(--color-ink-secondary);
 		--tw-prose-code: var(--color-ink);
