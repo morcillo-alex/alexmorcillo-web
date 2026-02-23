@@ -1,0 +1,143 @@
+---
+title: 'The Two Years That Rewrote AI: 2024 to February 2026'
+description: 'From GPT-4o to DeepSeek R1 to reasoning models going mainstream: a sharp, opinionated chronicle of the AI milestones that actually mattered.'
+category: 'AI'
+pubDate: 2026-02-23
+# heroImage: '../../../../assets/blog/two-years-that-changed-ai.jpg'
+tags:
+  - ai
+  - large-language-models
+  - reasoning-models
+  - open-source
+  - developers
+---
+
+Two years ago, if you told me that a Chinese lab would train a model rivaling OpenAI's best for roughly $5.5 million and then open-source it on Christmas Day, I'd have assumed you were pitching a Black Mirror episode. But that's more or less what happened. And it's only one of a dozen moments since early 2024 that made me stop, step back, and recalibrate my entire mental model of where this technology is going.
+
+This is my attempt to make sense of that period. Not a changelog. Not a press release digest. A genuine reckoning with what shifted, why it matters, and what it means if you're building things with AI or trying to understand what comes next.
+
+## Early 2024: The Year AI Got Serious About Craft
+
+The year opened with a crowded field of large language models, but a clear hierarchy. OpenAI's GPT-4 was the undisputed flagship. Everyone else was chasing it.
+
+Then, in **March 2024**, Anthropic shipped [Claude 3](https://www.anthropic.com/news/claude-3-family) and the race got genuinely interesting. The Claude 3 family came in three tiers: Haiku (fast, cheap), Sonnet (balanced), and Opus (flagship). On several benchmarks, Claude 3 Opus edged past GPT-4. But more than the numbers, it felt different to use. The writing was sharper. The reasoning on complex documents was noticeably better. For the first time I found myself reaching for Claude instead of ChatGPT for serious analytical work.
+
+But Claude 3 wasn't even the biggest release of the spring.
+
+**May 13, 2024.** OpenAI held a live demo and unveiled GPT-4o, the "o" standing for "omni." The headline feature was native audio: the model could listen, understand tone and emotion, and respond with realistic speech in real time. The demo of the model coaching through a math problem while joking around went everywhere. It was theatrical, yes. But the underlying capability was real: a single model that natively processed text, vision, and audio without bolted-on pipelines. Multimodality stopped being a roadmap item and became table stakes.
+
+**April 2024** also brought [Llama 3 from Meta](https://ai.meta.com/blog/meta-llama-3/), released with 8B and 70B parameter variants under a relatively permissive commercial license. On benchmarks, the 70B model was outcompeting models twice its size. The open-weights movement now had a genuinely capable flagship, and the community immediately started fine-tuning, distilling, and building on top of it. The message was clear: you no longer needed OpenAI's API to ship something powerful.
+
+Meanwhile, Mistral (the scrappy Paris-based lab that had already punched well above its weight) was shipping a steady stream of capable open models: Codestral for code, Pixtral with vision, Mistral Nemo for multilingual tasks. The European open-source scene was alive and kicking.
+
+## Summer 2024: Claude 3.5 and the Coding Inflection Point
+
+I remember the day **Claude 3.5 Sonnet dropped on June 20, 2024** because it broke my mental model of how model tiers work. Anthropic released a mid-tier "Sonnet" model that outperformed their own flagship Opus, at lower cost and higher speed. How do you price that? How do you even categorize it?
+
+The answer, it turned out, was that efficiency was catching up to raw scale. You didn't need the biggest model in the world to get the best results. You needed the best-trained model at a given size. Claude 3.5 Sonnet became my default for coding tasks almost immediately. It was the first AI assistant that felt like a genuine pair programmer rather than an autocomplete engine with opinions.
+
+This was also the summer when the **AI coding tools market fully ignited**. Cursor, built by four MIT graduates, was growing explosively. GitHub Copilot was inside 90% of Fortune 100 companies. Developers were genuinely arguing about whether AI tools made them faster or just made them feel faster. (More on that tension later.)
+
+## September 2024: The Reasoning Revolution Begins
+
+OpenAI's **o1 model preview**, released September 12, 2024, changed everything. And in hindsight, the industry didn't fully grasp what it meant for months.
+
+The concept sounds simple: before answering, the model "thinks." It generates an extended internal chain of reasoning, sometimes thousands of tokens worth, before producing a response. The result was a model that scored **83% on the International Mathematics Olympiad**, compared to GPT-4o's 13%. On Ph.D.-level science questions, it approached expert human performance.
+
+But there was a catch: speed. Reasoning models trade latency for accuracy. A query that GPT-4o answers in 2 seconds might take o1 a full minute of internal deliberation. For many tasks (drafting an email, summarizing a document) this is absurd overkill. For debugging a complex distributed systems race condition or verifying a mathematical proof, it's exactly what you want.
+
+The industry spent the rest of 2024 figuring out when to use a fast generalist versus a slow thinker. That distinction still matters today.
+
+## Christmas 2024: DeepSeek Drops the Bomb
+
+**December 25, 2024.** While most of the Western tech industry was offline, a Chinese AI lab called DeepSeek published [DeepSeek V3](https://www.bentoml.com/blog/the-complete-guide-to-deepseek-models-from-v3-to-r1-and-beyond): a 671 billion parameter mixture-of-experts model, trained for an estimated $5.5 million, that matched or beat the closed-source state of the art on several benchmarks.
+
+Let that number sink in. OpenAI's GPT-4 was rumored to have cost over $100 million to train. Google's Gemini Ultra, certainly in that ballpark. DeepSeek V3 for $5.5 million.
+
+Then, on **January 20, 2025**, the other shoe dropped: [DeepSeek R1](https://huggingface.co/deepseek-ai/DeepSeek-R1). A fully open-sourced reasoning model, weights and all, performing at parity with OpenAI's o1 on math and coding tasks, with smaller distilled variants that could run on consumer hardware.
+
+The market reaction was instant and visceral. NVIDIA lost approximately **$593 billion in market cap in a single day** as investors processed the implication: if frontier-quality AI can be trained this cheaply, the entire capital expenditure thesis for AI infrastructure spending needed to be revisited.
+
+I watched that news cycle with a mix of admiration and vertigo. DeepSeek had done something the Western labs claimed required enormous resources and years of iteration. The architectural choices (mixture-of-experts, efficient attention mechanisms, aggressive optimization) were documented in the paper for anyone to read and replicate. The moat, it turned out, was shallower than anyone wanted to admit.
+
+## Early 2025: Reasoning Goes Mainstream
+
+The months after DeepSeek R1 were marked by every major lab scrambling to ship their own reasoning capabilities.
+
+**February 2025** brought [Claude 3.7 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet) from Anthropic, their first "hybrid reasoning" model that could toggle between fast response mode and extended thinking. The integration was clever: rather than forcing users to choose between a fast model and a slow one, Claude 3.7 let you dial the thinking budget per query. It felt like exactly the right UX for reasoning models, and it influenced how everyone else shipped theirs.
+
+In **April 2025**, OpenAI released [o3 and o4-mini](https://www.datacamp.com/blog/o3-openai), the successor to o1, with dramatically improved scores. o3 hit **91.6% on AIME 2024** math problems, compared to o1's 74.3%. On the ARC-AGI benchmark (designed to test general fluid reasoning that can't be pattern-matched from training data), o3 had already scored 87.5% in preview. An extraordinary leap from anything that came before.
+
+**March 2025** brought [Gemini 2.5](https://deepmind.google) from Google, their "most intelligent model yet," with strong reasoning and coding capabilities and, critically, a 1 million token context window that made it genuinely useful for codebase-scale analysis. Google had been the third-place narrative for most of 2024. Gemini 2.5 forced a reassessment.
+
+By this point, reasoning was no longer a differentiator. It was an expectation. Every new model announcement included benchmark scores on AIME, ARC-AGI, and coding challenges. The bar had been raised, permanently.
+
+## The Vibe Coding Revolution (and Its Reality Check)
+
+Andrej Karpathy coined the term "vibe coding" in **February 2025**, and it became Collins Dictionary's 2025 Word of the Year. The premise: describe what you want in plain language, let the AI generate the code, iterate based on whether it works rather than reading every line. Accept the vibes, not the implementation.
+
+The adoption numbers are staggering. By late 2025, [92% of US developers were using AI coding tools daily](https://superframeworks.com/blog/best-ai-coding-tools). Cursor hit $1 billion in annualized revenue in under 24 months. At Google and Microsoft, 30% of new code was AI-generated.
+
+But here's what doesn't make the highlight reels: a rigorous METR study published in **July 2025** found that experienced developers using AI tools like Cursor and Claude actually took **19% longer to complete tasks**, despite believing they were 20% faster. Trust in AI tools was declining even as adoption rose.
+
+I find this paradox genuinely interesting. The tools are everywhere. The productivity gains, at least for experienced engineers working on complex systems, are contested. What's actually happening, I think, is a transfer of who benefits: junior developers and non-programmers can build things they never could before. Senior developers are offloading the tedious mechanical work of coding but discovering that understanding and verifying AI-generated code has its own cognitive load.
+
+The net is still positive. But the story is more complicated than the pitch.
+
+## AI Agents: The Gap Between Demo and Reality
+
+Every AI lab in 2025 was selling you on agents. Autonomous systems that browse the web, write code, call APIs, manage files: AI that does things, not just answers questions.
+
+The demos were impressive. OpenAI's [Operator](https://www.ai2incubator.com/articles/insights-15-the-state-of-ai-agents-in-2025-balancing-optimism-with-reality) could automate browser-based workflows. Anthropic's Claude with Computer Use could interact with desktop applications. Enterprises were building multi-agent pipelines that automated entire workflows.
+
+The reality? Today's agents are still unreliable enough that most require a human in the loop for anything consequential. In testing, Operator was observed misreading web content, getting stuck in loops, requiring manual intervention. The gap between "agent that works in a demo" and "agent I'd trust to book a flight for me" remains significant.
+
+What did ship reliably in 2025 was **tool use**: models that can call APIs, run code, search the web, and synthesize results. This is the foundation agents need, and it's now solid. The fully autonomous agent remains one capability jump away.
+
+## Mid to Late 2025: The Frontier Pushes Again
+
+**May 2025** brought Claude 4, Anthropic's Opus 4 and Sonnet 4, meaningfully improved on coding and complex reasoning. The models that power this blog editor, the ones I use daily, are in this generation.
+
+**November 2025** brought Gemini 3 from Google, with a "Deep Think" reasoning mode and a 1 million token context window that scored **100% on AIME 2025** with code execution. Google had turned a corner.
+
+And DeepSeek kept shipping: R1-0528 in May 2025 brought hallucination rates down by 45-50% on common tasks and pushed AIME 2024 accuracy from ~79% to 91%, approaching parity with the best closed models in mathematics.
+
+The open-weights ecosystem had become impossible to ignore. DeepSeek V3.2 and Qwen3-235B emerged as genuinely competitive self-hosted alternatives. For many workloads, the argument for paying premium API costs had to be made on latency and reliability rather than raw capability.
+
+## The Cost Curve Nobody Is Talking About Loudly Enough
+
+Between November 2022 and October 2024, the cost to query an AI model at GPT-3.5 capability levels dropped from **$20.00 per million tokens to $0.07**: a 280x reduction in under 18 months. That trajectory continued through 2025.
+
+DeepSeek's entry sparked an API price war. Google cut Gemini Flash pricing by 78% for inputs. OpenAI's GPT-4o saw an 83% reduction in output token costs across model generations. Claude Opus equivalent capability costs roughly one-third what it did in early 2024.
+
+This matters more than any individual benchmark score. When AI inference costs approach zero, the economics of AI-powered products transform completely. Features that were prohibitively expensive to call on every user action become viable. Startups that couldn't afford GPT-4 in 2023 are now building on models at the same capability tier for pennies.
+
+The irony is that enterprise AI spending went up, from $11.5 billion in 2024 to $37 billion in 2025. Cheaper tokens don't reduce demand. They expand it.
+
+## What Changed for Developers, Specifically
+
+If you were writing code in early 2024 and you're still writing code today, here's what's different at the practical level:
+
+**The generalist model is no longer the right default.** You now choose: fast multimodal model for everyday tasks, reasoning model for hard problems, specialized code model when latency matters, open-weights model when cost or privacy matters. The choice is meaningful and consequential.
+
+**Context windows got serious.** 128K was exotic in early 2024. 1 million tokens is now a product feature. For developers, this means you can pass entire codebases to a model and ask architectural questions. Something that simply wasn't possible before.
+
+**The cost is no longer a blocker for most ideas.** If you had a feature idea that required an LLM call per user action in 2023, the economics probably killed it. Today, that math almost always works.
+
+**Agents are real enough to prototype, not reliable enough to ship unsupervised.** Build the scaffolding now. The reliability gap will close.
+
+**Vibe coding is a starting point, not a destination.** Use it to explore and scaffold. Then actually read and understand what the model gave you, because you will be the one debugging it at 2am.
+
+## Looking Forward
+
+We're sitting at February 2026, and the pace hasn't slowed. Every six months, the state of the art is genuinely different. Not incrementally different. Structurally different.
+
+I've stopped trying to predict which lab will be ahead in 18 months. That game is unwinnable. What I'm more confident about: reasoning will get cheaper and faster until the latency trade-off largely disappears. Agents will get reliable enough for narrow, well-defined workflows before the end of this year. The open-weights ecosystem will keep narrowing the gap with closed models.
+
+The deeper question, the one I keep coming back to, is what this pace of change means for the humans building on top of it. We're developing on infrastructure that rewrites itself every few months. The skill isn't picking the best model. It's building systems that can survive the model underneath changing.
+
+That's the real lesson from two years of watching this unfold. The technology is becoming a utility. The craft is learning how to build well on top of a utility that's still figuring out what it is.
+
+---
+
+*Research for this article was conducted in February 2026. Model release dates, benchmark scores, and pricing data sourced from Anthropic, OpenAI, Google DeepMind, and third-party analysis at [Epoch AI](https://epoch.ai/data-insights/llm-inference-price-trends), [Simon Willison's LLM year review](https://simonwillison.net/2025/Dec/31/the-year-in-llms/), and [Adam Holter's 2025 AI timeline](https://adam.holter.com/2025-ai-timeline-the-year-reasoning-agents-and-video-all-hit-at-once/).*
