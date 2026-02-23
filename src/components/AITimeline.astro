@@ -1,0 +1,26 @@
+---
+// Thin wrapper — keeps page static; only hydrates the D3 chart when visible.
+import AITimelineChart from './AITimelineChart.svelte';
+---
+
+<figure class="not-prose my-10" aria-label="AI vendor milestones timeline 2024–2025">
+  <AITimelineChart client:visible />
+  <figcaption class="timeline-caption">
+    AI model releases by vendor · 2024 – early 2026
+  </figcaption>
+</figure>
+
+<style>
+  .timeline-caption {
+    text-align: center;
+    margin-top: 0.6rem;
+    font-size: 0.68rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+  :global(.dark) .timeline-caption {
+    color: #a0a0b8;
+  }
+</style>
