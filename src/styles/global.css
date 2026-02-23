@@ -269,7 +269,6 @@
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 	animation: title-shine-sweep 10s ease-in-out infinite;
-	animation-delay: 3s;
 }
 .dark .title-glass-shine {
 	--shine-text: var(--color-cream);
