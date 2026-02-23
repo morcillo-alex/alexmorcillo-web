@@ -250,6 +250,37 @@
 	color: var(--color-cream-muted);
 }
 
+/* Title glass shine effect — green sweep repeating every 10s */
+.title-glass-shine {
+	--shine-text: var(--color-ink);
+	background: linear-gradient(
+		105deg,
+		var(--shine-text) 0%,
+		var(--shine-text) 40%,
+		#2acf62 48%,
+		#5fffaa 50%,
+		#2acf62 52%,
+		var(--shine-text) 60%,
+		var(--shine-text) 100%
+	);
+	background-size: 300% 100%;
+	background-position: 100% 0;
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: title-shine-sweep 10s ease-in-out infinite;
+	animation-delay: 3s;
+}
+.dark .title-glass-shine {
+	--shine-text: var(--color-cream);
+}
+
+@keyframes title-shine-sweep {
+	0%, 75% { background-position: 100% 0; }
+	95% { background-position: 0% 0; }
+	100% { background-position: 0% 0; }
+}
+
 /* Card glass effect */
 .card-glass {
 	background: rgba(255, 255, 255, 0.04);
