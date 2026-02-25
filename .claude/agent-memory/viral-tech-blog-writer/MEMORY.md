@@ -23,6 +23,7 @@
 - AI/2022/first-post.md — appears to be a placeholder/demo post
 - AI/2022/ai-first-post.md — appears to be a placeholder/demo post
 - AI/2026/two-years-that-changed-ai.mdx — "The Two Years That Rewrote AI: 2024 to February 2026" (published 2026-02-23)
+- AI/2026/ai-cognitive-load.mdx — "AI Is Not a Tool. It Is Work. And Your Brain Knows It." (published 2026-02-25) — cognitive/mental impact of AI, neuroplasticity, Kahneman System 1/2, Gardner multiple intelligences, bandwidth flip, supervision trap
 
 ## Writing Conventions
 - No cliches: never start with "In today's world", never use "delve", "testament", "tapestry", "game-changer", "realm of"
