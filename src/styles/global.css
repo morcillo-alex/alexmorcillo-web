@@ -334,3 +334,52 @@
 .hero-glass:hover::before {
 	left: 125%;
 }
+
+/* Hamburger icon */
+.hamburger-line {
+	display: block;
+	width: 16px;
+	height: 2px;
+	background: currentColor;
+	border-radius: 1px;
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+	            opacity 0.15s ease;
+}
+.menu-open .hamburger-line:nth-child(1) {
+	transform: translateY(6px) rotate(45deg);
+}
+.menu-open .hamburger-line:nth-child(2) {
+	opacity: 0;
+	transform: scaleX(0);
+}
+.menu-open .hamburger-line:nth-child(3) {
+	transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Mobile menu */
+.mobile-menu {
+	display: grid;
+	grid-template-rows: 0fr;
+	transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mobile-menu.open {
+	grid-template-rows: 1fr;
+}
+.mobile-menu > div {
+	overflow: hidden;
+}
+.mobile-menu-content {
+	opacity: 0;
+	transform: translateY(-8px);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.mobile-menu.open .mobile-menu-content {
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.1s;
+}
+@media (min-width: 720px) {
+	.mobile-menu {
+		display: none;
+	}
+}

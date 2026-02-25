@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import siteLogo from '../assets/AppIcons/android/mipmap-xxxhdpi/ic_launcher.png';
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
@@ -13,10 +11,12 @@ import HeaderLink from './HeaderLink.astro';
 			</span>
 		</a>
 		<div class="flex items-center gap-1">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
-			<div class="w-px h-4 bg-border dark:bg-night-border mx-2"></div>
+			<div class="hidden md:flex items-center gap-1">
+				<HeaderLink href="/">Home</HeaderLink>
+				<HeaderLink href="/blog">Blog</HeaderLink>
+				<HeaderLink href="/about">About</HeaderLink>
+				<div class="w-px h-4 bg-border dark:bg-night-border mx-2"></div>
+			</div>
 			<button
 				id="theme-toggle"
 				type="button"
@@ -30,8 +30,30 @@ import HeaderLink from './HeaderLink.astro';
 					<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
 				</svg>
 			</button>
+			<button
+				id="menu-toggle"
+				type="button"
+				aria-label="Toggle menu"
+				aria-expanded="false"
+				class="md:hidden p-2 rounded-lg text-ink-muted dark:text-cream-muted hover:text-ink dark:hover:text-cream hover:bg-border/50 dark:hover:bg-night-border/50 transition-colors duration-200 cursor-pointer"
+			>
+				<div class="flex flex-col justify-center items-center w-4 h-4 gap-[4px]">
+					<span class="hamburger-line"></span>
+					<span class="hamburger-line"></span>
+					<span class="hamburger-line"></span>
+				</div>
+			</button>
 		</div>
 	</nav>
+	<div id="mobile-menu" class="mobile-menu">
+		<div>
+			<div class="mobile-menu-content px-6 pb-4 pt-2 flex flex-col gap-1 border-t border-border/30 dark:border-night-border/30">
+				<HeaderLink href="/">Home</HeaderLink>
+				<HeaderLink href="/blog">Blog</HeaderLink>
+				<HeaderLink href="/about">About</HeaderLink>
+			</div>
+		</div>
+	</div>
 	<div id="reading-progress" class="absolute bottom-0 left-0 h-0.5 bg-accent" style="width: 0%; transition: none;"></div>
 </header>
 
@@ -48,4 +70,27 @@ import HeaderLink from './HeaderLink.astro';
 		const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 		progressBar.style.width = progress + '%';
 	}, { passive: true });
+
+	const menuToggle = document.getElementById('menu-toggle');
+	const mobileMenu = document.getElementById('mobile-menu');
+
+	function closeMenu() {
+		mobileMenu.classList.remove('open');
+		menuToggle.classList.remove('menu-open');
+		menuToggle.setAttribute('aria-expanded', 'false');
+	}
+
+	menuToggle.addEventListener('click', () => {
+		const isOpen = mobileMenu.classList.toggle('open');
+		menuToggle.classList.toggle('menu-open', isOpen);
+		menuToggle.setAttribute('aria-expanded', String(isOpen));
+	});
+
+	mobileMenu.querySelectorAll('a').forEach(function(link) {
+		link.addEventListener('click', closeMenu);
+	});
+
+	document.addEventListener('keydown', function(e) {
+		if (e.key === 'Escape') closeMenu();
+	});
 </script>
