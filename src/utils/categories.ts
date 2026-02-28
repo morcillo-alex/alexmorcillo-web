@@ -1,4 +1,4 @@
-import { ALL_CATEGORY_PATHS, CATEGORY_TREE, type CategoryTree } from '../consts';
+import { ALL_CATEGORY_PATHS, CATEGORY_TREE, type CategoryTree } from '@/consts';
 
 export function slugify(name: string): string {
 	return name

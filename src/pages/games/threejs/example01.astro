@@ -1,0 +1,49 @@
+---
+import BaseHead from '@/components/BaseHead.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+const sourceCode: string = await import('@/demos/threejs/cube.ts?raw').then(m => m.default);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="Three.js Example: Rotating Cube — Alex Morcillo"
+			description="Interactive Three.js demo featuring a rotating cube with dynamic lighting and post-processing effects."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="max-w-5xl mx-auto px-6 py-16">
+			<a href="/blog/games/exploring-threejs" class="inline-flex items-center gap-2 font-mono text-sm text-ink-muted dark:text-cream-muted hover:text-accent transition-colors no-underline mb-8">
+				&larr; Back to article
+			</a>
+
+			<h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-2 animate-fade-up">Rotating Cube</h1>
+			<p class="text-ink-secondary dark:text-cream-secondary mb-8 animate-fade-up" style="animation-delay: 0.1s">
+				Click and drag to orbit. Scroll to zoom. A simple Three.js scene with lighting and animation.
+			</p>
+
+			<div class="rounded-2xl overflow-hidden border border-border dark:border-night-border animate-fade-up" style="animation-delay: 0.2s">
+				<canvas id="three-canvas" class="w-full" style="aspect-ratio: 16/9; display: block;"></canvas>
+			</div>
+
+			<div class="mt-8 animate-fade-up" style="animation-delay: 0.3s">
+				<details class="border border-border dark:border-night-border rounded-lg">
+					<summary class="px-5 py-3 font-mono text-sm font-semibold text-ink dark:text-cream cursor-pointer hover:text-accent transition-colors">
+						View source code
+					</summary>
+					<div class="px-5 pb-5">
+						<pre class="text-sm leading-relaxed overflow-x-auto"><code class="font-mono text-ink-secondary dark:text-cream-secondary">{sourceCode}</code></pre>
+					</div>
+				</details>
+			</div>
+		</main>
+		<Footer />
+
+		<script>
+			import '@/demos/threejs/cube';
+		</script>
+	</body>
+</html>

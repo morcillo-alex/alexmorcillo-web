@@ -1,14 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import CVCallout from '../components/CVCallout.astro';
-import Header from '../components/Header.astro';
-import { CATEGORIES, SITE_AUTHOR, SITE_AUTHOR_FULL, SITE_DESCRIPTION, SITE_TITLE, SITE_TITLE_FULL, SOCIAL_LINKS } from '../consts';
-import { buildCategoryUrl, slugify } from '../utils/categories';
-import { getPostUrl } from '../utils/posts';
+import BaseHead from '@/components/BaseHead.astro';
+import Footer from '@/components/Footer.astro';
+import FormattedDate from '@/components/FormattedDate.astro';
+import CVCallout from '@/components/CVCallout.astro';
+import Header from '@/components/Header.astro';
+import { CATEGORIES, SITE_AUTHOR, SITE_AUTHOR_FULL, SITE_DESCRIPTION, SITE_TITLE, SITE_TITLE_FULL, SOCIAL_LINKS } from '@/consts';
+import { buildCategoryUrl, slugify } from '@/utils/categories';
+import { getPostUrl } from '@/utils/posts';
 
 const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())

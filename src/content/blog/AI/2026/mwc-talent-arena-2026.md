@@ -3,7 +3,7 @@ title: "I'm Speaking at MWC Talent Arena 2026: The Velocity Gap in Healthcare AI
 description: 'Join me at Mobile World Congress Barcelona as I share how Roche is closing the gap between AI innovation speed and healthcare adoption while maintaining quality.'
 category: 'AI'
 pubDate: 2026-02-28
-heroImage: '../../../../assets/Media/AI/talent-arena.png'
+heroImage: '@/assets/Media/AI/talent-arena.png'
 tags:
   - ai
   - healthcare

@@ -1,7 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-import CategoryListing from '../../layouts/CategoryListing.astro';
+import BlogPost from '@/layouts/BlogPost.astro';
+import CategoryListing from '@/layouts/CategoryListing.astro';
 import {
 	buildCategoryBreadcrumbs,
 	buildPostBreadcrumbs,
@@ -10,8 +10,8 @@ import {
 	getChildCategories,
 	getDescendantPaths,
 	labelPathFromSlugPath,
-} from '../../utils/categories';
-import { getFullSlug } from '../../utils/posts';
+} from '@/utils/categories';
+import { getFullSlug } from '@/utils/posts';
 
 type CategoryProps = {
 	type: 'category';

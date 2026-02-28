@@ -1,9 +1,9 @@
 ---
-import BaseHead from '../../../components/BaseHead.astro';
-import Footer from '../../../components/Footer.astro';
-import Header from '../../../components/Header.astro';
-import { SITE_AUTHOR } from '../../../consts';
-import { cvData, formatDateShort, calculateDuration } from '../../../data/cv';
+import BaseHead from '@/components/BaseHead.astro';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import { SITE_AUTHOR } from '@/consts';
+import { cvData, formatDateShort, calculateDuration } from '@/data/cv';
 
 const grouped = new Map<string, typeof cvData.experience>();
 for (const exp of cvData.experience) {
