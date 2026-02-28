@@ -60,6 +60,15 @@ export const cvData: CVData = {
 			startDate: new Date('2025-09-01'),
 			endDate: 'Present',
 			location: 'Sant Cugat del Vall\u00e8s, Spain',
+			highlights: [
+				'Identifying where AI can support existing program roles to amplify their capabilities and accelerate decision-making',
+				'Shaping processes to operate more efficiently with AI, maximising quality and throughput across the value chain',
+				'Transforming documents and other artefacts into actionable information that enables cross-functional collaboration and answers questions that previously took significant effort to find',
+				'Reducing tool sprawl for simplicity and enabling a unified "corporate brain" — a single AI-powered knowledge layer across the organisation',
+				'Enabling end-to-end visibility at enterprise level into product capabilities and solution building blocks (SBBs)',
+				'Driving a solution-oriented architecture over vertically siloed products, unlocking cross-product synergies',
+				'Architecting prompts for predictable, regulation-compliant outcomes while optimising information delivery for efficient consumption over traditional document-based approaches',
+			],
 		},
 		{
 			company: 'Roche',
