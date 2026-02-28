@@ -22,8 +22,11 @@ export const CATEGORIES = Object.keys(CATEGORY_TREE);
 export type Category = string;
 
 export const SITE_TITLE = 'Alex Morcillo';
-export const SITE_DESCRIPTION = 'Exploring AI, games, short stories, and the ideas shaping our future.';
+export const SITE_TITLE_FULL = 'Alex Morcillo — Architect Lead & AI Engineer at Roche | Patent Inventor';
+export const SITE_DESCRIPTION =
+	'Architect Lead & AI Process/Software Engineer at Roche with 19+ years in software engineering, 11 patents, and an MBA from ESADE. Writing about AI, games, speculative fiction, and the technologies shaping our future.';
 export const SITE_AUTHOR = 'Alex Morcillo';
+export const SITE_AUTHOR_FULL = 'Alex Morcillo Montejo';
 export const TWITTER_HANDLE = '@alexmorcillo82';
 export const SOCIAL_LINKS = {
 	github: 'https://github.com/morcillo-alex',

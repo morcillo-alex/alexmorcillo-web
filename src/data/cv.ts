@@ -56,9 +56,16 @@ export const cvData: CVData = {
 	experience: [
 		{
 			company: 'Roche',
+			role: 'Architect Lead & AI Process/Software Engineer',
+			startDate: new Date('2025-09-01'),
+			endDate: 'Present',
+			location: 'Sant Cugat del Vall\u00e8s, Spain',
+		},
+		{
+			company: 'Roche',
 			role: 'Senior Manager IT Products Architecture (Lab & Point of Care)',
 			startDate: new Date('2024-09-01'),
-			endDate: 'Present',
+			endDate: new Date('2025-09-01'),
 			location: 'Sant Cugat del Vall\u00e8s, Spain',
 		},
 		{

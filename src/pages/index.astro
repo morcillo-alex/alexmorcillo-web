@@ -6,13 +6,15 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import CVCallout from '../components/CVCallout.astro';
 import Header from '../components/Header.astro';
-import { CATEGORIES, SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE, SOCIAL_LINKS } from '../consts';
+import { CATEGORIES, SITE_AUTHOR, SITE_AUTHOR_FULL, SITE_DESCRIPTION, SITE_TITLE, SITE_TITLE_FULL, SOCIAL_LINKS } from '../consts';
 import { buildCategoryUrl, slugify } from '../utils/categories';
 import { getPostUrl } from '../utils/posts';
 
 const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 4);
+
+const siteUrl = Astro.site?.toString();
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -21,13 +23,36 @@ const jsonLd = {
 			'@type': 'WebSite',
 			name: SITE_TITLE,
 			description: SITE_DESCRIPTION,
-			url: Astro.site?.toString(),
+			url: siteUrl,
 		},
 		{
 			'@type': 'Person',
 			name: SITE_AUTHOR,
-			url: Astro.site?.toString(),
+			alternateName: [SITE_AUTHOR_FULL, 'Alejandro Morcillo', 'Alejandro Morcillo Montejo'],
+			url: siteUrl,
 			sameAs: Object.values(SOCIAL_LINKS),
+			jobTitle: 'Architect Lead & AI Process/Software Engineer',
+			worksFor: {
+				'@type': 'Organization',
+				name: 'Roche',
+				url: 'https://www.roche.com',
+			},
+			alumniOf: [
+				{
+					'@type': 'EducationalOrganization',
+					name: 'ESADE Business & Law School',
+				},
+				{
+					'@type': 'EducationalOrganization',
+					name: 'Universitat de Girona',
+				},
+			],
+			knowsAbout: ['Software Architecture', 'Artificial Intelligence', 'Medical Diagnostics', 'Laboratory Automation', 'Product Management', 'Healthcare IT'],
+			nationality: 'Spanish',
+			homeLocation: {
+				'@type': 'Place',
+				name: 'Barcelona, Spain',
+			},
 		},
 	],
 };
@@ -36,7 +61,7 @@ const jsonLd = {
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={SITE_TITLE_FULL} description={SITE_DESCRIPTION} />
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
@@ -51,7 +76,7 @@ const jsonLd = {
 				{SITE_TITLE}
 			</h1>
 			<div class="w-16 h-0.5 bg-accent my-8 animate-fade-up" style="animation-delay: 0.2s"></div>
-			<p class="font-body text-xl md:text-2xl text-ink-secondary dark:text-cream-secondary max-w-xl leading-relaxed animate-fade-up" style="animation-delay: 0.3s">
+			<p class="font-body text-xl md:text-2xl text-ink-secondary dark:text-cream-secondary leading-relaxed animate-fade-up" style="animation-delay: 0.3s">
 				{SITE_DESCRIPTION}
 			</p>
 			<div class="flex flex-wrap gap-3 mt-10 animate-fade-up" style="animation-delay: 0.4s">
