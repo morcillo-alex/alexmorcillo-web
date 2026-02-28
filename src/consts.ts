@@ -3,7 +3,7 @@ export type CategoryTree = { [label: string]: CategoryTree };
 export const CATEGORY_TREE: CategoryTree = {
 	AI: {},
 	Games: {},
-	Architecture: {},
+	'Short Stories': {},
 	Technology: {},
 };
 
@@ -22,7 +22,7 @@ export const CATEGORIES = Object.keys(CATEGORY_TREE);
 export type Category = string;
 
 export const SITE_TITLE = 'Alex Morcillo';
-export const SITE_DESCRIPTION = 'Exploring AI, games, architecture, and the ideas shaping our future.';
+export const SITE_DESCRIPTION = 'Exploring AI, games, short stories, and the ideas shaping our future.';
 export const SITE_AUTHOR = 'Alex Morcillo';
 export const TWITTER_HANDLE = '@alexmorcillo82';
 export const SOCIAL_LINKS = {

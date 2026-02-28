@@ -1,0 +1,139 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="404 — Not Found" description="This page doesn't exist." />
+	</head>
+	<body>
+		<Header />
+		<main class="flex flex-col items-center justify-center min-h-[calc(100vh-3.5rem-8rem)] px-6 py-12">
+			<div class="relative w-full max-w-3xl animate-fade-up" style="aspect-ratio: 2.5 / 1;">
+				<canvas id="matrix-canvas" class="absolute inset-0 w-full h-full"></canvas>
+			</div>
+			<p
+				class="font-display text-lg text-ink-secondary dark:text-cream-secondary mt-6 animate-fade-up tracking-wide"
+				style="animation-delay: 0.15s;"
+			>
+				Page not found
+			</p>
+			<a
+				href="/"
+				class="mt-4 inline-flex items-center gap-2 font-mono text-sm text-ink-muted dark:text-cream-muted hover:text-accent transition-colors no-underline animate-fade-up"
+				style="animation-delay: 0.3s;"
+			>
+				&larr; Back to home
+			</a>
+		</main>
+		<Footer />
+
+		<script is:inline>
+			(function () {
+				var canvas = document.getElementById('matrix-canvas');
+				if (!canvas) return;
+				var ctx = canvas.getContext('2d');
+				var rain = document.createElement('canvas');
+				var rCtx = rain.getContext('2d');
+				var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+				var chars =
+					'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+				var fontSize = 14;
+				var columns, drops;
+
+				function resize() {
+					var rect = canvas.parentElement.getBoundingClientRect();
+					var w = Math.floor(rect.width * dpr);
+					var h = Math.floor(rect.height * dpr);
+					canvas.width = w;
+					canvas.height = h;
+					rain.width = w;
+					rain.height = h;
+					rCtx.fillStyle = '#000';
+					rCtx.fillRect(0, 0, w, h);
+					var fs = fontSize * dpr;
+					columns = Math.floor(w / fs);
+					drops = [];
+					for (var i = 0; i < columns; i++) {
+						drops[i] = Math.floor(Math.random() * -(h / fs));
+					}
+				}
+
+				var dropSpeed = 0.35;
+
+				function drawRain() {
+					rCtx.fillStyle = 'rgba(0, 0, 0, 0.02)';
+					rCtx.fillRect(0, 0, rain.width, rain.height);
+
+					var fs = fontSize * dpr;
+					rCtx.font = fs + 'px monospace';
+
+					for (var i = 0; i < drops.length; i++) {
+						var row = Math.floor(drops[i]);
+						var x = i * fs;
+						var y = row * fs;
+
+						// Bright leading character
+						var c = chars[Math.floor(Math.random() * chars.length)];
+						rCtx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+						rCtx.fillText(c, x, y);
+
+						// Green trail one step behind
+						if (row > 1) {
+							var t = chars[Math.floor(Math.random() * chars.length)];
+							rCtx.fillStyle = '#2acf62';
+							rCtx.fillText(t, x, y - fs);
+						}
+
+						// Dimmer trail two steps behind
+						if (row > 2) {
+							var d = chars[Math.floor(Math.random() * chars.length)];
+							rCtx.fillStyle = 'rgba(42, 207, 98, 0.5)';
+							rCtx.fillText(d, x, y - fs * 2);
+						}
+
+						if (y > rain.height && Math.random() > 0.975) {
+							drops[i] = 0;
+						}
+						drops[i] += dropSpeed;
+					}
+				}
+
+				function draw() {
+					drawRain();
+
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+					// Draw "404" text as the mask shape
+					var textSize = canvas.height * 0.78;
+					ctx.save();
+					ctx.font = '900 ' + textSize + 'px "Syne", system-ui, sans-serif';
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'middle';
+					ctx.fillStyle = '#000';
+					ctx.fillText('404', canvas.width / 2, canvas.height / 2);
+
+					// Composite: only keep rain pixels within the text shape
+					ctx.globalCompositeOperation = 'source-in';
+					ctx.drawImage(rain, 0, 0);
+					ctx.restore();
+
+					requestAnimationFrame(draw);
+				}
+
+				resize();
+				draw();
+
+				var resizeTimer;
+				window.addEventListener('resize', function () {
+					clearTimeout(resizeTimer);
+					resizeTimer = setTimeout(resize, 150);
+				});
+			})();
+		</script>
+	</body>
+</html>
