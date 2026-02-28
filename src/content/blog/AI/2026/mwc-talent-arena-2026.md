@@ -56,7 +56,7 @@ Healthcare isn't the only field wrestling with this velocity gap. Financial serv
 
 ## See You in Barcelona
 
-[Talent Arena 2026](https://talentarena.tech/) starts in two days. My session is **March 3 at 9:30h**, part of Mobile World Congress Barcelona. Our Digital Hub is in Sant Cugat del Vallès, just outside the city — come say hi at the Roche stand (March 2-4) if you want to talk shop.
+[Talent Arena 2026](https://talentarena.tech/) starts in two days. My session is **March 3 at 9:30h CET**, part of Mobile World Congress Barcelona. Our Digital Hub is in Sant Cugat del Vallès, just outside the city — come say hi at the Roche stand (March 2-4) if you want to talk shop.
 
 If you can't make it in person, I'll share key insights here afterward.
 
