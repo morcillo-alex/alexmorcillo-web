@@ -46,7 +46,8 @@
       "Bash(pdftotext:*)",
       "mcp__chrome-devtools__select_page",
       "WebFetch(domain:patents.google.com)",
-      "mcp__chrome-devtools__close_page"
+      "mcp__chrome-devtools__close_page",
+      "Bash(npm install:*)"
     ]
   }
 }
