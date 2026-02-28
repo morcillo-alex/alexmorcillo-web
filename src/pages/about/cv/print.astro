@@ -1,0 +1,189 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import { SITE_AUTHOR, SOCIAL_LINKS } from '../../../consts';
+import { cvData, formatDateShort, calculateDuration } from '../../../data/cv';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`CV — ${SITE_AUTHOR} (Print)`}
+			description={`Printable curriculum vitae for ${SITE_AUTHOR}`}
+		/>
+		<style>
+			@media print {
+				.no-print { display: none !important; }
+				body {
+					background: white !important;
+					color: #1a1a2e !important;
+					font-size: 11pt !important;
+					line-height: 1.5 !important;
+				}
+				h1, h2, h3, h4 { color: #1a1a2e !important; }
+				a { color: #1a1a2e !important; text-decoration: none !important; }
+				.print-muted { color: #475569 !important; }
+				.print-accent { color: #0a5f30 !important; }
+				.print-border { border-color: #e2e8f0 !important; }
+				.print-avoid { page-break-inside: avoid; }
+				@page { margin: 1.5cm 2cm; }
+			}
+		</style>
+	</head>
+	<body class="bg-surface dark:bg-night text-ink dark:text-cream">
+		<!-- Print button -->
+		<div class="no-print sticky top-0 z-50 bg-canvas/90 dark:bg-night/90 backdrop-blur-md border-b border-border dark:border-night-border">
+			<div class="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
+				<a
+					href="/about/cv"
+					class="font-mono text-sm text-ink-muted dark:text-cream-muted hover:text-accent transition-colors no-underline"
+				>
+					&larr; Back to CV
+				</a>
+				<button
+					onclick="window.print()"
+					class="inline-flex items-center gap-2 font-mono text-sm font-semibold px-5 py-2.5 bg-accent text-surface rounded-lg hover:brightness-110 transition-all duration-200 cursor-pointer"
+				>
+					<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+					</svg>
+					Print Me
+				</button>
+			</div>
+		</div>
+
+		<div class="max-w-4xl mx-auto px-6 py-10">
+			<!-- Header -->
+			<header class="mb-10 print-avoid">
+				<h1 class="font-display text-4xl font-bold tracking-tight mb-2">{SITE_AUTHOR}</h1>
+				<p class="text-lg text-ink-secondary dark:text-cream-secondary print-muted mb-3">
+					{cvData.summary}
+				</p>
+				<div class="flex flex-wrap gap-x-4 gap-y-1 font-mono text-sm text-ink-muted dark:text-cream-muted print-muted">
+					<span>alexmorcillo.com</span>
+					<span>&middot;</span>
+					<span>alex.morcillo@gmail.com</span>
+					<span>&middot;</span>
+					<span>linkedin.com/in/alexmorcillo</span>
+				</div>
+			</header>
+
+			<!-- Experience -->
+			<section class="mb-10">
+				<h2 class="font-display text-2xl font-bold pb-2 mb-6 border-b-2 border-accent print-accent print-border">Experience</h2>
+				<div class="space-y-5">
+					{cvData.experience.map((exp) => {
+						const duration = calculateDuration(exp.startDate, exp.endDate);
+						const startStr = formatDateShort(exp.startDate);
+						const endStr = exp.endDate === 'Present' ? 'Present' : formatDateShort(exp.endDate);
+
+						return (
+							<div class="print-avoid">
+								<div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 mb-1">
+									<div>
+										<h3 class="font-display text-base font-bold leading-snug">{exp.role}</h3>
+										<p class="text-ink-secondary dark:text-cream-secondary print-muted">
+											<span class="font-semibold">{exp.company}</span> &middot; {exp.location}
+										</p>
+									</div>
+									<div class="sm:text-right shrink-0">
+										<p class="font-mono text-xs text-ink-muted dark:text-cream-muted print-muted">
+											{startStr} &ndash; {endStr}
+										</p>
+										<p class="font-mono text-xs text-[#107C41] dark:text-accent print-accent">{duration}</p>
+									</div>
+								</div>
+								{exp.highlights && exp.highlights.length > 0 && (
+									<ul class="mt-2 space-y-1 text-sm text-ink-secondary dark:text-cream-secondary print-muted">
+										{exp.highlights.map(h => (
+											<li class="flex gap-2">
+												<span class="text-accent print-accent shrink-0">&rarr;</span>
+												<span>{h}</span>
+											</li>
+										))}
+									</ul>
+								)}
+							</div>
+						);
+					})}
+				</div>
+			</section>
+
+			<!-- Education -->
+			<section class="mb-10">
+				<h2 class="font-display text-2xl font-bold pb-2 mb-6 border-b-2 border-accent print-accent print-border">Education</h2>
+				<div class="space-y-4">
+					{cvData.education.map(edu => (
+						<div class="print-avoid flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
+							<div>
+								<h3 class="font-display text-base font-bold">{edu.degree}</h3>
+								{edu.field && (
+									<p class="text-sm text-ink-secondary dark:text-cream-secondary print-muted">{edu.field}</p>
+								)}
+								<p class="text-ink-secondary dark:text-cream-secondary print-muted">{edu.institution}</p>
+							</div>
+							<p class="font-mono text-xs text-ink-muted dark:text-cream-muted print-muted shrink-0">
+								{edu.startYear} &ndash; {edu.endYear}
+							</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<!-- Two-column: Certifications & Awards -->
+			<div class="grid sm:grid-cols-2 gap-8 mb-10">
+				<section class="print-avoid">
+					<h2 class="font-display text-xl font-bold pb-2 mb-4 border-b border-border dark:border-night-border print-border">Certifications</h2>
+					<ul class="space-y-1.5 text-sm text-ink-secondary dark:text-cream-secondary print-muted">
+						{cvData.certifications.map(cert => (
+							<li>&bull; {cert.name}</li>
+						))}
+					</ul>
+				</section>
+				<section class="print-avoid">
+					<h2 class="font-display text-xl font-bold pb-2 mb-4 border-b border-border dark:border-night-border print-border">Awards</h2>
+					<ul class="space-y-1.5 text-sm">
+						{cvData.awards.map(award => (
+							<li>
+								<div class="font-semibold text-ink dark:text-cream">{award.name}</div>
+								<div class="text-ink-muted dark:text-cream-muted print-muted">{award.issuer}</div>
+							</li>
+						))}
+					</ul>
+				</section>
+			</div>
+
+			<!-- Patents -->
+			<section class="mb-10">
+				<h2 class="font-display text-xl font-bold pb-2 mb-4 border-b border-border dark:border-night-border print-border">Patents <span class="font-mono text-sm font-normal text-ink-muted dark:text-cream-muted print-muted">({cvData.patents.length} patent families)</span></h2>
+				<div class="space-y-2 text-sm">
+					{cvData.patents.map(patent => (
+						<div class="print-avoid flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
+							<div>
+								<span class="font-semibold text-ink dark:text-cream">{patent.title}</span>
+								<span class="text-ink-muted dark:text-cream-muted print-muted"> &mdash; {patent.assignee}</span>
+							</div>
+							<div class="shrink-0 font-mono text-xs text-ink-muted dark:text-cream-muted print-muted">
+								{patent.number} &middot; {patent.year}
+							</div>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<!-- Languages -->
+			<section class="print-avoid">
+				<h2 class="font-display text-xl font-bold pb-2 mb-4 border-b border-border dark:border-night-border print-border">Languages</h2>
+				<p class="text-sm text-ink-secondary dark:text-cream-secondary print-muted">
+					{cvData.languages.map((lang, i) => (
+						<>
+							<span class="font-semibold text-ink dark:text-cream">{lang.name}</span>
+							<span> ({lang.proficiency})</span>
+							{i < cvData.languages.length - 1 && <span> &middot; </span>}
+						</>
+					))}
+				</p>
+			</section>
+		</div>
+	</body>
+</html>

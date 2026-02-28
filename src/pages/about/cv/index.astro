@@ -1,0 +1,258 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import Header from '../../../components/Header.astro';
+import { SITE_AUTHOR } from '../../../consts';
+import { cvData, formatDateShort, calculateDuration } from '../../../data/cv';
+
+const grouped = new Map<string, typeof cvData.experience>();
+for (const exp of cvData.experience) {
+	const list = grouped.get(exp.company) ?? [];
+	list.push(exp);
+	grouped.set(exp.company, list);
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`CV — ${SITE_AUTHOR}`}
+			description="Career experience, education, and professional achievements of Alex Morcillo — Senior Manager IT Products Architecture at Roche with 19+ years of experience."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main class="max-w-4xl mx-auto px-6 py-20">
+			<!-- Header -->
+			<p class="font-mono text-sm uppercase tracking-[0.25em] text-ink-muted dark:text-cream-muted mb-6 animate-fade-up">
+				Curriculum Vitae
+			</p>
+			<h1 class="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] animate-fade-up" style="animation-delay: 0.1s">
+				{SITE_AUTHOR}
+			</h1>
+			<div class="w-12 h-0.5 bg-accent my-6 animate-fade-up" style="animation-delay: 0.2s"></div>
+			<p class="text-lg text-ink-secondary dark:text-cream-secondary max-w-2xl animate-fade-up" style="animation-delay: 0.3s">
+				{cvData.summary}
+			</p>
+
+			<!-- Actions -->
+			<div class="flex flex-wrap gap-4 mt-8 mb-16 animate-fade-up" style="animation-delay: 0.4s">
+				<a
+					href="/about/cv/print"
+					target="_blank"
+					class="inline-flex items-center gap-2 font-mono text-sm px-4 py-2 border border-border dark:border-night-border rounded-lg hover:border-accent hover:text-[#107C41] dark:hover:text-accent transition-colors duration-200 no-underline"
+				>
+					<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+					</svg>
+					Print Version
+				</a>
+				<a
+					href="/about"
+					class="inline-flex items-center gap-2 font-mono text-sm px-4 py-2 border border-border dark:border-night-border rounded-lg hover:border-accent hover:text-[#107C41] dark:hover:text-accent transition-colors duration-200 no-underline"
+				>
+					&larr; About
+				</a>
+			</div>
+
+			<!-- Experience -->
+			<section class="mb-16">
+				<h2 class="text-2xl font-bold mb-10 flex items-center gap-4">
+					Experience
+					<div class="flex-1 h-px bg-border dark:bg-night-border"></div>
+				</h2>
+
+				<div class="relative">
+					<!-- Timeline line -->
+					<div class="hidden md:block absolute left-[11px] top-2 bottom-2 w-px bg-border dark:bg-night-border"></div>
+
+					<div class="space-y-10">
+						{[...grouped.entries()].map(([company, roles], gi) => {
+							const earliest = roles[roles.length - 1].startDate;
+							const latest = roles[0].endDate;
+							const totalDuration = calculateDuration(earliest, latest);
+
+							return (
+								<div class="relative animate-fade-up" style={`animation-delay: ${0.1 * (gi + 1)}s`}>
+									<!-- Company marker -->
+									<div class="hidden md:flex absolute left-0 top-0 w-[23px] h-[23px] rounded-full bg-accent/15 items-center justify-center">
+										<div class="w-[11px] h-[11px] rounded-full bg-accent"></div>
+									</div>
+
+									<div class="md:ml-12">
+										<!-- Company header -->
+										<div class="flex flex-wrap items-baseline gap-3 mb-4">
+											<h3 class="font-display text-xl font-bold text-ink dark:text-cream">
+												{company}
+											</h3>
+											<span class="font-mono text-xs px-2.5 py-1 rounded-full bg-accent/10 text-[#107C41] dark:text-accent">
+												{totalDuration}
+											</span>
+										</div>
+
+										<!-- Roles -->
+										<div class="space-y-4">
+											{roles.map((exp) => {
+												const duration = calculateDuration(exp.startDate, exp.endDate);
+												const startStr = formatDateShort(exp.startDate);
+												const endStr = exp.endDate === 'Present' ? 'Present' : formatDateShort(exp.endDate);
+
+												return (
+													<div class="relative border border-border dark:border-night-border rounded-lg p-5 hover:border-accent/50 transition-colors duration-200">
+														<div class="flex flex-wrap items-center gap-3 mb-2">
+															<time class="font-mono text-xs uppercase tracking-wider text-ink-muted dark:text-cream-muted">
+																{startStr} &ndash; {endStr}
+															</time>
+															<span class="font-mono text-xs text-ink-muted dark:text-cream-muted">{duration}</span>
+														</div>
+														<h4 class="font-display text-lg font-semibold text-ink dark:text-cream leading-snug">
+															{exp.role}
+														</h4>
+														{exp.location && (
+															<p class="text-sm text-ink-muted dark:text-cream-muted mt-1">{exp.location}</p>
+														)}
+														{exp.highlights && exp.highlights.length > 0 && (
+															<ul class="mt-3 space-y-1.5 text-sm text-ink-secondary dark:text-cream-secondary">
+																{exp.highlights.map(h => (
+																	<li class="flex gap-2">
+																		<span class="text-accent shrink-0 mt-0.5">&rarr;</span>
+																		<span>{h}</span>
+																	</li>
+																))}
+															</ul>
+														)}
+													</div>
+												);
+											})}
+										</div>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			</section>
+
+			<!-- Education -->
+			<section class="mb-16">
+				<h2 class="text-2xl font-bold mb-8 flex items-center gap-4">
+					Education
+					<div class="flex-1 h-px bg-border dark:bg-night-border"></div>
+				</h2>
+				<div class="space-y-4">
+					{cvData.education.map((edu, i) => (
+						<div class="border border-border dark:border-night-border rounded-lg p-5 animate-fade-up" style={`animation-delay: ${0.1 * (i + 1)}s`}>
+							<p class="font-mono text-xs uppercase tracking-wider text-ink-muted dark:text-cream-muted mb-2">
+								{edu.startYear} &ndash; {edu.endYear}
+							</p>
+							<h3 class="font-display text-lg font-bold text-ink dark:text-cream">
+								{edu.degree}
+							</h3>
+							{edu.field && (
+								<p class="text-sm text-ink-secondary dark:text-cream-secondary">{edu.field}</p>
+							)}
+							<p class="text-ink-secondary dark:text-cream-secondary">{edu.institution}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<!-- Certifications & Awards -->
+			<div class="grid md:grid-cols-2 gap-10 mb-16">
+				<section>
+					<h2 class="text-2xl font-bold mb-6 flex items-center gap-4">
+						Certifications
+						<div class="flex-1 h-px bg-border dark:bg-night-border"></div>
+					</h2>
+					<ul class="space-y-3">
+						{cvData.certifications.map((cert, i) => (
+							<li class="flex gap-2.5 items-start animate-fade-up" style={`animation-delay: ${0.05 * (i + 1)}s`}>
+								<span class="text-accent mt-0.5 shrink-0">&#10003;</span>
+								<span class="text-ink-secondary dark:text-cream-secondary">{cert.name}</span>
+							</li>
+						))}
+					</ul>
+				</section>
+				<section>
+					<h2 class="text-2xl font-bold mb-6 flex items-center gap-4">
+						Awards
+						<div class="flex-1 h-px bg-border dark:bg-night-border"></div>
+					</h2>
+					<ul class="space-y-3">
+						{cvData.awards.map((award, i) => (
+							<li class="flex gap-2.5 items-start animate-fade-up" style={`animation-delay: ${0.05 * (i + 1)}s`}>
+								<span class="text-accent mt-0.5 shrink-0">&#9733;</span>
+								<div>
+									<div class="font-semibold text-ink dark:text-cream">{award.name}</div>
+									<div class="text-sm text-ink-muted dark:text-cream-muted">{award.issuer}</div>
+								</div>
+							</li>
+						))}
+					</ul>
+				</section>
+			</div>
+
+			<!-- Patents -->
+			<section class="mb-16 rounded-2xl border border-accent/20 bg-accent/[0.04] dark:bg-accent/[0.06] p-8 md:p-10">
+				<div class="flex flex-wrap items-baseline gap-4 mb-8">
+					<h2 class="text-2xl font-bold flex items-center gap-3">
+						<svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+						Patents
+					</h2>
+					<span class="font-mono text-sm font-semibold text-accent">{cvData.patents.length} patent families</span>
+					<div class="flex-1 h-px bg-accent/20"></div>
+				</div>
+				<div class="grid md:grid-cols-2 gap-4">
+					{cvData.patents.map((patent, i) => (
+						<a
+							href={`https://patents.google.com/patent/${patent.number}`}
+							target="_blank"
+							rel="noopener"
+							class="block no-underline rounded-lg border border-accent/10 dark:border-accent/15 bg-surface/60 dark:bg-night-surface/60 p-4 hover:border-accent/40 transition-colors duration-200 animate-fade-up"
+							style={`animation-delay: ${0.05 * (i + 1)}s`}
+						>
+							<div class="flex items-center gap-2 mb-2">
+								<span class="font-mono text-xs text-accent font-semibold">{patent.number}</span>
+								{patent.status === 'Granted' && (
+									<span class="font-mono text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-accent/15 text-accent font-semibold">Granted</span>
+								)}
+							</div>
+							<h3 class="font-display text-sm font-semibold text-ink dark:text-cream leading-snug mb-2">{patent.title}</h3>
+							<div class="flex flex-wrap items-center gap-2">
+								<span class="font-mono text-xs text-ink-muted dark:text-cream-muted">{patent.year}</span>
+								<span class="text-ink-muted dark:text-cream-muted">&middot;</span>
+								<div class="flex gap-1">
+									{patent.jurisdictions.map(j => (
+										<span class="font-mono text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-border/50 dark:bg-night-border/50 text-ink-muted dark:text-cream-muted">{j}</span>
+									))}
+								</div>
+							</div>
+						</a>
+					))}
+				</div>
+				<p class="mt-6 text-sm text-ink-muted dark:text-cream-muted">
+					All patents filed through <span class="font-semibold text-ink dark:text-cream">Roche / F. Hoffmann-La Roche AG</span> in the field of medical diagnostics, laboratory automation, and healthcare IT.
+				</p>
+			</section>
+
+			<!-- Languages -->
+			<section>
+				<h2 class="text-2xl font-bold mb-6 flex items-center gap-4">
+					Languages
+					<div class="flex-1 h-px bg-border dark:bg-night-border"></div>
+				</h2>
+				<div class="flex flex-wrap gap-3">
+					{cvData.languages.map((lang, i) => (
+						<span class="inline-flex items-center gap-2 font-mono text-xs px-4 py-2 border border-border dark:border-night-border rounded-full animate-fade-up" style={`animation-delay: ${0.05 * (i + 1)}s`}>
+							<span class="font-semibold text-ink dark:text-cream">{lang.name}</span>
+							<span class="text-ink-muted dark:text-cream-muted">&middot;</span>
+							<span class="text-ink-muted dark:text-cream-muted">{lang.proficiency}</span>
+						</span>
+					))}
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

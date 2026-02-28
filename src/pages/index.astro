@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import CVCallout from '../components/CVCallout.astro';
 import Header from '../components/Header.astro';
 import { CATEGORIES, SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE, SOCIAL_LINKS } from '../consts';
 import { buildCategoryUrl, slugify } from '../utils/categories';
@@ -60,6 +61,11 @@ const jsonLd = {
 					</a>
 				))}
 			</div>
+		</section>
+
+		<!-- CV callout -->
+		<section class="max-w-5xl mx-auto px-6 pb-16">
+			<CVCallout delay="0.5s" />
 		</section>
 
 		<!-- Latest Posts -->

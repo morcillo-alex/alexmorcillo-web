@@ -1,7 +1,8 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import CVCallout from '../../components/CVCallout.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
 ---
 
 <!doctype html>
@@ -37,6 +38,14 @@ import Header from '../components/Header.astro';
 					<li><strong>Short Stories</strong> — Speculative fiction exploring possible futures shaped by the evolution of technology</li>
 					<li><strong>Technology</strong> — Software engineering, emerging tech, tools, and the broader tech landscape</li>
 				</ul>
+				</div>
+
+			<!-- CV callout -->
+			<div class="my-12">
+				<CVCallout />
+			</div>
+
+			<div class="prose prose-lg max-w-none animate-fade-up" style="animation-delay: 0.5s">
 				<h2>Get in Touch</h2>
 				<p>
 					Feel free to reach out on any of the social platforms linked below.

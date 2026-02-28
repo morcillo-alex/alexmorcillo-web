@@ -40,7 +40,13 @@
       "WebFetch(domain:www.businessinsider.com)",
       "Bash(grep legacy:*)",
       "Bash(cd /c/Users/Usuario/projects/alexmorcillo-web && npm install --progress=false 2>&1)",
-      "mcp__chrome-devtools__emulate"
+      "mcp__chrome-devtools__emulate",
+      "WebFetch(domain:www.linkedin.com)",
+      "Bash(brew install:*)",
+      "Bash(pdftotext:*)",
+      "mcp__chrome-devtools__select_page",
+      "WebFetch(domain:patents.google.com)",
+      "mcp__chrome-devtools__close_page"
     ]
   }
 }
