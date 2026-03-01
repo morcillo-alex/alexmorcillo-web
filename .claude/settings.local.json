@@ -47,7 +47,20 @@
       "mcp__chrome-devtools__select_page",
       "WebFetch(domain:patents.google.com)",
       "mcp__chrome-devtools__close_page",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm info:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:mermaid.js.org)",
+      "WebFetch(domain:docs.godotengine.org)",
+      "WebFetch(domain:godotengine.org)",
+      "WebFetch(domain:en.wikipedia.org)",
+      "Bash(curl:*)",
+      "Bash(gh search:*)",
+      "WebFetch(domain:accesskit.dev)",
+      "WebFetch(domain:www.google.com)",
+      "WebFetch(domain:www.reddit.com)"
     ]
   }
 }
