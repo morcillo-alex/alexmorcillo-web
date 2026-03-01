@@ -28,8 +28,18 @@ Additionally, keeping the core mechanics and logic of the game in pure C++ can m
 
 > Using C++ for game logic in Godot can provide significant performance benefits and access to powerful libraries and tools, but it also comes with increased complexity and development time. The best approach is to use C++ for performance-critical parts of your game logic, while using GDScript for the rest, allowing you to take advantage of the strengths of both languages and create a game that is both performant and easy to develop.
 
+## What approaches can I take to use C++ for game logic in Godot?
 
+### Sticking to the node system
 
+The first level is to build your game assuming the node system `as is`. This offers many benefits, in fact, it is one of the design decisions I like most about the engine, as it allows you to take advantage of the powerful scene system and the editor, while still being able to write your game logic in scripts attached to your nodes or by creating nodes with "intelligence" and benefit from the inheritance system. 
 
+By using this approach, you can maintain a clear separation between the core logic and the presentation layer. Any person (designer, artist, developer) who is familiar with Godot can jump into the project and start working on the game, without needing to understand the underlying C++ code. This can lead to a more efficient development process, as different team members can focus on their areas of expertise while still contributing to the overall project. You can even consider having external support through fundraising platforms like Patreon or Kickstarter, and ramp up a team in no time.
+
+### Building your own engine on top of Godot XXXServer(s)
+
+Godot has `servers` ...
+
+RenderingServer, PhysicsServer, AudioServer, etc. These servers are responsible for handling specific aspects of the engine, and they provide a powerful API that you can use to build your own engine on top of Godot. By using this approach, you can have complete control over the architecture and design of your game, while still taking advantage of the powerful features and tools that Godot provides.
 
 
