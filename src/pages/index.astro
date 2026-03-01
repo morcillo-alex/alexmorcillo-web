@@ -8,11 +8,14 @@ import CVCallout from '@/components/CVCallout.astro';
 import Header from '@/components/Header.astro';
 import { CATEGORIES, SITE_AUTHOR, SITE_AUTHOR_FULL, SITE_DESCRIPTION, SITE_TITLE, SITE_TITLE_FULL, SOCIAL_LINKS } from '@/consts';
 import { buildCategoryUrl, slugify } from '@/utils/categories';
-import { getPostUrl } from '@/utils/posts';
+import { getFeaturedPost, getPostUrl } from '@/utils/posts';
 
-const posts = (await getCollection('blog'))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 4);
+const allPosts = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const result = getFeaturedPost(allPosts);
+const featured = result?.featured;
+const posts = result ? result.rest.slice(0, 4) : [];
 
 const siteUrl = Astro.site?.toString();
 
@@ -103,9 +106,45 @@ const jsonLd = {
 				</a>
 			</div>
 
+			{featured && (
+				<article class="mb-10 animate-fade-up" style="perspective: 800px; animation-delay: 0.1s">
+					<a href={getPostUrl(featured)} class="card-glass relative overflow-hidden group block no-underline md:grid md:grid-cols-2 md:gap-10 items-center" data-tilt>
+						{featured.data.heroImage && (
+							<div class="overflow-hidden rounded-lg bg-border/30 dark:bg-night-border/30">
+								<Image
+									width={720}
+									height={480}
+									src={featured.data.heroImage}
+									alt=""
+									class="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+									loading="eager"
+									fetchpriority="high"
+								/>
+							</div>
+						)}
+						<div class="mt-6 md:mt-0">
+							<div class="flex items-center gap-3 mb-3">
+								<span class="font-mono text-xs uppercase tracking-widest text-[#107C41] dark:text-accent">Featured</span>
+								<span class="text-border dark:text-night-border">&middot;</span>
+								<span class="font-mono text-xs uppercase tracking-widest text-ink-muted dark:text-cream-muted">{featured.data.category}</span>
+							</div>
+							<h3 class="text-2xl md:text-3xl font-bold text-ink dark:text-cream leading-tight group-hover:text-accent transition-colors duration-200">
+								{featured.data.title}
+							</h3>
+							<p class="mt-3 text-ink-secondary dark:text-cream-secondary leading-relaxed">
+								{featured.data.description}
+							</p>
+							<div class="font-mono text-sm text-ink-muted dark:text-cream-muted mt-3 uppercase tracking-wider">
+								<FormattedDate date={featured.data.pubDate} />
+							</div>
+						</div>
+					</a>
+				</article>
+			)}
+
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 				{posts.map((post, i) => (
-					<article class="animate-fade-up" style={`perspective: 800px; animation-delay: ${0.1 * (i + 1)}s`}>
+					<article class="animate-fade-up" style={`perspective: 800px; animation-delay: ${0.1 * (i + 1) + 0.15}s`}>
 						<a href={getPostUrl(post)} class="card-glass relative overflow-hidden group block no-underline" data-tilt>
 							{post.data.heroImage && (
 								<div class="overflow-hidden rounded-lg mb-4 bg-border/30 dark:bg-night-border/30">

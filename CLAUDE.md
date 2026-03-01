@@ -53,7 +53,7 @@ Pattern: use `text-ink dark:text-cream`, `bg-canvas dark:bg-night`, etc.
 - `src/content/blog/` — Blog posts as Markdown/MDX, organized by `Category/Year/` folders (e.g., `AI/2022/first-post.md`), validated by Zod schema in `src/content.config.ts`
 - `src/components/` — BaseHead, Header, HeaderLink, Footer, FormattedDate, Breadcrumbs
 - `src/layouts/` — BlogPost.astro (article layout with hero image + prose + breadcrumbs), CategoryListing.astro (category page with subcategory chips + post grid)
-- `src/utils/posts.ts` — `getSlug()`, `getFilenameSlug()`, `getFullSlug()`, `getPostUrl()` utilities for post URL generation
+- `src/utils/posts.ts` — `getSlug()`, `getFilenameSlug()`, `getFullSlug()`, `getPostUrl()`, `getFeaturedPost()` utilities for post URL generation and featured selection
 - `src/utils/categories.ts` — Category tree utilities: `slugify()`, `categoryToSlugPath()`, `buildCategoryBreadcrumbs()`, `buildPostBreadcrumbs()`, `getCategoryNode()`, `getChildCategories()`, `getDescendantPaths()`, `getAllSlugPaths()`, `labelPathFromSlugPath()`, `buildCategoryUrl()`, `isValidCategoryPath()`
 - `src/consts.ts` — SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR, TWITTER_HANDLE, SOCIAL_LINKS, CATEGORY_TREE, ALL_CATEGORY_PATHS, CATEGORIES, Category type
 - `src/assets/AppIcons/` — App icons (Android mipmap, iOS Assets.xcassets, App Store/Play Store)
@@ -94,7 +94,7 @@ src/content/blog/
 
 Blog post frontmatter schema:
 - Required: `title` (string), `description` (string), `category` (string, validated against `CATEGORY_TREE` — e.g. `'AI'`, `'Games/Blender/Modeling'`), `pubDate` (date)
-- Optional: `updatedDate` (date), `heroImage` (image), `tags` (string array)
+- Optional: `updatedDate` (date), `featuredTill` (date), `heroImage` (image), `tags` (string array)
 
 Top-level categories derived as `CATEGORIES = Object.keys(CATEGORY_TREE)`. `ALL_CATEGORY_PATHS` contains every valid path at all nesting levels.
 
@@ -119,13 +119,24 @@ Uses discriminated union props (`type: 'category' | 'post'`) to render either `C
 - Styled: `font-mono text-xs uppercase tracking-widest`
 - Used in both `BlogPost.astro` and `CategoryListing.astro`
 
+### Featured post system
+
+Both the homepage "Latest Writing" section and the blog index (`/blog`) display a featured post with a larger 2-column side-by-side card layout (image left, content right on desktop).
+
+**Selection logic** (`getFeaturedPost()` in `src/utils/posts.ts`):
+1. Find posts with `featuredTill` date >= today (build date for SSG)
+2. Among those, pick the one with the most recent `pubDate`
+3. If none qualify, fall back to the newest post by `pubDate`
+
+**Usage**: Set `featuredTill: YYYY-MM-DD` in a post's frontmatter to pin it as featured until that date. The featured post is excluded from the regular grid below it.
+
 ### Blog index & category navigation
 
 The blog index (`src/pages/blog/index.astro`):
 - "All" label (active state) + category `<a>` links to `/blog/ai/`, `/blog/games/`, etc.
 - No client-side JS filtering — categories are separate pages
 - Backwards compat: `?category=X` query param redirects to `/blog/{slug}/` via inline script
-- Featured post (first by date) gets a larger card layout
+- Featured post selected via `getFeaturedPost()` — gets a larger 2-column card layout
 - Homepage topic badges link to `/blog/ai/`, `/blog/games/`, etc.
 
 ### Favicons & site identity

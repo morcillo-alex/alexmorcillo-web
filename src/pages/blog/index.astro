@@ -7,13 +7,15 @@ import FormattedDate from '@/components/FormattedDate.astro';
 import Header from '@/components/Header.astro';
 import { CATEGORIES, SITE_TITLE } from '@/consts';
 import { buildCategoryUrl, slugify } from '@/utils/categories';
-import { getPostUrl } from '@/utils/posts';
+import { getFeaturedPost, getPostUrl } from '@/utils/posts';
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const [featured, ...rest] = posts;
+const result = getFeaturedPost(allPosts);
+const featured = result?.featured;
+const rest = result?.rest ?? [];
 ---
 
 <!doctype html>
