@@ -165,12 +165,6 @@ export const cvData: CVData = {
 			startYear: 2018,
 			endYear: 2019,
 		},
-		{
-			institution: 'Universitat de Girona',
-			degree: 'Computer Science',
-			startYear: 2000,
-			endYear: 2005,
-		},
 	],
 
 	certifications: [
@@ -280,8 +274,6 @@ export const cvData: CVData = {
 		{ name: 'Spanish', proficiency: 'Native' },
 		{ name: 'Catalan', proficiency: 'Native' },
 		{ name: 'English', proficiency: 'Professional Working' },
-		{ name: 'German', proficiency: 'Elementary' },
-		{ name: 'Italian', proficiency: 'Elementary' },
 	],
 };
 
