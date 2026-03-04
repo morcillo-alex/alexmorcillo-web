@@ -51,8 +51,8 @@ Pattern: use `text-ink dark:text-cream`, `bg-canvas dark:bg-night`, etc.
 
 - `src/pages/` — File-based routing (`.astro`, `.md`, `.mdx` → URLs)
 - `src/content/blog/` — Blog posts as Markdown/MDX, organized by `Category/Year/` folders (e.g., `AI/2022/first-post.md`), validated by Zod schema in `src/content.config.ts`
-- `src/components/` — BaseHead, Header, HeaderLink, Footer, FormattedDate, Breadcrumbs
-- `src/layouts/` — BlogPost.astro (article layout with hero image + prose + breadcrumbs), CategoryListing.astro (category page with subcategory chips + post grid)
+- `src/components/` — BaseHead, Header, HeaderLink, Footer, FormattedDate, Breadcrumbs, ShareSocial
+- `src/layouts/` — BlogPost.astro (article layout with hero image + prose + breadcrumbs + share buttons), CategoryListing.astro (category page with subcategory chips + post grid)
 - `src/utils/posts.ts` — `getSlug()`, `getFilenameSlug()`, `getFullSlug()`, `getPostUrl()`, `getFeaturedPost()` utilities for post URL generation and featured selection
 - `src/utils/categories.ts` — Category tree utilities: `slugify()`, `categoryToSlugPath()`, `buildCategoryBreadcrumbs()`, `buildPostBreadcrumbs()`, `getCategoryNode()`, `getChildCategories()`, `getDescendantPaths()`, `getAllSlugPaths()`, `labelPathFromSlugPath()`, `buildCategoryUrl()`, `isValidCategoryPath()`
 - `src/consts.ts` — SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR, TWITTER_HANDLE, SOCIAL_LINKS, CATEGORY_TREE, ALL_CATEGORY_PATHS, CATEGORIES, Category type
@@ -118,6 +118,14 @@ Uses discriminated union props (`type: 'category' | 'post'`) to render either `C
 - JSON-LD `BreadcrumbList` schema for SEO
 - Styled: `font-mono text-xs uppercase tracking-widest`
 - Used in both `BlogPost.astro` and `CategoryListing.astro`
+
+### Share buttons
+
+`src/components/ShareSocial.astro` renders social share buttons for blog posts:
+- Props: `url` (canonical URL) and `title` (post title)
+- Networks: X, LinkedIn, Facebook, WhatsApp, Telegram — each opens the platform's native share dialog
+- Styled: `font-mono` "Share" label + icon buttons with accent green hover (`text-[#107C41] dark:text-accent`, `bg-[#107C41]/8 dark:bg-accent/8`)
+- Placed twice in `BlogPost.astro`: in the article header (after reading time) and after the prose content (separated by a border)
 
 ### Featured post system
 

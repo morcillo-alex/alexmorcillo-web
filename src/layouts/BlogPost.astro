@@ -6,6 +6,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Footer from '@/components/Footer.astro';
 import FormattedDate from '@/components/FormattedDate.astro';
 import Header from '@/components/Header.astro';
+import ShareSocial from '@/components/ShareSocial.astro';
 import { SITE_AUTHOR, SITE_TITLE } from '@/consts';
 import type { BreadcrumbItem } from '@/utils/categories';
 
@@ -111,6 +112,9 @@ const jsonLd = {
 									{readingTime} min read
 								</p>
 							)}
+							<div class="mt-4 animate-fade-up" style="animation-delay: 0.3s">
+								<ShareSocial url={canonicalURL.toString()} title={title} />
+							</div>
 						</header>
 						{heroImage && (
 							<div class="hidden md:block md:flex-1 md:min-w-0 animate-fade-up" style="animation-delay: 0.15s; perspective: 600px;">
@@ -132,6 +136,9 @@ const jsonLd = {
 				<div class="max-w-3xl mx-auto px-6 pb-20 animate-fade-up" style="animation-delay: 0.2s">
 					<div class="prose prose-lg max-w-none">
 						<slot />
+					</div>
+					<div class="mt-10 pt-6 border-t border-border dark:border-night-border">
+						<ShareSocial url={canonicalURL.toString()} title={title} />
 					</div>
 				</div>
 			</article>

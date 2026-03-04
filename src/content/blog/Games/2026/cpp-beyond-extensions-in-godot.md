@@ -1,6 +1,6 @@
 ---
 title: "C++ in Godot: Beyond Extensions, Into games with Superpowers"
-description: 'GDExtension is just the beginning. C++ can power your entire game logic with full engine API access, native performance, and direct server calls that bypass the scene tree entirely. This series shows you how to build ambitious systems most developers never realise are possible.'
+description: 'GDExtension is just the beginning. C++ can power your entire game logic with full engine API access, native performance, and direct server calls that bypass the scene tree entirely. This series shows you how to build ambitious systems most developers never realize are possible.'
 category: 'Games'
 pubDate: 2026-03-01
 heroImage: '@/assets/Media/Games/godot-series/godot_epic.png'
@@ -26,13 +26,13 @@ Performance is the obvious answer. And it's true. Compiling your game logic to n
 
 But performance is only the beginning.
 
-Using C++ gives you **access to the complete engine API**. Not the subset exposed through GDScript bindings. The actual internal API that Godot itself uses. Every server, every low-level call, every optimisation path the engine offers. It's all there, waiting.
+Using C++ gives you **access to the complete engine API**. Not the subset exposed through GDScript bindings. The actual internal API that Godot itself uses. Every server, every low-level call, every optimization path the engine offers. It's all there, waiting.
 
-You also get the entire **C and C++ ecosystem** at your fingertips. Want an Entity-Component-System architecture? [FLECS](https://github.com/SanderMertens/flecs) or [EnTT](https://github.com/skypjack/entt). Need a debug UI that doesn't slow your editor to a crawl? [ImGui](https://github.com/ocornut/imgui). Networking, serialisation, machine learning, audio processing. If there's a C++ library for it (and there usually is), you can bring it into your Godot project as a first-class citizen.
+You also get the entire **C and C++ ecosystem** at your fingertips. Want an Entity-Component-System architecture? [FLECS](https://github.com/SanderMertens/flecs) or [EnTT](https://github.com/skypjack/entt). Need a debug UI that doesn't slow your editor to a crawl? [ImGui](https://github.com/ocornut/imgui). Networking, serialization, machine learning, audio processing. If there's a C++ library for it (and there usually is), you can bring it into your Godot project as a first-class citizen.
 
 And then there's [LibGodot](https://godotengine.org/releases/4.6/), introduced in Godot 4.6. This lets you embed the entire Godot engine as a shared library inside your own applications. Which means programmatic control over engine startup and the main loop. You're no longer building a game *in* Godot. You're building an application *with* Godot.
 
-Think about what that enables: custom editors with 3D viewports, CAD tools, simulation platforms, hybrid applications where Godot powers the rendering layer inside a larger system. Combine that with the [AccessKit-based screen reader support](https://godotengine.org/releases/4.5/) from Godot 4.5, and suddenly Godot becomes compelling for educational tools, accessible interfaces, and interactive visualisations that have nothing to do with games.
+Think about what that enables: custom editors with 3D viewports, CAD tools, simulation platforms, hybrid applications where Godot powers the rendering layer inside a larger system. Combine that with the [AccessKit-based screen reader support](https://godotengine.org/releases/4.5/) from Godot 4.5, and suddenly Godot becomes compelling for educational tools, accessible interfaces, and interactive visualizations that have nothing to do with games.
 
 That's the real story. Performance is nice. But access to the full engine? That's where things get interesting.
 
@@ -51,7 +51,7 @@ So the question isn't "should I use C++ or GDScript?" It's "where does each one 
 The most effective approach is to use both languages where they're strongest. It's a separation of concerns:
 
 - **C++ for the engine layer**: core game logic, performance-critical systems, data-heavy operations, anything that needs to run at scale. Tech leads, engine programmers, and architects live here.
-- **GDScript for the gameplay layer**: visualisation, UI, gameplay scripting, rapid iteration, anything that benefits from tight editor integration. Designers, artists, and gameplay programmers thrive here.
+- **GDScript for the gameplay layer**: visualization, UI, gameplay scripting, rapid iteration, anything that benefits from tight editor integration. Designers, artists, and gameplay programmers thrive here.
 
 This separation has practical benefits beyond raw performance.
 
@@ -79,7 +79,7 @@ We'll explore this in depth in the next article, with a hands-on example.
 
 ![Godot's Architecture Diagram](@/assets/Media/Games/godot-series/godot-architecture-diagram.webp)
 
-When I first started digging into Godot's architecture, I expected to find what most game engines give you: a scene graph with some optimisation tricks and maybe a few extension points. That's not what I found.
+When I first started digging into Godot's architecture, I expected to find what most game engines give you: a scene graph with some optimization tricks and maybe a few extension points. That's not what I found.
 
 What I found was this: **the scene tree is optional.**
 
