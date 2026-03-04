@@ -24,8 +24,10 @@
 - AI/2022/ai-first-post.md — appears to be a placeholder/demo post
 - AI/2026/two-years-that-changed-ai.mdx — "The Two Years That Rewrote AI: 2024 to February 2026" (published 2026-02-23)
 - AI/2026/ai-cognitive-load.mdx — "AI Is Not a Tool. It Is Work. And Your Brain Knows It." (published 2026-02-25) — cognitive/mental impact of AI, neuroplasticity, Kahneman System 1/2, Gardner multiple intelligences, bandwidth flip, supervision trap
+- Technology/????/what-is-a-north-star-and-what-is-not.md (DRAFT) — "Your North Star Metric Is Probably Wrong (And Why That Matters)" — North Star Metrics explained with Spotify, Airbnb, Slack examples, metric trees, 2026 trends
 
 ## Writing Conventions
+- **NO EMOJIS** — never use emojis in article output unless explicitly requested by the user (mode instructions state this clearly)
 - No cliches: never start with "In today's world", never use "delve", "testament", "tapestry", "game-changer", "realm of"
 - Hook: first 150 words must make stopping impossible — provocative question, surprising stat, bold claim
 - Sections: H2 headings should be curiosity-gap phrased or promise a clear benefit
