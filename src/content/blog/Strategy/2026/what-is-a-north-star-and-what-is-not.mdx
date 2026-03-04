@@ -16,23 +16,31 @@ tags:
 import MetricTree from '@/components/MetricTree.astro';
 
 export const streamingServiceTree = {
-  name: "Weekly Active Subscribers (WAS)",
+  name: "Total Time Spent Listening",
   level: "North Star",
   children: [
     {
-      name: "New user conversion rate (within 7 days)",
+      name: "New user activation",
       level: "L1",
       children: [
-        { name: "Onboarding completion rate", level: "L2" },
-        { name: "Content discovery in first session", level: "L2" }
+        { name: "First-play conversion rate", level: "L2" },
+        { name: "Onboarding completion rate", level: "L2" }
       ]
     },
     {
-      name: "Existing user retention",
+      name: "Session depth & frequency",
       level: "L1",
       children: [
-        { name: "Engagement frequency", level: "L2" },
-        { name: "Content library freshness", level: "L2" }
+        { name: "Average session duration", level: "L2" },
+        { name: "Sessions per week per user", level: "L2" }
+      ]
+    },
+    {
+      name: "Content engagement",
+      level: "L1",
+      children: [
+        { name: "Discover Weekly play rate", level: "L2" },
+        { name: "Playlist creation & saves", level: "L2" }
       ]
     }
   ]
@@ -220,10 +228,12 @@ Spotify monetizes in two ways:
 **It breaks down into actionable team goals**  
 This is where the magic happens. The overall metric decomposes into "input metrics" that individual teams can own:
 
-- **Breadth** (Growth team): Get more returning users through the door
-- **Depth** (Product team): Keep each session longer with features like gapless playback and Discover Weekly
-- **Frequency** (Retention team): Bring users back more often with personalized notifications
-- **Efficiency** (ML team): Reduce time-to-first-play so users hear great music instantly
+<MetricTree data={streamingServiceTree} />
+
+Breaking this down by team:
+- **Growth team**: New user activation - improve first-play conversion and onboarding completion
+- **Product team**: Session depth & frequency - keep sessions longer with features like gapless playback, increase weekly sessions with personalized notifications
+- **Content/ML team**: Content engagement - optimize Discover Weekly recommendations, encourage playlist creation and saves
 
 Each team has a lever they can pull right now. No confusion about priorities.
 
@@ -544,13 +554,7 @@ This article draws on established product management frameworks, academic busine
 - Reforge Growth Series materials on North Star frameworks and input metrics
 - First Round Review articles on product metrics and team alignment
 
-*Note: Company-specific metric choices are based on publicly available product management literature, academic business research, case studies, and industry analysis. Specific implementation details may vary from what companies currently use internally.*
+> *Note: Company-specific metric choices are based on publicly available product management literature, academic business research, case studies, and industry analysis. Specific implementation details may vary from what companies currently use internally.*
 
----
 
-**HERO IMAGE PROMPT**
-
-A cinematic editorial illustration of Polaris (the North Star) illuminating a path through an abstract digital landscape. The star is positioned prominently in the upper third, emitting a bright, guiding beam of light that cuts through layers of translucent data visualizations, graphs, and metric charts floating in the dark space. The color palette is deep midnight blue transitioning to electric teal and white highlights, with subtle grid overlays suggesting technology and precision. The lower portion shows multiple diverging pathways (representing wrong choices) fading into shadow, while one clear illuminated path leads directly toward the star (representing the correct North Star). Style: modern editorial illustration meets data visualization art, cinematic lighting, high contrast, professional business publication quality. Mood: clarity, direction, strategic focus.
-
-Aspect ratio: 16:9 (1200x630px recommended for hero + OG image)
 

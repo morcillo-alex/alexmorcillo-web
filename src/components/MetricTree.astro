@@ -11,184 +11,318 @@ interface Props {
 }
 
 const { data } = Astro.props;
+const uniqueId = `metric-tree-${Math.random().toString(36).substr(2, 9)}`;
+const tooltipId = `${uniqueId}-tooltip`;
 ---
 
-<div class="w-full overflow-x-auto py-8 relative">
-  <div id="metric-tree" class="min-w-[600px]"></div>
-  <div id="metric-tree-tooltip" class="pointer-events-none absolute z-10 hidden max-w-xs rounded-lg border border-border dark:border-night-border bg-canvas dark:bg-night-surface px-4 py-3 shadow-lg"></div>
+<div class="w-full relative py-6 overflow-hidden rounded-lg bg-canvas dark:bg-night-surface">
+  <div id={uniqueId} class="w-full h-[500px] cursor-grab active:cursor-grabbing"></div>
+  <div id={tooltipId} class="pointer-events-none absolute z-10 hidden max-w-xs rounded-lg border border-border dark:border-night-border bg-canvas dark:bg-night-surface px-4 py-3 shadow-lg"></div>
+  <div class="absolute bottom-2 right-2 flex gap-2 opacity-60 hover:opacity-100 transition-opacity">
+    <button id={`${uniqueId}-zoom-in`} class="px-2 py-1 rounded bg-surface dark:bg-night-surface border border-border dark:border-night-border text-ink dark:text-cream text-sm font-mono hover:bg-accent hover:text-white transition-colors">+</button>
+    <button id={`${uniqueId}-zoom-out`} class="px-2 py-1 rounded bg-surface dark:bg-night-surface border border-border dark:border-night-border text-ink dark:text-cream text-sm font-mono hover:bg-accent hover:text-white transition-colors">&minus;</button>
+    <button id={`${uniqueId}-reset`} class="px-2 py-1 rounded bg-surface dark:bg-night-surface border border-border dark:border-night-border text-ink dark:text-cream text-xs font-mono hover:bg-accent hover:text-white transition-colors">Reset</button>
+  </div>
 </div>
 
-<script define:vars={{ treeData: data }}>
-  // D3-style Metric Tree Visualization
+<script define:vars={{ treeData: data, containerId: uniqueId, tooltipId }}>
   (function() {
-    const margin = { top: 30, right: 220, bottom: 30, left: 220 };
-    const width = 960 - margin.left - margin.right;
-    const height = 420 - margin.top - margin.bottom;
+    var DEPTH_SPACING = 260;
+    var LEAF_SPACING = 80;
+    var W = 1000;
+    var H = 500;
 
-    const container = document.getElementById('metric-tree');
+    var container = document.getElementById(containerId);
     if (!container) return;
 
-    // Clear any existing content
+    // --- State ---
+    var collapsedNodes = new Set();
+    var tx = 0, ty = 0, sc = 1;
+    var dragging = false;
+    var dragX = 0, dragY = 0;
+
+    // --- Assign stable IDs once; collapse every non-root node ---
+    function assignIds(node, parentId) {
+      node._id = parentId ? parentId + '/' + node.name.replace(/\s+/g, '-') : 'root';
+      if (node.children && node.children.length > 0) {
+        if (parentId) collapsedNodes.add(node._id);
+        node.children.forEach(function(c) { assignIds(c, node._id); });
+      }
+    }
+    assignIds(treeData, '');
+
+    // --- SVG scaffold ---
     container.innerHTML = '';
 
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
-    svg.setAttribute('class', 'w-full h-auto');
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', W);
+    svg.setAttribute('height', H);
+    svg.setAttribute('class', 'w-full h-full');
     container.appendChild(svg);
 
-    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.setAttribute('transform', `translate(${margin.left},${margin.top})`);
+    var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    var pat = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
+    pat.setAttribute('id', containerId + '-dots');
+    pat.setAttribute('width', '20');
+    pat.setAttribute('height', '20');
+    pat.setAttribute('patternUnits', 'userSpaceOnUse');
+    var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('cx', '2');
+    dot.setAttribute('cy', '2');
+    dot.setAttribute('r', '1');
+    dot.setAttribute('fill', document.documentElement.classList.contains('dark') ? '#334155' : '#e2e8f0');
+    pat.appendChild(dot);
+    defs.appendChild(pat);
+    svg.appendChild(defs);
+
+    var bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bg.setAttribute('width', W);
+    bg.setAttribute('height', H);
+    bg.setAttribute('fill', 'url(#' + containerId + '-dots)');
+    svg.appendChild(bg);
+
+    var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     svg.appendChild(g);
 
-    // Convert data to hierarchy
-    const root = {
-      name: treeData.name,
-      level: treeData.level,
-      children: treeData.children || [],
-      x: 0,
-      y: 0,
-      depth: 0
-    };
+    // --- Transform helpers ---
+    function applyTransform() {
+      g.setAttribute('transform', 'translate(' + tx + ',' + ty + ') scale(' + sc + ')');
+    }
 
-    // Two-pass layout: count leaves globally, then distribute evenly
+    // --- Layout helpers ---
     function countLeaves(node) {
-      if (!node.children || node.children.length === 0) return 1;
-      return node.children.reduce(function(sum, child) { return sum + countLeaves(child); }, 0);
+      if (!node.children || node.children.length === 0 || collapsedNodes.has(node._id)) return 1;
+      return node.children.reduce(function(s, c) { return s + countLeaves(c); }, 0);
     }
 
-    // Find max depth for horizontal spacing
-    function maxDepth(node, d) {
-      if (!node.children || node.children.length === 0) return d;
-      return Math.max.apply(null, node.children.map(function(c) { return maxDepth(c, d + 1); }));
-    }
-
-    var totalLeaves = countLeaves(root);
-    var depth = maxDepth(root, 0);
-    var leafSpacing = height / (totalLeaves - 1 || 1);
-    var depthSpacing = width / (depth || 1);
-    var leafIndex = 0;
-
-    var nodes = [];
-    var links = [];
-
-    // Layout: assign positions bottom-up (leaves first, then center parents)
-    function layoutNode(node, d) {
-      node.depth = d;
-      node.y = d * depthSpacing;
-
-      if (!node.children || node.children.length === 0) {
-        node.x = leafIndex * leafSpacing;
-        leafIndex++;
-        nodes.push(node);
-        return;
-      }
-
-      node.children.forEach(function(child) {
-        child.parent = node;
-        links.push({ source: node, target: child });
-        layoutNode(child, d + 1);
-      });
-
-      // Center parent over its children
-      var childXs = node.children.map(function(c) { return c.x; });
-      node.x = (Math.min.apply(null, childXs) + Math.max.apply(null, childXs)) / 2;
-      nodes.push(node);
-    }
-
-    layoutNode(root, 0);
-
-    // Color scheme based on level
-    const getNodeColor = (level) => {
-      const isDark = document.documentElement.classList.contains('dark');
+    function getColor(level) {
+      var dk = document.documentElement.classList.contains('dark');
       if (level === 'North Star') return '#2acf62';
-      if (level === 'L1') return isDark ? '#60a5fa' : '#3b82f6';
-      if (level === 'L2') return isDark ? '#f59e0b' : '#f97316';
-      return isDark ? '#94a3b8' : '#64748b';
-    };
+      if (level === 'L1') return dk ? '#60a5fa' : '#3b82f6';
+      if (level === 'L2') return dk ? '#f59e0b' : '#f97316';
+      return dk ? '#94a3b8' : '#64748b';
+    }
 
-    // Draw links
-    links.forEach(link => {
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      const d = `M${link.source.y},${link.source.x}
-                 C${(link.source.y + link.target.y) / 2},${link.source.x}
-                  ${(link.source.y + link.target.y) / 2},${link.target.x}
-                  ${link.target.y},${link.target.x}`;
-      path.setAttribute('d', d);
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', document.documentElement.classList.contains('dark') ? '#334155' : '#cbd5e1');
-      path.setAttribute('stroke-width', '2');
-      path.setAttribute('class', 'transition-all duration-300');
-      g.appendChild(path);
-    });
+    // --- Main render ---
+    // Root is ALWAYS placed at local (0, 0).
+    // Children fan out to the right (depth) and vertically (spread),
+    // centered around the parent. This means expand/collapse never
+    // moves the root on screen — only children appear/disappear.
+    function render() {
+      while (g.firstChild) g.removeChild(g.firstChild);
 
-    // Draw nodes
-    nodes.forEach(node => {
-      const nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      nodeGroup.setAttribute('transform', `translate(${node.y},${node.x})`);
-      nodeGroup.setAttribute('class', 'cursor-pointer transition-all duration-300');
-      
-      // Node circle
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('r', node.level === 'North Star' ? '12' : '8');
-      circle.setAttribute('fill', getNodeColor(node.level));
-      circle.setAttribute('stroke', document.documentElement.classList.contains('dark') ? '#1e293b' : '#fff');
-      circle.setAttribute('stroke-width', '3');
-      circle.setAttribute('class', 'transition-all duration-300');
-      nodeGroup.appendChild(circle);
+      var nodes = [];
+      var links = [];
 
-      // Node label
-      const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      textElement.textContent = node.name;
-      textElement.setAttribute('x', node.children ? -16 : 16);
-      textElement.setAttribute('dy', '.35em');
-      textElement.setAttribute('text-anchor', node.children ? 'end' : 'start');
-      textElement.setAttribute('class', 'text-sm font-mono fill-ink dark:fill-cream');
-      nodeGroup.appendChild(textElement);
+      // Recursive layout: each parent places its children centered
+      // around its own vertical position (centerX).
+      function layout(node, depth, centerX) {
+        node._py = depth * DEPTH_SPACING;   // horizontal (SVG x)
+        node._px = centerX;                  // vertical   (SVG y)
+        nodes.push(node);
 
-      // Add level badge
-      if (node.level !== 'North Star') {
-        const badge = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        badge.textContent = node.level;
-        badge.setAttribute('x', node.children ? -16 : 16);
-        badge.setAttribute('dy', '-1.2em');
-        badge.setAttribute('text-anchor', node.children ? 'end' : 'start');
-        badge.setAttribute('class', 'text-xs font-mono fill-ink-muted dark:fill-cream-muted');
-        nodeGroup.appendChild(badge);
+        if (!node.children || node.children.length === 0 || collapsedNodes.has(node._id)) return;
+
+        var weights = node.children.map(countLeaves);
+        var total = weights.reduce(function(s, w) { return s + w; }, 0);
+        var span = (total - 1) * LEAF_SPACING;
+        var cursor = centerX - span / 2;
+
+        node.children.forEach(function(child, i) {
+          var w = weights[i];
+          var childCenter = cursor + (w - 1) * LEAF_SPACING / 2;
+          links.push({ s: node, t: child });
+          layout(child, depth + 1, childCenter);
+          cursor += w * LEAF_SPACING;
+        });
       }
 
-      // Hover effects + tooltip
-      nodeGroup.addEventListener('mouseenter', function(e) {
-        circle.setAttribute('r', node.level === 'North Star' ? '14' : '10');
-        textElement.setAttribute('class', 'text-sm font-mono font-bold fill-accent');
-        showTooltip(node, e);
+      layout(treeData, 0, 0);
+
+      var dk = document.documentElement.classList.contains('dark');
+
+      // --- Draw links ---
+      links.forEach(function(l) {
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        var my = (l.s._py + l.t._py) / 2;
+        path.setAttribute('d',
+          'M' + l.s._py + ',' + l.s._px +
+          ' C' + my + ',' + l.s._px +
+          ' ' + my + ',' + l.t._px +
+          ' ' + l.t._py + ',' + l.t._px);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', dk ? '#334155' : '#cbd5e1');
+        path.setAttribute('stroke-width', '2');
+        g.appendChild(path);
       });
 
-      nodeGroup.addEventListener('mousemove', function(e) {
-        positionTooltip(e);
-      });
+      // --- Draw nodes ---
+      nodes.forEach(function(node) {
+        var hasKids = node.children && node.children.length > 0;
+        var collapsed = collapsedNodes.has(node._id);
 
-      nodeGroup.addEventListener('mouseleave', function() {
-        circle.setAttribute('r', node.level === 'North Star' ? '12' : '8');
-        textElement.setAttribute('class', 'text-sm font-mono fill-ink dark:fill-cream');
-        hideTooltip();
-      });
+        var ng = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        ng.setAttribute('transform', 'translate(' + node._py + ',' + node._px + ')');
+        if (hasKids) ng.setAttribute('class', 'cursor-pointer');
 
-      g.appendChild(nodeGroup);
+        // Circle
+        var baseR = node.level === 'North Star' ? 12 : 8;
+        var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circ.setAttribute('r', baseR);
+        circ.setAttribute('fill', getColor(node.level));
+        circ.setAttribute('stroke', dk ? '#1e293b' : '#fff');
+        circ.setAttribute('stroke-width', '3');
+        ng.appendChild(circ);
+
+        // +/− indicator
+        if (hasKids) {
+          var ind = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          ind.textContent = collapsed ? '+' : '\u2212';
+          ind.setAttribute('dy', '.35em');
+          ind.setAttribute('text-anchor', 'middle');
+          ind.setAttribute('class', 'text-xs font-bold fill-white pointer-events-none');
+          ind.setAttribute('style', 'user-select:none');
+          ng.appendChild(ind);
+        }
+
+        // Label — left of node when expanded (children visible), right otherwise
+        var side = (hasKids && !collapsed) ? -1 : 1;
+        var label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.textContent = node.name;
+        label.setAttribute('x', String(side * 16));
+        label.setAttribute('dy', '.35em');
+        label.setAttribute('text-anchor', side < 0 ? 'end' : 'start');
+        label.setAttribute('class', 'text-sm font-mono fill-ink dark:fill-cream pointer-events-none');
+        ng.appendChild(label);
+
+        // Level badge
+        if (node.level !== 'North Star') {
+          var badge = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          badge.textContent = node.level;
+          badge.setAttribute('x', String(side * 16));
+          badge.setAttribute('dy', '-1.2em');
+          badge.setAttribute('text-anchor', side < 0 ? 'end' : 'start');
+          badge.setAttribute('class', 'text-xs font-mono fill-ink-muted dark:fill-cream-muted pointer-events-none');
+          ng.appendChild(badge);
+        }
+
+        // Click → toggle collapse
+        if (hasKids) {
+          ng.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (collapsedNodes.has(node._id)) collapsedNodes.delete(node._id);
+            else collapsedNodes.add(node._id);
+            render();
+          });
+        }
+
+        // Hover → enlarge + accent + tooltip
+        ng.addEventListener('mouseenter', function(e) {
+          if (dragging) return;
+          circ.setAttribute('r', baseR + 2);
+          label.setAttribute('class', 'text-sm font-mono font-bold fill-accent pointer-events-none');
+          showTooltip(node, e);
+        });
+        ng.addEventListener('mousemove', function(e) {
+          if (!dragging) positionTooltip(e);
+        });
+        ng.addEventListener('mouseleave', function() {
+          circ.setAttribute('r', baseR);
+          label.setAttribute('class', 'text-sm font-mono fill-ink dark:fill-cream pointer-events-none');
+          hideTooltip();
+        });
+
+        g.appendChild(ng);
+      });
+    }
+
+    // --- Initial view: center root in viewport ---
+    tx = 250;
+    ty = H / 2;
+    sc = 1;
+    applyTransform();
+    render();
+
+    // --- Pan ---
+    function evtPt(e) {
+      if (e.touches && e.touches.length) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      return { x: e.clientX, y: e.clientY };
+    }
+
+    svg.addEventListener('mousedown', function(e) {
+      if (e.target.tagName === 'circle') return;
+      dragging = true;
+      var p = evtPt(e);
+      dragX = p.x - tx;
+      dragY = p.y - ty;
+      hideTooltip();
+    });
+    svg.addEventListener('touchstart', function(e) {
+      if (e.target.tagName === 'circle') return;
+      dragging = true;
+      var p = evtPt(e);
+      dragX = p.x - tx;
+      dragY = p.y - ty;
+      hideTooltip();
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!dragging) return;
+      var p = evtPt(e);
+      tx = p.x - dragX;
+      ty = p.y - dragY;
+      applyTransform();
+    });
+    window.addEventListener('touchmove', function(e) {
+      if (!dragging) return;
+      var p = evtPt(e);
+      tx = p.x - dragX;
+      ty = p.y - dragY;
+      applyTransform();
+      e.preventDefault();
+    });
+    window.addEventListener('mouseup', function() { dragging = false; });
+    window.addEventListener('touchend', function() { dragging = false; });
+
+    // --- Zoom (wheel + buttons) ---
+    svg.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      var r = svg.getBoundingClientRect();
+      var mx = e.clientX - r.left, my = e.clientY - r.top;
+      var d = e.deltaY > 0 ? 0.9 : 1.1;
+      var ns = Math.min(Math.max(sc * d, 0.3), 3);
+      var ratio = ns / sc;
+      tx = mx - (mx - tx) * ratio;
+      ty = my - (my - ty) * ratio;
+      sc = ns;
+      applyTransform();
     });
 
-    // Tooltip helpers
-    var tooltip = document.getElementById('metric-tree-tooltip');
-    var wrapper = container.parentElement;
+    document.getElementById(containerId + '-zoom-in').addEventListener('click', function() {
+      sc = Math.min(sc * 1.2, 3);
+      applyTransform();
+    });
+    document.getElementById(containerId + '-zoom-out').addEventListener('click', function() {
+      sc = Math.max(sc * 0.8, 0.3);
+      applyTransform();
+    });
+    document.getElementById(containerId + '-reset').addEventListener('click', function() {
+      tx = 250; ty = H / 2; sc = 1;
+      applyTransform();
+    });
+
+    // --- Tooltip ---
+    var tip = document.getElementById(tooltipId);
+    var wrap = container.parentElement;
 
     function showTooltip(node, e) {
-      if (!tooltip) return;
-      var levelColors = {
-        'North Star': '#2acf62',
-        'L1': document.documentElement.classList.contains('dark') ? '#60a5fa' : '#3b82f6',
-        'L2': document.documentElement.classList.contains('dark') ? '#f59e0b' : '#f97316'
-      };
-      var color = levelColors[node.level] || '#64748b';
-      var html = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:' + (node.description ? '6px' : '0') + '">'
+      if (!tip) return;
+      var color = getColor(node.level);
+      var hasKids = node.children && node.children.length > 0;
+      var hint = hasKids
+        ? '<div style="margin-top:4px;font-size:11px;opacity:0.5;font-style:italic">Click to ' + (collapsedNodes.has(node._id) ? 'expand' : 'collapse') + '</div>'
+        : '';
+      var html = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:' + (node.description || hasKids ? '6' : '0') + 'px">'
         + '<span style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0"></span>'
         + '<span style="font-family:monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.6">' + node.level + '</span>'
         + '</div>'
@@ -196,46 +330,31 @@ const { data } = Astro.props;
       if (node.description) {
         html += '<div style="margin-top:4px;font-size:13px;opacity:0.7;line-height:1.4">' + node.description + '</div>';
       }
-      tooltip.innerHTML = html;
-      tooltip.classList.remove('hidden');
+      html += hint;
+      tip.innerHTML = html;
+      tip.classList.remove('hidden');
       positionTooltip(e);
     }
 
     function positionTooltip(e) {
-      if (!tooltip || !wrapper) return;
-      var rect = wrapper.getBoundingClientRect();
-      var x = e.clientX - rect.left + 12;
-      var y = e.clientY - rect.top - 10;
-      // Keep tooltip inside the wrapper
-      if (x + tooltip.offsetWidth > rect.width - 8) {
-        x = e.clientX - rect.left - tooltip.offsetWidth - 12;
-      }
-      if (y + tooltip.offsetHeight > rect.height - 8) {
-        y = e.clientY - rect.top - tooltip.offsetHeight + 10;
-      }
-      tooltip.style.left = x + 'px';
-      tooltip.style.top = y + 'px';
+      if (!tip || !wrap) return;
+      var r = wrap.getBoundingClientRect();
+      var x = e.clientX - r.left + 12;
+      var y = e.clientY - r.top - 10;
+      if (x + tip.offsetWidth > r.width - 8) x = e.clientX - r.left - tip.offsetWidth - 12;
+      if (y + tip.offsetHeight > r.height - 8) y = e.clientY - r.top - tip.offsetHeight + 10;
+      tip.style.left = x + 'px';
+      tip.style.top = y + 'px';
     }
 
     function hideTooltip() {
-      if (!tooltip) return;
-      tooltip.classList.add('hidden');
+      if (tip) tip.classList.add('hidden');
     }
 
-    // Listen for theme changes
-    const observer = new MutationObserver(() => {
-      // Redraw with new colors
-      const circles = g.querySelectorAll('circle');
-      circles.forEach((circle, i) => {
-        const node = nodes[i];
-        circle.setAttribute('fill', getNodeColor(node.level));
-      });
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
+    // --- Theme observer ---
+    new MutationObserver(function() {
+      dot.setAttribute('fill', document.documentElement.classList.contains('dark') ? '#334155' : '#e2e8f0');
+      render();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   })();
 </script>
-
