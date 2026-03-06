@@ -15,7 +15,7 @@ const uniqueId = `metric-tree-${Math.random().toString(36).substr(2, 9)}`;
 const tooltipId = `${uniqueId}-tooltip`;
 ---
 
-<div class="w-full relative py-6 overflow-hidden rounded-lg bg-canvas dark:bg-night-surface">
+<div class="w-full relative py-6 overflow-hidden rounded-lg bg-surface dark:bg-night-surface border border-border dark:border-night-border">
   <div id={uniqueId} class="w-full h-[500px] cursor-grab active:cursor-grabbing"></div>
   <div id={tooltipId} class="pointer-events-none absolute z-10 hidden max-w-xs rounded-lg border border-border dark:border-night-border bg-canvas dark:bg-night-surface px-4 py-3 shadow-lg"></div>
   <div class="absolute bottom-2 right-2 flex gap-2 opacity-60 hover:opacity-100 transition-opacity">
@@ -69,8 +69,8 @@ const tooltipId = `${uniqueId}-tooltip`;
     var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     dot.setAttribute('cx', '2');
     dot.setAttribute('cy', '2');
-    dot.setAttribute('r', '1');
-    dot.setAttribute('fill', document.documentElement.classList.contains('dark') ? '#334155' : '#e2e8f0');
+    dot.setAttribute('r', '1.2');
+    dot.setAttribute('fill', document.documentElement.classList.contains('dark') ? '#334155' : '#c4c4bc');
     pat.appendChild(dot);
     defs.appendChild(pat);
     svg.appendChild(defs);
@@ -353,7 +353,7 @@ const tooltipId = `${uniqueId}-tooltip`;
 
     // --- Theme observer ---
     new MutationObserver(function() {
-      dot.setAttribute('fill', document.documentElement.classList.contains('dark') ? '#334155' : '#e2e8f0');
+      dot.setAttribute('fill', document.documentElement.classList.contains('dark') ? '#334155' : '#c4c4bc');
       render();
     }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   })();

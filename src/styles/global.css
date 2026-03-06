@@ -14,7 +14,7 @@
 	--color-ink-secondary: #475569;
 	--color-ink-muted: #4A5568;
 	--color-surface: #ffffff;
-	--color-canvas: #FAFAF8;
+	--color-canvas: #F0F0EC;
 	--color-border: #E2E8F0;
 
 	--color-cream: #E8E6E1;
@@ -248,6 +248,35 @@
 }
 .dark .prose :where(li)::marker {
 	color: var(--color-cream-muted);
+}
+
+/* Heading anchor links */
+.heading-anchor {
+	text-decoration: none !important;
+	margin-left: -1.2em;
+	padding-right: 0.3em;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	position: relative;
+}
+.heading-anchor-icon {
+	font-family: var(--font-mono);
+	font-weight: 400;
+	color: var(--color-accent);
+	font-size: 0.8em;
+}
+:where(h1, h2, h3, h4, h5, h6):hover .heading-anchor {
+	opacity: 1;
+}
+.heading-anchor:focus-visible {
+	opacity: 1;
+}
+@media (max-width: 720px) {
+	.heading-anchor {
+		margin-left: 0;
+		padding-right: 0.4em;
+		position: static;
+	}
 }
 
 /* Mermaid diagrams — rendered as inline SVG at build time */
