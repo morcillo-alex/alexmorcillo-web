@@ -12,13 +12,6 @@ tags:
   - tools
 ---
 
-<!--
-🎨 HERO IMAGE PROMPT
-A split-screen cinematic editorial illustration showing two developer workstations side by side. Left side: a developer drowning in a flood of AI-generated code streaming from multiple monitors, looking overwhelmed and fatigued, surrounded by glowing but chaotic code fragments. Right side: a developer confidently reviewing clean, well-structured code on a single monitor with clarity and focus, annotating and directing with precision, calm and in control. Color palette: deep blues and purples with accent green highlights (#2acf62) representing productive AI use. Photorealistic digital art style with dramatic lighting emphasizing the contrast between chaos and control. The image should feel like a high-end tech editorial from Wired or The Verge.
-
-Aspect ratio: 16:9 (1200x630px recommended for hero + OG image)
--->
-
 I shipped three features last week that would have taken me two weeks six months ago. The code is cleaner, the edge cases are covered, and I caught two architectural issues before they hit production. I'm genuinely moving faster.
 
 Then I read the METR study.
