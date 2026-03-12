@@ -3,6 +3,7 @@ title: "I'm Faster With AI Code Tools. The Studies Say I Shouldn't Be."
 description: "The METR study found developers are 19% slower with AI tools. My experience says the opposite. Here's what separates productive AI-assisted developers from those who actually slow down."
 category: 'AI'
 pubDate: 2026-03-12
+featuredTill: 2026-04-12
 heroImage: '@/assets/Media/AI/ai-coding-productivity-reality.png'
 tags:
   - ai
