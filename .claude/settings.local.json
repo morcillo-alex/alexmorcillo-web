@@ -63,7 +63,9 @@
       "WebFetch(domain:www.reddit.com)",
       "Bash(podman run:*)",
       "Bash(cmd.exe:*)",
-      "WebFetch(domain:blog.mozilla.org)"
+      "WebFetch(domain:blog.mozilla.org)",
+      "WebFetch(domain:metr.org)",
+      "WebFetch(domain:developers.google.com)"
     ]
   }
 }

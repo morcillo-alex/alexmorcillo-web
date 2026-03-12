@@ -1,15 +1,18 @@
 ---
 title: 'The Two Years That Rewrote AI: 2024 to February 2026'
-description: 'From GPT-4o to DeepSeek R1 to reasoning models going mainstream: a sharp, opinionated chronicle of the AI milestones that actually mattered.'
+description: 'Training costs dropped 280x. DeepSeek trained a frontier model for $5M. Reasoning went mainstream. Here is what 24 months of AI chaos actually means for builders.'
 category: 'AI'
 pubDate: 2026-02-23
 heroImage: "@/assets/Media/AI/F1_AI_Race.png"
+heroImageAlt: 'AI model evolution timeline visualization from 2024 to 2026, showing the race between OpenAI, Anthropic, Google, and DeepSeek'
 tags:
-  - ai
-  - large-language-models
+  - ai-timeline-2024-2026
+  - deepseek-r1
   - reasoning-models
-  - open-source
-  - developers
+  - ai-cost-reduction
+  - claude-vs-gpt
+  - open-source-ai
+  - vibe-coding
 ---
 
 import AITimeline from '@/components/AITimeline.astro';
@@ -86,7 +89,7 @@ But here's what doesn't make the highlight reels: a rigorous METR study publishe
 
 I find this paradox genuinely interesting. The tools are everywhere. The productivity gains, at least for experienced engineers working on complex systems, are contested. What's actually happening, I think, is a transfer of who benefits: junior developers and non-programmers can build things they never could before. Senior developers are offloading the tedious mechanical work of coding but discovering that understanding and verifying AI-generated code has its own cognitive load.
 
-The net is still positive. But the story is more complicated than the pitch.
+The net is still positive. But the story is more complicated than the pitch. I wrote about both sides of this in [my breakdown of when AI coding tools actually make you faster](/blog/ai/im-faster-with-ai-code-tools/) and [why supervising AI agents is harder than producing the work yourself](/blog/ai/ai-cognitive-load/).
 
 ## AI Agents: The Gap Between Demo and Reality
 
@@ -141,6 +144,31 @@ I've stopped trying to predict which lab will be ahead in 18 months. That game i
 The deeper question, the one I keep coming back to, is what this pace of change means for the humans building on top of it. We're developing on infrastructure that rewrites itself every few months. The skill isn't picking the best model. It's building systems that can survive the model underneath changing.
 
 That's the real lesson from two years of watching this unfold. The technology is becoming a utility. The craft is learning how to build well on top of a utility that's still figuring out what it is.
+
+**What surprised you most about the last two years of AI?** I'd love to hear what I missed or got wrong. Find me on [X](https://x.com/alexmorcillo82) or [LinkedIn](https://www.linkedin.com/in/alexmorcillo/).
+
+**Keep reading:** For the human side of this shift, see [why AI supervision is cognitively harder than coding](/blog/ai/ai-cognitive-load/). For the practical developer angle, [here's when AI coding tools actually make you faster and when they don't](/blog/ai/im-faster-with-ai-code-tools/).
+
+import FAQSchema from '@/components/FAQSchema.astro';
+
+<FAQSchema items={[
+  {
+    question: "What was the most significant AI breakthrough between 2024 and 2026?",
+    answer: "DeepSeek R1, released January 2025, was arguably the biggest shift. A Chinese lab trained a reasoning model rivaling OpenAI's o1 for roughly $5.5 million and open-sourced it completely. This proved frontier AI didn't require the massive capital expenditure Western labs had claimed, triggering a market reset that wiped $593 billion from NVIDIA's market cap in a single day."
+  },
+  {
+    question: "How much did AI model costs drop between 2024 and 2026?",
+    answer: "Inference costs dropped approximately 280x from November 2022 to October 2024, falling from $20 per million tokens to $0.07 at GPT-3.5 capability levels. DeepSeek's entry then sparked an API price war: Google cut Gemini Flash pricing by 78%, OpenAI reduced GPT-4o output costs by 83%, and Claude Opus equivalent capability now costs roughly one-third of early 2024 pricing."
+  },
+  {
+    question: "Are AI coding tools actually making developers faster?",
+    answer: "The data is mixed. While 92% of US developers use AI coding tools daily and report feeling 20% faster, a rigorous METR study in July 2025 found experienced developers using tools like Cursor and Claude actually took 19% longer to complete tasks. Junior developers and non-programmers gain significantly, while senior engineers face increased cognitive load from verifying AI-generated code."
+  },
+  {
+    question: "What is the difference between reasoning models and regular LLMs?",
+    answer: "Reasoning models like OpenAI's o1 and DeepSeek R1 generate an extended internal chain-of-thought before responding, sometimes thousands of tokens worth. This lets them score 83-91% on International Math Olympiad problems versus 13% for standard models. The trade-off is latency: reasoning models take 30-60 seconds versus 2 seconds for fast models."
+  }
+]} />
 
 ---
 

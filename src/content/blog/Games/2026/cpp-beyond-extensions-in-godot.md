@@ -1,15 +1,19 @@
 ---
-title: "C++ in Godot: Beyond Extensions, Into games with Superpowers"
-description: 'GDExtension is just the start. C++ can power your entire Godot game logic, bypass the scene tree, and unlock systems most devs never realize are possible.'
+title: "C++ in Godot: Build Entire Games Beyond GDExtension (Part 1)"
+description: 'Beyond GDExtension: use C++ for your entire Godot game logic, bypass the scene tree, and access the hidden server architecture. Part 1 of 4.'
 category: 'Games'
 pubDate: 2026-03-01
 heroImage: '@/assets/Media/Games/godot-series/godot_epic.png'
+heroImageAlt: 'Godot Engine architecture diagram showing the scene tree layer above the low-level server singletons like RenderingServer and PhysicsServer3D'
 tags:
-  - games
   - godot
   - cpp
+  - gdextension
+  - game-development
   - performance
-  - architecture
+  - ecs
+  - rendering
+  - tutorial-series
 ---
 
 Here's what most developers think when they hear "C++ in Godot": build a GDExtension library, expose a few classes, call them from GDScript. Performance boost achieved, move on.
@@ -77,7 +81,7 @@ We'll explore this in depth in the next article, with a hands-on example.
 
 ### Approach 2: Going below the scene tree (and this is where it gets wild)
 
-![Godot's Architecture Diagram](@/assets/Media/Games/godot-series/godot-architecture-diagram.webp)
+![Diagram showing Godot's layered architecture: Scene Tree on top, Server singletons (RenderingServer, PhysicsServer3D, AudioServer) below, connected via RIDs](@/assets/Media/Games/godot-series/godot-architecture-diagram.webp)
 
 When I first started digging into Godot's architecture, I expected to find what most game engines give you: a scene graph with some optimization tricks and maybe a few extension points. That's not what I found.
 
@@ -133,4 +137,13 @@ This article was about the *why* and the *what*. The rest of the series is about
 
 **Part 4: ECS meets Godot.** Integrating FLECS or EnTT with Godot's servers for large-scale simulations. Tens of thousands of entities, minimal overhead, full control.
 
-If any of that sounds interesting, follow along. We're going to build some genuinely ambitious things.
+If you're coming from a web 3D background, you might also enjoy my [Three.js tutorial for building browser-based 3D experiences](/blog/games/exploring-threejs/), which covers similar rendering concepts in a web context.
+
+### Don't miss the next parts
+
+This series builds on itself. Part 2 assumes you've read this foundation. To get notified when each article drops:
+
+- **[Subscribe via RSS](/rss.xml)** to add this blog to your feed reader
+- **[Follow @alexmorcillo82 on X](https://x.com/alexmorcillo82)** where I'll announce each part
+
+Have questions or want to share what you're building with C++ in Godot? Reach out on [X](https://x.com/alexmorcillo82) or [LinkedIn](https://www.linkedin.com/in/alexmorcillo/). I read everything.
