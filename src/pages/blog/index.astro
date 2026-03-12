@@ -21,7 +21,7 @@ const rest = result?.rest ?? [];
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`Blog — ${SITE_TITLE}`} description="Blog by Alex Morcillo — articles on artificial intelligence, games, speculative fiction, software architecture, and emerging technology. Senior Manager at Roche and patent inventor." />
+		<BaseHead title={`Blog — ${SITE_TITLE}`} description="Where AI meets architecture meets games. A Roche tech lead breaks down what's actually happening in AI, not what the hype cycle wants you to believe." />
 	</head>
 	<body>
 		<Header />
@@ -58,7 +58,7 @@ const rest = result?.rest ?? [];
 									width={720}
 									height={480}
 									src={featured.data.heroImage}
-									alt=""
+									alt={featured.data.heroImageAlt ?? featured.data.title}
 									class="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
 									loading="eager"
 									fetchpriority="high"
@@ -98,7 +98,7 @@ const rest = result?.rest ?? [];
 												width={480}
 												height={320}
 												src={post.data.heroImage}
-												alt=""
+												alt={post.data.heroImageAlt ?? post.data.title}
 												class="w-full aspect-[3/2] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
 												loading="lazy"
 											/>

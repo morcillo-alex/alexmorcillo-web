@@ -1,6 +1,6 @@
 ---
 title: "C++ in Godot: Beyond Extensions, Into games with Superpowers"
-description: 'GDExtension is just the beginning. C++ can power your entire game logic with full engine API access, native performance, and direct server calls that bypass the scene tree entirely. This series shows you how to build ambitious systems most developers never realize are possible.'
+description: 'GDExtension is just the start. C++ can power your entire Godot game logic, bypass the scene tree, and unlock systems most devs never realize are possible.'
 category: 'Games'
 pubDate: 2026-03-01
 heroImage: '@/assets/Media/Games/godot-series/godot_epic.png'

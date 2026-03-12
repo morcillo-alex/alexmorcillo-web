@@ -9,7 +9,7 @@ export const getSlug = getFilenameSlug;
 
 export function getFullSlug(post: CollectionEntry<'blog'>): string {
 	const categorySlug = categoryToSlugPath(post.data.category);
-	const filename = getFilenameSlug(post.id);
+	const filename = post.data.slug ?? getFilenameSlug(post.id);
 	return `${categorySlug}/${filename}`;
 }
 

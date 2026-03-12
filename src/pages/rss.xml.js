@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getPostUrl } from '../utils/posts';
 
 function escapeXml(str) {
@@ -24,6 +24,7 @@ export async function GET(context) {
       <guid>${new URL(getPostUrl(post), context.site)}</guid>
       <description>${escapeXml(post.data.description)}</description>
       <pubDate>${post.data.pubDate.toUTCString()}</pubDate>
+      <author>${escapeXml(SITE_AUTHOR)}</author>
       <category>${escapeXml(post.data.category)}</category>
     </item>`,
 		)

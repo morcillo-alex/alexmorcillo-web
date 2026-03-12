@@ -115,7 +115,7 @@ const jsonLd = {
 									width={720}
 									height={480}
 									src={featured.data.heroImage}
-									alt=""
+									alt={featured.data.heroImageAlt ?? featured.data.title}
 									class="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
 									loading="eager"
 									fetchpriority="high"
@@ -152,7 +152,7 @@ const jsonLd = {
 										width={720}
 										height={400}
 										src={post.data.heroImage}
-										alt=""
+										alt={post.data.heroImageAlt ?? post.data.title}
 										class="w-full aspect-[16/10] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
 										loading="lazy"
 									/>

@@ -25,8 +25,31 @@ export type Category = string;
 export const SITE_TITLE = 'Alex Morcillo';
 export const SITE_TITLE_FULL = 'Alex Morcillo — Architect Lead & AI Engineer at Roche | Patent Inventor';
 export const SITE_DESCRIPTION =
-	'Architect Lead & AI Process/Software Engineer at Roche with 17+ years in highly regulated software lifecycle, 11 patents, and an MBA from ESADE. Writing about AI, strategy, games, speculative fiction, and the technologies shaping our future.';
+	'Inside the AI shifts happening. 17 years in regulated software, 11 patents, and the unfiltered takes you won\'t find on LinkedIn.';
 export const SITE_AUTHOR = 'Alex Morcillo';
+
+export const CATEGORY_META: Record<string, { description: string }> = {
+	AI: {
+		description:
+			'How AI is changing work as the new "Industrial Revolution". Reasoning models, cognitive load, developer tools, and the gap between hype and reality.',
+	},
+	Games: {
+		description:
+			'Godot, Three.js, and game architecture from a software engineer who builds production systems by day and games by night.',
+	},
+	'Short Stories': {
+		description:
+			'Speculative fiction exploring AI, automation, and the future we\'re building whether we\'re ready or not.',
+	},
+	Strategy: {
+		description:
+			'North Star metrics, product execution, and strategy frameworks from 17 years shipping software in regulated environments.',
+	},
+	Technology: {
+		description:
+			'Architecture patterns, performance optimization, and the technical decisions that matter when building at scale.',
+	},
+};
 export const SITE_AUTHOR_FULL = 'Alex Morcillo Montejo';
 export const TWITTER_HANDLE = '@alexmorcillo82';
 export const SOCIAL_LINKS = {

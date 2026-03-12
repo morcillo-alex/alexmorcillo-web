@@ -15,7 +15,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
 	breadcrumbs?: BreadcrumbItem[];
 };
 
-const { title, description, pubDate, updatedDate, heroImage, readingTime, category, breadcrumbs } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, readingTime, category, breadcrumbs } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const jsonLd = {
@@ -71,7 +71,7 @@ const jsonLd = {
 							width={1200}
 							height={600}
 							src={heroImage}
-							alt=""
+							alt={heroImageAlt ?? title}
 							class="w-full rounded-2xl object-cover aspect-[2/1]"
 							loading="eager"
 							fetchpriority="high"
@@ -123,7 +123,7 @@ const jsonLd = {
 										width={1200}
 										height={600}
 										src={heroImage}
-										alt=""
+										alt={heroImageAlt ?? title}
 										class="w-full rounded-xl object-cover aspect-[4/3]"
 										loading="eager"
 										fetchpriority="high"
