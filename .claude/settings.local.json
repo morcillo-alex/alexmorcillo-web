@@ -68,7 +68,10 @@
       "WebFetch(domain:developers.google.com)",
       "Bash(npm ls:*)",
       "Bash(git checkout:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "WebFetch(domain:alexmorcillo.com)",
+      "Bash(npm search:*)",
+      "Bash(claude mcp:*)"
     ]
   }
 }
