@@ -1,0 +1,124 @@
+---
+---
+
+<script is:inline>
+(function () {
+	var dl = window.dataLayer = window.dataLayer || [];
+
+	// --- Theme tracking ---
+	var theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+	dl.push({ event: 'theme_detected', theme: theme });
+
+	var toggle = document.getElementById('theme-toggle');
+	if (toggle) {
+		toggle.addEventListener('click', function () {
+			var newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+			dl.push({ event: 'theme_toggle', theme: newTheme });
+		});
+	}
+
+	// --- Navigation tracking ---
+	// Header nav links
+	document.querySelectorAll('header nav a, #mobile-menu a').forEach(function (link) {
+		link.addEventListener('click', function () {
+			dl.push({
+				event: 'navigation_click',
+				link_text: link.textContent.trim(),
+				link_url: link.getAttribute('href'),
+				nav_location: 'header'
+			});
+		});
+	});
+
+	// Footer links
+	document.querySelectorAll('footer a').forEach(function (link) {
+		link.addEventListener('click', function () {
+			dl.push({
+				event: 'navigation_click',
+				link_text: link.textContent.trim() || link.getAttribute('aria-label') || 'unknown',
+				link_url: link.getAttribute('href'),
+				nav_location: 'footer'
+			});
+		});
+	});
+
+	// --- CTA tracking ---
+	// Cookie consent accept
+	var cookieBtn = document.getElementById('cookie-accept');
+	if (cookieBtn) {
+		cookieBtn.addEventListener('click', function () {
+			dl.push({ event: 'cta_click', cta_name: 'cookie_accept' });
+		});
+	}
+
+	// Contact LinkedIn CTA
+	document.querySelectorAll('a[href*="linkedin.com"]').forEach(function (link) {
+		var text = link.textContent.trim();
+		if (text.indexOf('Contact') !== -1) {
+			link.addEventListener('click', function () {
+				dl.push({ event: 'cta_click', cta_name: 'contact_linkedin', link_url: link.getAttribute('href') });
+			});
+		}
+	});
+
+	// Social share buttons
+	document.querySelectorAll('a[aria-label^="Share on"]').forEach(function (link) {
+		link.addEventListener('click', function () {
+			dl.push({
+				event: 'social_share',
+				share_network: link.getAttribute('aria-label').replace('Share on ', ''),
+				share_url: link.getAttribute('href')
+			});
+		});
+	});
+
+	// Footer social icons
+	document.querySelectorAll('footer a[aria-label]').forEach(function (link) {
+		var label = link.getAttribute('aria-label');
+		if (label && label !== 'RSS Feed') {
+			link.addEventListener('click', function () {
+				dl.push({
+					event: 'social_click',
+					social_network: label,
+					link_url: link.getAttribute('href')
+				});
+			});
+		}
+	});
+
+	// --- Scroll depth tracking ---
+	var milestones = [25, 50, 75, 100];
+	var reached = {};
+
+	function getScrollPercent() {
+		var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+		if (docHeight <= 0) return 100;
+		return Math.round((window.scrollY / docHeight) * 100);
+	}
+
+	window.addEventListener('scroll', function () {
+		var pct = getScrollPercent();
+		for (var i = 0; i < milestones.length; i++) {
+			var m = milestones[i];
+			if (pct >= m && !reached[m]) {
+				reached[m] = true;
+				dl.push({
+					event: 'scroll_depth',
+					scroll_percentage: m,
+					page_path: window.location.pathname
+				});
+			}
+		}
+	}, { passive: true });
+
+	// --- Device info ---
+	var w = window.innerWidth;
+	var deviceType = w < 768 ? 'mobile' : (w < 1024 ? 'tablet' : 'desktop');
+	dl.push({
+		event: 'device_info',
+		device_type: deviceType,
+		screen_width: w,
+		page_path: window.location.pathname
+	});
+})();
+</script>

@@ -1,0 +1,44 @@
+---
+---
+
+<div
+	id="cookie-consent"
+	class="fixed left-6 right-6 md:left-auto md:right-6 md:max-w-sm z-50"
+	style="bottom: -200px; transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease; opacity: 0;"
+>
+	<div class="bg-surface dark:bg-night-surface border border-border dark:border-night-border rounded-xl p-5" style="box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 20px 60px rgba(0, 0, 0, 0.08);">
+		<p class="font-display text-sm font-semibold text-ink dark:text-cream m-0 mb-2">
+			Cookie Notice
+		</p>
+		<p class="font-body text-sm text-ink-secondary dark:text-cream-secondary m-0 mb-4 leading-relaxed">
+			This website uses cookies to ensure you get the best experience. By continuing to browse, you consent to the use of cookies. See our <a href="/cookie-policy" class="text-accent hover:underline">Cookie Policy</a> and <a href="/privacy-policy" class="text-accent hover:underline">Privacy Policy</a> for more information.
+		</p>
+		<button
+			id="cookie-accept"
+			class="font-mono text-xs font-semibold tracking-wider uppercase px-5 py-2 rounded-lg bg-accent text-night cursor-pointer border-0 hover:opacity-90 transition-opacity"
+		>
+			Accept
+		</button>
+	</div>
+</div>
+
+<script is:inline>
+	(function () {
+		if (localStorage.getItem('cookie-consent') === 'accepted') return;
+		var banner = document.getElementById('cookie-consent');
+		if (!banner) return;
+		// Trigger slide-up after a short delay so the transition plays
+		setTimeout(function () {
+			banner.style.bottom = '1.5rem';
+			banner.style.opacity = '1';
+		}, 300);
+		var btn = document.getElementById('cookie-accept');
+		if (btn) {
+			btn.addEventListener('click', function () {
+				localStorage.setItem('cookie-consent', 'accepted');
+				banner.style.bottom = '-200px';
+				banner.style.opacity = '0';
+			});
+		}
+	})();
+</script>
