@@ -53,7 +53,7 @@ Let me be clear: AI absolutely can make you slower. I've watched it happen to my
 
 **When you're debugging your own recent code.** You already have the mental model. You know what you meant to do. Reading and verifying AI-generated fixes takes longer than just fixing it yourself. The cognitive overhead of explaining the problem to an AI, evaluating the proposed solution, and verifying it doesn't introduce new issues often exceeds the cost of just patching the bug.
 
-**When you're working in a well-understood domain with established patterns.** If you've written authentication middleware five times before, the sixth time is mechanical. You don't need AI to generate it. You need your fingers to type what your brain already knows. Adding an AI intermediary just adds latency.
+**When you're working in a well-understood domain with established patterns.** If you've written authentication middleware five times before, the sixth time is mechanical. You don't need AI to generate it. You need your fingers to type what your brain already knows. Adding an AI intermediary just adds latency. Additionally, many developers just want to get the job done and don't spend then right amount of time preparing the prompt or collecting the right context for the AI to be effective.
 
 **When the AI generates plausible but subtly wrong code.** This is the killer. The model produces something that looks right, passes basic tests, and will absolutely fail in production under edge cases you didn't think to specify. Catching these requires intense scrutiny. You're not just reading code. You're reading code while constantly asking "what did the model misunderstand about my intent?"
 
@@ -61,44 +61,25 @@ The METR study likely captured all three scenarios. Experienced developers worki
 
 **When supervision cost exceeds production cost.** Here's the thing nobody warns you about: AI generates code faster than you can properly review it. If you're running multiple AI agents concurrently, the cognitive load of maintaining quality across parallel workstreams is genuinely draining. I wrote about this in depth in ["AI Is Not a Tool. It Is Work."](/blog/ai/ai-cognitive-load/) Your System 2 (deliberate, analytical thinking) fatigues. Your System 1 (fast, intuitive pattern-matching) takes over. System 1 is terrible at catching confident-sounding errors. Quality erodes quietly.
 
-## When AI Coding Tools Make You Faster
+## When AI Makes You Faster
 
-But here's where my experience diverges from the study results. When I'm faster with AI, it's in fundamentally different scenarios:
+Here's where my experience diverges from the study results. I'm faster with AI. The code I ship is really good, well tested, following the architecture I want, and with rapid iteration cycles.
 
-**When I'm exploring unfamiliar territory.** I wanted to add structured logging to a Python service but hadn't used `structlog` before. Claude generated a complete integration, explained the tradeoffs between different formatters, and showed me how to configure context injection. I refined it, tested it, shipped it. That would have been a full afternoon of reading docs and trial-and-error. It took 30 minutes.
+So, how do I achieve this?
 
-**When I'm scaffolding architecture.** The initial structure of a new service (project setup, dependency injection, config management, error handling, testing infrastructure) is tedious but essential. AI can generate the entire scaffold while I focus on the domain-specific logic that actually matters. The generated code isn't perfect. It's a starting point that saves me two hours of boilerplate.
+> Shifting the mindset from _"AI is a tool that should make me faster at the same tasks"_ to _"AI is work. AI is a collaborator that expands the range of tasks I can tackle and the quality bar I can sustain"_
 
-**When I'm working across language or framework boundaries.** I needed to integrate a Rust library into a Node.js project via FFI. I've done FFI exactly twice in my career. Claude walked me through the build config, showed me how to handle memory management across the boundary, and generated the TypeScript bindings. I reviewed, tested, adjusted. It worked. Without AI, I'd have been reading docs for hours before writing a single line.
+AI isn't just a code generator. It is a thinking partner. It helps me explore solutions I wouldn't have thought of, catch edge cases I would have missed, and scaffold complex features faster than I could write them from scratch. Now, as any brilliant collaborator, it needs **context**. It needs **guidance**. 
 
-**When I need to cover edge cases I'd otherwise miss.** Good AI models are paranoid. They think about null cases, timezone edge cases, encoding issues, race conditions. When I ask Claude to review a function, it flags things I didn't think to test. The signal-to-noise ratio isn't perfect, but I've caught real bugs this way before they hit production.
+Think about it. Imagine you join a new team and your first task is to implement a feature in a codebase you've never seen before and they ask you to do it without clarifications, without explaining what is the change about, what is the product or the feature about. Nothing. Just change this line of code to "solve the problem" and, if it does not work, you are the one to be blamed. Frustrating, right? That's how most people are using AI. They just throw the problem at it and expect a perfect solution. But AI doesn't understand your product, your users, or your architecture. It only understands the prompt you give it. If you don't provide the right context and guidance, you're setting it up to fail.
 
-**When I'm translating between domains.** Converting a SQL query into equivalent Pandas operations. Translating a shell script into a cross-platform Python equivalent. Refactoring imperative code into functional style. These are mechanical transformations that are tedious and error-prone for humans. AI does them instantly and reliably if you verify the output.
-
-The pattern here? I'm faster when I'm operating outside my comfort zone, when the task is exploratory or mechanical, and when my role shifts from producer to director.
-
-## The Firefox Example: When AI Gets It Right
-
-Here's proof that AI can be extremely capable when used correctly: In early 2026, Anthropic partnered with Mozilla to apply Claude to Firefox security analysis. The system found over 100 bugs, including 14 classified as high-severity.
-
-Let me put that in context. Firefox is a mature codebase with millions of lines of C++ and Rust, maintained by some of the best engineers in open source, with continuous security audits. And an AI model found 14 high-severity bugs they'd missed.
-
-This isn't vibe coding. This is systematic, exhaustive analysis of the kind humans struggle to sustain. The AI didn't get fatigued. It didn't get bored reviewing the same patterns across thousands of files. It flagged every instance of a potential vulnerability class and let human experts verify and prioritize.
-
-That's the frontier. Not replacing developers. Augmenting the kind of exhaustive, tedious analysis that humans know they should do but realistically can't sustain at scale.
+When I'm building something new or working in an unfamiliar codebase, AI helps me bootstrap understanding and iterate quickly. When I'm refactoring or adding features to a well-known codebase, I use AI to generate boilerplate or explore alternative implementations, but I don't rely on it for the core logic.
 
 ## Why The Studies Miss The Point
 
-The METR study measured task completion time in familiar codebases. That's valid. It's also narrow.
+The METR study measured task completion time in familiar codebases. That's valid. It's also narrow. Additionally, it was conducted from a Tool perspective, not a Work perspective. It asked: "Does adding AI tools make developers faster at the same tasks?" The answer was no if you just don't change your Ways of Working (WoW).
 
-What the study didn't measure:
-
-- **Exploration bandwidth.** How many new technologies or frameworks did developers feel comfortable trying because AI lowered the learning curve?
-- **Error prevention.** How many bugs were caught during development that would have shipped without AI review?
-- **Cognitive offload.** How much mental energy was freed up by offloading mechanical tasks, allowing developers to focus on architecture and domain logic?
-- **Capability expansion.** How many tasks did developers tackle that they wouldn't have attempted without AI support?
-
-I'm not arguing the study is wrong. I'm arguing it's measuring the wrong thing if you want to understand whether AI tools make developers more effective.
+> I'm not arguing the study is wrong. I'm arguing it's measuring the wrong thing if you want to understand whether AI (not AI tools) make developers more effective.
 
 Faster task completion on known problems isn't the game. The game is: can you solve harder problems, explore more options, catch more errors, and ship higher-quality systems than you could before?
 
@@ -106,69 +87,45 @@ For me, the answer is yes. But only because I've learned when to use AI and when
 
 ## The Skill Nobody Teaches: Knowing When to Use AI
 
-Here's the uncomfortable truth: most developers are using AI wrong. They're using it the way they were taught to use Stack Overflow: when stuck, paste in the problem, accept the answer, move on.
+Here's the uncomfortable truth: most developers are using AI wrong. They're using it the way they were taught to use `Stack Overflow`: when stuck, paste in the problem, accept the answer, move on.
 
-That works for Stack Overflow because the answers have been upvoted by thousands of people and tested in production for years. It doesn't work for AI because the answer is generated on the spot, may be subtly wrong, and has zero validation beyond your own review.
+That works for `Stack Overflow` because the answers have been upvoted by thousands of people and tested in production for years. It doesn't work for AI because the answer is generated on the spot, may be subtly wrong, and has zero validation beyond your own review.
 
 The skill that separates productive AI users from those who slow down is knowing when the tool's strengths align with the task's demands.
 
-**Use AI when:**
-- You're in unfamiliar territory and need to bootstrap understanding quickly
-- The task is mechanical and tedious (boilerplate, format conversions, repetitive refactoring)
-- You want exhaustive coverage of edge cases and error conditions
-- You're prototyping and iteration speed matters more than perfection
+**You prepare specs and context over random code generation.** Before asking AI to generate code, I spend time preparing the prompt. I gather relevant documentation, write a clear spec (also using AI), and provide examples. This upfront investment pays off in higher-quality output.
 
-**Don't use AI when:**
-- You already have a clear mental model and muscle memory for the task
-- The code requires deep domain knowledge the AI doesn't have
-- Verification cost will exceed writing it yourself
-- The stakes are high and the margin for error is zero (security-critical code, financial transactions, healthcare logic)
+**AI can run many agents in parallel, but they need a plan first.** I don't just ask for code. I ask for a plan from a given `Idea`. I break down the problem into subproblems and assign agents to each. This way, I can manage the cognitive load and ensure each agent has a clear purpose.
 
-**And critically: always verify.** Treat AI output like code from a junior developer who's brilliant but unreliable. Review every line. Test edge cases. Ask "what did the model probably get wrong?"
+**AI can document reverse engineer your code into a `memory bank` that it can refer to later.** I use AI agents run in batches to create a living documentation of the codebase as I work. Not what the developer expects to have or wishes to have, but WHAT the code ACTUALLY IS. This helps me and the AI maintain context across sessions and reduces the risk of hallucinations.
 
-## The Real Productivity Gain Isn't Speed
+**I prioritize AI friendly code structures over human-friendly quality attributes**. I understood that the **real value** is not in Code itself. It is in the to articulate the problem, the solution, and the rationale. I generate code that I can easily replace and rewite. I focus more on other quality attributes like performance, security, reliability, and AI maintainability. I don't care if the code is elegant or follows best coding style practices if it doesn't solve the problem effectively. Don't get me wrong. I want the code to be readable and maintainable, but, if AI will be able to boost my productivity by 10x but the side effect is that I may have some class with few to no-comments and methods with more than 20 lines of code, so be it. I can always refactor it later and make it more elegant. The point is to get the value out there faster and then iterate on it.
 
-Here's what I've realized after a year of serious AI-assisted development: the productivity gain isn't that I ship individual features faster. It's that I ship better features, explore more options, and catch more mistakes before they become incidents.
+## The Real Productivity Gain Isn't `just` Speed
 
-Last month, I was building a data sync service. My first design was event-driven with a message queue. Before writing code, I asked Claude to critique the architecture. It pointed out a race condition in my proposed design where overlapping updates could corrupt state. I would have caught that in testing, maybe. Or I would have shipped it and been paged at 2am. Instead, I redesigned before writing a line.
+Here's what I've realized after a year of serious AI-assisted development: the productivity gain isn't `just` that I ship individual features faster. It's that I ship better features, explore more options, and catch more mistakes before they become incidents.
 
-That's the real value. Not typing faster. Thinking better.
+For example, every code I generate now is accompanied by its `memory bank` documentation. This means that I can ask the AI to explain the code, critique it, or generate tests against it with a much richer context than I could provide in a prompt. This leads to higher-quality code and faster iteration cycles.
+
+See below some of the practices that I have developed to get the most out of AI:
+
+- **I deeply prioritize that it is fully documented** with detailed specifications. This make that the AI generation is highly replicable and maintainable.
+
+- **Every specification I write, provides strong context about the business value, personas, constraints, expectations, acceptance criteria, and edge cases.** While I am creating those specs I can ask the AI to generate a new scenarios that I carefully review.
+
+- **I document my planned architecture and guiding principles.** This way, I can ask the AI to generate code that follows those principles and architecture. I can also ask the AI to critique the code against those principles and architecture, which helps me catch any deviations or inconsistencies.
+
+- **I use AI to generate a coding plan before writing any code.** This way, I can ask the AI to explore different approaches, identify potential pitfalls, and suggest optimizations. I also edit what the AI is expecting to generate doing an early code review of what is meant to be generated. Since I wrote the specifications and the acceptance criteria, I prepare the plan to make sure that it is using Behavior Driven Development (BDD) and Test Driven Development (TDD) practices. This way, I can ask the AI to generate tests first, which helps me clarify my requirements and catch any misunderstandings before writing the implementation code.
+
+- **Generate the testing and code and iterate on it.** I don't expect the first generation to be perfect. I use it as a starting point and then iterate on it, asking the AI to refine the code, add more tests, or explore alternative implementations. This way, I can leverage the AI's ability to generate multiple iterations quickly and efficiently. I define clear quality bars for each iteration and enforce them rigorously. If the AI output doesn't meet the quality bar, I don't ship it. I ask the AI to explain why it generated that code and what it misunderstood about my intent.
+
+> In a nutshell, the real productivity comes from acting as a orchestrator of AI agents. A LEADER, a Product Manager, a Software Architect, ... not a typist.
 
 AI coding tools are not making me faster at the tasks I was already good at. They're expanding the surface area of problems I can tackle and the quality bar I can sustain. That's a fundamentally different kind of productivity.
 
-## What Separates Fast Developers From Slow Ones
+Now, my delivery is accompanied by a `memory bank` documentation that is always versioned together with the code that captures the rationale, the design decisions, the edge cases, and the testing strategy. This means that I can iterate on the code with much richer context and catch issues before they become incidents. The speed gain is real, but it's just one part of a much bigger picture of how AI is transforming software development. 
 
-The METR study found a 19% slowdown on average. But averages hide distribution. I'd bet money there's a bimodal distribution in that data: some developers got dramatically slower, others got faster, and the average came out negative.
-
-The difference isn't typing speed or years of experience. It's whether you've developed the meta-skill of AI-assisted development:
-
-**Know your tools' failure modes.** Claude hallucinates API methods that don't exist. Copilot completes patterns it's seen before even if they're wrong for your context. GPT-4 generates confidently wrong explanations. Learn where your model tends to fail and look harder in those spots.
-
-**Develop review discipline.** Your System 2 will fatigue after an hour of reviewing AI output. Take breaks. Don't approve code when you're tired. Set a quality bar and enforce it ruthlessly.
-
-**Treat AI as a collaborator, not an oracle.** When Claude suggests something, my first question is "why?" If I can't explain why the solution works, I don't ship it. Understanding is non-negotiable.
-
-**Maintain deep-production habits.** Write some code yourself. Debug without AI. Keep your core skills sharp. The day your AI tool goes down, you still need to ship.
-
-The developers who get slower with AI are the ones using it as a replacement for thinking. The ones who get faster are using it as a thinking aid.
-
-## The Question You Should Actually Ask
-
-The METR study asks: "Do AI tools make developers faster at completing tasks?"
-
-The better question is: "Do AI tools make developers more effective at building reliable software?"
-
-Effectiveness includes speed, but also correctness, maintainability, edge case coverage, architectural soundness, and ability to work outside your comfort zone.
-
-By that measure? Yes. Absolutely yes.
-
-But only if you've learned to use the tools as tools, not as magic wands. Only if you've developed the discipline to review rigorously, the judgment to know when to engage AI and when to ignore it, and the self-awareness to recognize when you're rubber-stamping instead of reviewing.
-
-The studies will catch up. Right now, they're measuring task completion time on familiar problems. Eventually, they'll measure what matters: whether AI-assisted developers build better systems, catch more bugs, explore more solutions, and ship more value.
-
-Until then, I'll keep using the tools that make me better and ignoring the ones that don't.
-
-And I'll keep shipping faster than the studies say I should be able to.
+And very importantly, I can validate the re-execution with new models and see how the code evolves.  
 
 ---
 
