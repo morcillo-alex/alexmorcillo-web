@@ -1,0 +1,107 @@
+---
+---
+
+<script is:inline>
+(function () {
+	// --- Theme tracking ---
+	var theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+	plausible('Theme Detected', { props: { theme: theme } });
+
+	var toggle = document.getElementById('theme-toggle');
+	if (toggle) {
+		toggle.addEventListener('click', function () {
+			var newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+			plausible('Theme Toggle', { props: { theme: newTheme } });
+		});
+	}
+
+	// --- Navigation tracking ---
+	document.querySelectorAll('header nav a, #mobile-menu a').forEach(function (link) {
+		link.addEventListener('click', function () {
+			plausible('Navigation Click', {
+				props: {
+					text: link.textContent.trim(),
+					url: link.getAttribute('href'),
+					location: 'header'
+				}
+			});
+		});
+	});
+
+	document.querySelectorAll('footer a').forEach(function (link) {
+		link.addEventListener('click', function () {
+			plausible('Navigation Click', {
+				props: {
+					text: link.textContent.trim() || link.getAttribute('aria-label') || 'unknown',
+					url: link.getAttribute('href'),
+					location: 'footer'
+				}
+			});
+		});
+	});
+
+	// --- CTA tracking ---
+	var cookieBtn = document.getElementById('cookie-accept');
+	if (cookieBtn) {
+		cookieBtn.addEventListener('click', function () {
+			plausible('CTA Click', { props: { name: 'cookie_accept' } });
+		});
+	}
+
+	document.querySelectorAll('a[href*="linkedin.com"]').forEach(function (link) {
+		var text = link.textContent.trim();
+		if (text.indexOf('Contact') !== -1) {
+			link.addEventListener('click', function () {
+				plausible('CTA Click', { props: { name: 'contact_linkedin', url: link.getAttribute('href') } });
+			});
+		}
+	});
+
+	// --- Social share buttons ---
+	document.querySelectorAll('a[aria-label^="Share on"]').forEach(function (link) {
+		link.addEventListener('click', function () {
+			plausible('Social Share', {
+				props: {
+					network: link.getAttribute('aria-label').replace('Share on ', ''),
+					url: link.getAttribute('href')
+				}
+			});
+		});
+	});
+
+	// --- Footer social icons ---
+	document.querySelectorAll('footer a[aria-label]').forEach(function (link) {
+		var label = link.getAttribute('aria-label');
+		if (label && label !== 'RSS Feed') {
+			link.addEventListener('click', function () {
+				plausible('Social Click', {
+					props: { network: label, url: link.getAttribute('href') }
+				});
+			});
+		}
+	});
+
+	// --- Scroll depth tracking ---
+	var milestones = [25, 50, 75, 100];
+	var reached = {};
+
+	function getScrollPercent() {
+		var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+		if (docHeight <= 0) return 100;
+		return Math.round((window.scrollY / docHeight) * 100);
+	}
+
+	window.addEventListener('scroll', function () {
+		var pct = getScrollPercent();
+		for (var i = 0; i < milestones.length; i++) {
+			var m = milestones[i];
+			if (pct >= m && !reached[m]) {
+				reached[m] = true;
+				plausible('Scroll Depth', {
+					props: { percentage: String(m), path: window.location.pathname }
+				});
+			}
+		}
+	}, { passive: true });
+})();
+</script>
