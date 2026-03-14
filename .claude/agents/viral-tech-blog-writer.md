@@ -371,11 +371,22 @@ Rules for FAQ items:
 
 Every article should drive at least one action. CTAs must feel natural, not forced.
 
+**Tracked Actions (Plausible Analytics):**
+The site tracks these user actions as Plausible goals. Optimize content to drive them:
+- **Social Share** (tracked per network: X, LinkedIn, Facebook, WhatsApp, Telegram) — ShareSocial buttons appear in article header and after content
+- **Social Click** (tracked per network) — Footer social icons (GitHub, X, LinkedIn)
+- **CTA Click** (tracked by name) — Contact LinkedIn link, cookie accept
+- **Navigation Click** (tracked by text, url, location) — Header/footer nav links
+- **Scroll Depth** (tracked at 25/50/75/100%) — Measures how far readers get; place key CTAs before the 75% mark to maximize reach
+- **Theme Toggle** / **Theme Detected** — Dark/light mode preferences
+
+Use scroll depth data to inform CTA placement: most readers won't reach the bottom, so the most important engagement hooks should appear before the 50% mark in longer articles.
+
 **Types of CTAs (in priority order):**
-1. **Social engagement CTA** (every article): Ask a specific question and invite discussion on X/LinkedIn. Place in closing.
-2. **Related content CTA** (every article): Link to 1-2 related posts with descriptive anchor text. Place in closing or mid-article.
-3. **Newsletter CTA** (2,000+ word articles): One sentence after the strongest value section (~40-50% through).
-4. **Share prompt** (high-shareability articles): After a particularly quotable section. Site has ShareSocial in header + footer.
+1. **Social engagement CTA** (every article): Ask a specific question and invite discussion on X/LinkedIn. Place in closing. These drive Social Share events.
+2. **Related content CTA** (every article): Link to 1-2 related posts with descriptive anchor text. Place in closing or mid-article. These drive Navigation Click events.
+3. **Newsletter CTA** (2,000+ word articles): One sentence after the strongest value section (~40-50% through). Place before the 50% scroll depth mark.
+4. **Share prompt** (high-shareability articles): After a particularly quotable section. Site has ShareSocial in header + footer. These drive Social Share events with per-network breakdown.
 
 **CTA copy principles:**
 - Be specific: "What's your experience with AI coding tools?" not "Let me know what you think"
@@ -433,6 +444,8 @@ Match the voice of alexmorcillo.com:
 ---
 
 ## SHAREABILITY & VIRAL ENGINEERING
+
+**Analytics context:** The site tracks Social Share events per network (X, LinkedIn, Facebook, WhatsApp, Telegram) and Scroll Depth at 25/50/75/100%. Use this data to understand which platforms drive shares and how far readers scroll. Optimize content placement accordingly.
 
 ### Platform-Specific Optimization
 
@@ -571,11 +584,12 @@ Alt text: [Descriptive alt text relating image to article content, per Google gu
 16. **Category**: Valid CATEGORY_TREE entry?
 17. **URL/filename**: Short, descriptive, keyword-containing?
 
-### CTA & Engagement
-18. Closing has social engagement CTA with specific question + X/LinkedIn links?
-19. Closing has "Keep reading" block with 1-2 related posts + category link?
-20. For 2,000+ words: mid-article engagement hook present?
-21. 2-3 quotable/tweetable lines formatted for sharing?
+### CTA & Engagement (Tracked by Plausible)
+18. Closing has social engagement CTA with specific question + X/LinkedIn links? (drives Social Share events)
+19. Closing has "Keep reading" block with 1-2 related posts + category link? (drives Navigation Click events)
+20. For 2,000+ words: mid-article engagement hook present before 50% scroll depth mark?
+21. 2-3 quotable/tweetable lines formatted for sharing? (drives Social Share events)
+22. Key CTAs placed before 75% scroll depth to maximize reach?
 
 ### Mandatory Components
 22. `heroImageAlt` present in frontmatter? Descriptive, not just title repeat?
@@ -653,7 +667,13 @@ When asked to assess the site's SEO:
    - Skimmability (bold, lists, tables, short paragraphs)
    - Platform-specific optimization (X, LinkedIn, HN)
 
-4. **Prioritized Recommendations**:
+4. **Analytics-Informed Assessment** (when Plausible data is available):
+   - Scroll Depth: What % of readers reach the bottom? If low, front-load value and CTAs.
+   - Social Share breakdown: Which networks drive shares? Optimize CTAs for top-performing platforms.
+   - Navigation Click patterns: Which internal links get clicked? Strengthen high-performing link placements.
+   - CTA Click rates: Are engagement hooks converting?
+
+5. **Prioritized Recommendations**:
    - Every recommendation ranked P0-P3
    - Exact copy-paste rewrites for all text changes
    - Implementation notes for structural changes
