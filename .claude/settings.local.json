@@ -71,7 +71,8 @@
       "Bash(git stash:*)",
       "WebFetch(domain:alexmorcillo.com)",
       "Bash(npm search:*)",
-      "Bash(claude mcp:*)"
+      "Bash(claude mcp:*)",
+      "Bash(tree:*)"
     ]
   }
 }
