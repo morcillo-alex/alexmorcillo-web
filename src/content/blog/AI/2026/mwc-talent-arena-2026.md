@@ -1,16 +1,19 @@
 ---
-title: "I'm Speaking at MWC Talent Arena 2026: The Velocity Gap in Healthcare AI"
-description: "AI moves at venture capital speed. Healthcare moves at regulatory speed. Here's how Roche is closing the gap, straight from my MWC 2026 talk."
+title: "The Velocity Gap: Why Healthcare AI Fails (And How Roche Is Fixing It)"
+description: "AI innovation and healthcare adoption are fundamentally incompatible. Here is the process architecture Roche uses to ship AI at speed without sacrificing patient safety."
 category: 'AI'
 pubDate: 2026-02-28
 featuredTill: 2026-04-01
 heroImage: '@/assets/Media/AI/talent-arena.png'
+heroImageAlt: 'Mobile World Congress Talent Arena 2026 stage with AI and healthcare innovation theme'
 tags:
-  - ai
-  - healthcare
-  - speaking
-  - innovation
-  - mwc
+  - healthcare-ai-adoption
+  - ai-implementation
+  - regulated-ai
+  - mwc-2026
+  - roche
+  - velocity-gap
+  - process-architecture
 ---
 
 AI is moving at venture capital speed. Healthcare moves at regulatory speed. The gap between these two velocities isn't just an inconvenience — it delays genuine improvements in patient care. Every month we spend stuck in validation limbo is a month where a better tool could have been in a clinician's hands.
@@ -53,16 +56,18 @@ This isn't about moving fast and breaking things. It's about moving fast *becaus
 
 Healthcare isn't the only field wrestling with this velocity gap. Financial services, automotive, aerospace, pharma — if you're trying to ship AI in a world that demands slow, careful validation, we're dealing with the same problem.
 
-**If you're tired of AI hype**, this talk is for you. I'm not going to tell you AI will replace all of us by 2027 or to show you yet another way of generating a cool video. Instead, I'm going to talk about how can we get most of AI to work on our favor and not against us and, most importantly, how this can have a very positive impact on your career.
+**If you're tired of AI hype**, this talk is for you. I'm not going to tell you AI will replace all of us by 2027 or show you yet another way of generating a cool video. (For context on how AI actually evolved to this point, see [the two years that rewrote AI from 2024 to early 2026](/blog/ai/two-years-that-changed-ai/).) Instead, I'm going to talk about how to get most of AI to work in our favor and not against us, and most importantly, how this can have a very positive impact on your career.
 
 ## See You in Barcelona
 
 [Talent Arena 2026](https://talentarena.tech/) starts in two days. My session is **March 3 at 9:30h CET**, part of Mobile World Congress Barcelona. Our Digital Hub is in Sant Cugat del Vallès, just outside the city — come say hi at the Roche stand (March 2-4) if you want to talk shop.
 
-If you can't make it in person, I'll share key insights here afterward.
+If you can't make it in person, I'll publish a breakdown of our session insights here. [Follow me on X](https://x.com/alexmorcillo82) or [connect on LinkedIn](https://www.linkedin.com/in/alexmorcillo/) to get notified when it drops.
 
 I'm genuinely excited about this. Not in a "corporate speaking engagement" way. In a "finally get to talk about the work that matters to me with people who care about the same problems" way.
 
-Let's close that velocity gap.
+**Are you dealing with the velocity gap in your organization?** Whether it's regulatory compliance, organizational inertia, or something else entirely, I'd love to hear your story. Reach out on [X](https://x.com/alexmorcillo82) or [LinkedIn](https://www.linkedin.com/in/alexmorcillo/).
 
-*Check out [Roche Diagnostics España's announcement](https://www.linkedin.com/posts/roche-diagnostics-espa%C3%B1a_roche-estar%C3%A1-presente-en-talent-arena-activity-7429095209642262528-s6Nw/) for more details about our full presence at the event.*
+**Related reading:** If the cognitive side of AI adoption interests you, see [why supervising AI agents is harder than producing the work yourself](/blog/ai/ai-cognitive-load/).
+
+*Check out [Roche Diagnostics Espana's announcement](https://www.linkedin.com/posts/roche-diagnostics-espa%C3%B1a_roche-estar%C3%A1-presente-en-talent-arena-activity-7429095209642262528-s6Nw/) for more details about our full presence at the event.*

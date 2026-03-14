@@ -2,8 +2,9 @@
 title: "I'm Faster With AI Code Tools. The Studies Say I Shouldn't Be."
 description: "The METR study found developers are 19% slower with AI tools. My experience says the opposite. Here's what separates productive AI-assisted developers from those who actually slow down."
 category: 'AI'
-pubDate: 2026-03-09
-# heroImage: '../../../../assets/blog/ai-coding-productivity-reality.jpg'
+pubDate: 2026-03-12
+featuredTill: 2026-04-12
+heroImage: '@/assets/Media/AI/ai-coding-productivity-reality.png'
 tags:
   - ai
   - productivity
@@ -12,9 +13,13 @@ tags:
   - tools
 ---
 
-I shipped three features last week that would have taken me two weeks six months ago. The code is cleaner, the edge cases are covered, and I caught two architectural issues before they hit production. I'm genuinely moving faster.
+I am using extensively AI since a year now both, professionally and for my personal projects. I started interacting with the chat interfaces, copying and pasting code back and forth and, today, I am running multi-agent plans for large scaled refactors and architectural updates or complex features.
 
-Then I read the METR study.
+The amount of features that I am capable to release now has increased drastically. It is very hard to measure but you can feel that your speeds delivering value is way higher. What before would have taken me two weeks six months ago now is being delivered in a single day. The code is cleaner, the edge cases are covered, and I caught architectural issues before they hit production or spread further. **I'm genuinely moving faster**.
+
+Then I read the [METR study](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/).
+
+![METR study results showing developers with AI tools took 19% longer to complete tasks while believing they were 20% faster](../../../../assets/Media/AI/forecasted-vs-observed.png)
 
 In July 2025, researchers ran a rigorous randomized controlled trial with 16 experienced open-source developers. The kind of engineers who maintain repositories with 22,000+ stars. They were given 246 real GitHub issues. Half got AI tools like Cursor Pro with Claude 3.5 Sonnet. Half worked without AI.
 

@@ -1,15 +1,19 @@
 ---
-title: "Three.js: The Web's Best-Kept Secret for 3D"
-description: 'An introduction to Three.js — the JavaScript library turning browsers into 3D engines. Why it matters, what you can build, and a live interactive demo to prove it.'
+title: 'Three.js Tutorial: Build Your First 3D Web Experience in 2026'
+description: 'Why 111k developers chose Three.js to build 3D for the web. The library powering Apple, Google, and NASA projects. Interactive demo included. Start building in 5 minutes.'
 category: 'Games'
 pubDate: 2026-02-28
 heroImage: "@/assets/Media/Games/threejs_rendering.png"
+heroImageAlt: 'Three.js 3D scene with a glowing green cube, colored point lights, and orbit controls running in a web browser'
 tags:
   - threejs
-  - 3d
+  - 3d-graphics
   - webgl
-  - creative-coding
   - javascript
+  - creative-coding
+  - browser-games
+  - interactive-demos
+  - web-3d-tutorial
 ---
 import Callout from '@/components/Callout.astro';
 
@@ -116,9 +120,32 @@ If this sparked your curiosity, here are my recommended next steps:
 - [Shadertoy](https://www.shadertoy.com/) — When you're ready to dive into custom shaders
 - [pmndrs/drei](https://github.com/pmndrs/drei) — If you use React, this library makes Three.js even easier
 
-I'll be building more interactive demos and writing about advanced Three.js techniques in future posts. If there's something specific you'd like to see — particle systems, physics simulations, procedural terrain, shader effects — let me know.
+I'll be building more interactive demos and writing about advanced Three.js techniques in future posts. If there's something specific you'd like to see (particle systems, physics simulations, procedural terrain, shader effects), let me know on [X](https://x.com/alexmorcillo82).
 
 The web is a 3D canvas. Most people just haven't realized it yet.
+
+import FAQSchema from '@/components/FAQSchema.astro';
+
+<FAQSchema items={[
+  {
+    question: "What is Three.js?",
+    answer: "Three.js is a JavaScript library that makes WebGL accessible. It wraps low-level WebGL code in an intuitive API that lets you create 3D experiences using scenes, cameras, lights, and meshes instead of writing shader code and matrix math by hand. It has been actively developed since 2010 and has over 111,000 stars on GitHub."
+  },
+  {
+    question: "Why should I use Three.js instead of WebGL directly?",
+    answer: "WebGL is brutally low-level, requiring shader code, buffer geometry management, and matrix math by hand. Three.js wraps all of that complexity in an intuitive API. You can create stunning 3D experiences that run natively in the browser without plugins or downloads. The library has a mature ecosystem with thousands of examples, excellent documentation, and addons for physics, post-processing, and VR/AR support."
+  },
+  {
+    question: "What can you build with Three.js?",
+    answer: "Three.js enables product visualizations for e-commerce, interactive data visualizations, browser-based games including multiplayer, architectural walkthroughs, generative art, educational simulations like molecular structures and astronomical models, and interactive portfolio pieces. Companies like Apple, Google, Nike, and NASA have all shipped Three.js experiences."
+  },
+  {
+    question: "How do I get started with Three.js?",
+    answer: "Install Three.js via npm with 'npm install three', then create a scene, camera, and WebGL renderer. Add geometry and materials to create meshes, set up lighting, and use requestAnimationFrame for animation. A basic rotating cube requires about 20 lines of code. The official Three.js Fundamentals manual and Bruno Simon's Three.js Journey course are excellent starting points."
+  }
+]} />
+
+**Want to go deeper into game development?** Check out my series on [using C++ for full game logic in Godot](/blog/games/cpp-beyond-extensions-in-godot/), which covers similar low-level rendering concepts in a native game engine context. Browse more [Games articles](/blog/games/) for tutorials and demos.
 
 <Callout
   href="/games/threejs/example01"
